@@ -24,8 +24,8 @@ TileMap::TileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProg
 
 TileMap::~TileMap()
 {
-	if(map != NULL)
-		delete map;
+	if (map != NULL)
+		map = NULL;
 }
 
 
@@ -50,7 +50,7 @@ bool TileMap::loadLevel(const string &levelFile)
 	ifstream fin;
 	string line, tilesheetFile;
 	stringstream sstream;
-	char tile;
+	int tile;
 	
 	fin.open(levelFile.c_str());
 	if(!fin.is_open())
@@ -63,7 +63,7 @@ bool TileMap::loadLevel(const string &levelFile)
 	sstream >> mapSize.x >> mapSize.y;
 	getline(fin, line);
 	sstream.str(line);
-	sstream >> tileSize >> blockSize;
+	sstream >> tileSizeX >> tileSizeY >> blockSize;
 	getline(fin, line);
 	sstream.str(line);
 	sstream >> tilesheetFile;
@@ -78,21 +78,20 @@ bool TileMap::loadLevel(const string &levelFile)
 	tileTexSize = glm::vec2(1.f / tilesheetSize.x, 1.f / tilesheetSize.y);
 	
 	map = new int[mapSize.x * mapSize.y];
-	for(int j=0; j<mapSize.y; j++)
-	{
-		for(int i=0; i<mapSize.x; i++)
-		{
-			fin.get(tile);
-			if(tile == ' ')
-				map[j*mapSize.x+i] = 0;
-			else
-				map[j*mapSize.x+i] = tile - int('0');
+	
+	for(int j=0; j<mapSize.y; j++) {
+		
+		int i = 0;
+		while (getline(fin, line, ' ')) {
+
+			stringstream(line) >> tile;
+			map[j*mapSize.x + i] = tile;
+			i++;
+
 		}
-		fin.get(tile);
-#ifndef _WIN32
-		fin.get(tile);
-#endif
+
 	}
+
 	fin.close();
 	
 	return true;
@@ -105,17 +104,18 @@ void TileMap::prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program)
 	vector<float> vertices;
 	
 	halfTexel = glm::vec2(0.5f / tilesheet.width(), 0.5f / tilesheet.height());
-	for(int j=0; j<mapSize.y; j++)
+	for(int j=mapSize.y-1; j>=0; j--)
 	{
 		for(int i=0; i<mapSize.x; i++)
 		{
 			tile = map[j * mapSize.x + i];
-			if(tile != 0)
+			
+			if(tile != -1)
 			{
 				// Non-empty tile
 				nTiles++;
-				posTile = glm::vec2(minCoords.x + i * tileSize, minCoords.y + j * tileSize);
-				texCoordTile[0] = glm::vec2(float((tile-1)%2) / tilesheetSize.x, float((tile-1)/2) / tilesheetSize.y);
+				posTile = glm::vec2(minCoords.x + i * tileSizeX, (minCoords.y-63) + j * tileSizeY);
+				texCoordTile[0] = glm::vec2(float((tile-1)%10) / tilesheetSize.x, float((tile/10)%10) / tilesheetSize.y);
 				texCoordTile[1] = texCoordTile[0] + tileTexSize;
 				//texCoordTile[0] += halfTexel;
 				texCoordTile[1] -= halfTexel;
@@ -154,13 +154,14 @@ bool TileMap::collisionMoveLeft(const glm::ivec2 &pos, const glm::ivec2 &size) c
 {
 	int x, y0, y1;
 	
-	x = pos.x / tileSize;
-	y0 = pos.y / tileSize;
-	y1 = (pos.y + size.y - 1) / tileSize;
+	x = pos.x / 32;
+	y0 = pos.y / 64;
+	y1 = (pos.y + size.y - 1) / 64;
+
 	for(int y=y0; y<=y1; y++)
 	{
-		if(map[y*mapSize.x+x] != 0)
-			return true;
+		int tile = map[y*mapSize.x + x];
+		if ((tile / 10) % 10 != 4 && (tile / 10) % 10 != 3) return true;
 	}
 	
 	return false;
@@ -170,9 +171,9 @@ bool TileMap::collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) 
 {
 	int x, y0, y1;
 	
-	x = (pos.x + size.x - 1) / tileSize;
-	y0 = pos.y / tileSize;
-	y1 = (pos.y + size.y - 1) / tileSize;
+	x = (pos.x + size.x - 1) / tileSizeX;
+	y0 = pos.y / tileSizeY;
+	y1 = (pos.y + size.y - 1) / tileSizeY;
 	for(int y=y0; y<=y1; y++)
 	{
 		if(map[y*mapSize.x+x] != 0)
@@ -186,16 +187,16 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 {
 	int x0, x1, y;
 	
-	x0 = pos.x / tileSize;
-	x1 = (pos.x + size.x - 1) / tileSize;
-	y = (pos.y + size.y - 1) / tileSize;
+	x0 = pos.x / tileSizeX;
+	x1 = (pos.x + size.x - 1) / tileSizeX;
+	y = (pos.y + size.y - 1) / tileSizeY;
 	for(int x=x0; x<=x1; x++)
 	{
 		if(map[y*mapSize.x+x] != 0)
 		{
-			if(*posY - tileSize * y + size.y <= 4)
+			if(*posY - tileSizeY * y + size.y <= 4)
 			{
-				*posY = tileSize * y - size.y;
+				*posY = tileSizeY* y - size.y;
 				return true;
 			}
 		}
