@@ -1,8 +1,8 @@
-﻿Build started 15/03/2017 10:14:43.
+﻿Build started 15/03/2017 10:46:28.
      1>Project "F:\Windows 10\Documents\BO\Prince-Of-Persia\2DGame\02-Bubble\02-Bubble\02-Bubble.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"..\..\..\libs\Simple OpenGL Image Library\src" /I..\..\..\libs\freeglut\include /I"..\..\..\libs\glew-1.13.0\include" /I..\..\..\libs\glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Player.cpp
-         Player.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"..\..\..\libs\Simple OpenGL Image Library\src" /I..\..\..\libs\freeglut\include /I"..\..\..\libs\glew-1.13.0\include" /I..\..\..\libs\glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt TileMap.cpp
+         TileMap.cpp
      1>c:\program files (x86)\microsoft visual studio 12.0\vc\include\utility(103): warning C4244: 'initializing' : conversion from 'const double' to 'int', possible loss of data
                  f:\windows 10\documents\bo\prince-of-persia\2dgame\02-bubble\02-bubble\tilemap.h(34) : see reference to function template instantiation 'std::pair<int,int>::pair<char,double,void>(const std::pair<char,double> &)' being compiled
                  f:\windows 10\documents\bo\prince-of-persia\2dgame\02-bubble\02-bubble\tilemap.h(34) : see reference to function template instantiation 'std::pair<int,int>::pair<char,double,void>(const std::pair<char,double> &)' being compiled
@@ -25,4 +25,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:12.16
+Time Elapsed 00:00:05.99
