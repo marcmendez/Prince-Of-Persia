@@ -34,18 +34,21 @@ Sprite::Sprite(const glm::vec2 &quadSize, const glm::vec2 &sizeInSpritesheet, Te
 	position = glm::vec2(0.f);
 }
 
-void Sprite::update(int deltaTime)
+bool Sprite::update(int deltaTime)
 {
+	bool r = false;
 	if(currentAnimation >= 0)
 	{
 		timeAnimation += deltaTime;
 		while(timeAnimation > animations[currentAnimation].millisecsPerKeyframe)
 		{
 			timeAnimation -= animations[currentAnimation].millisecsPerKeyframe;
+			if ((currentKeyframe + 1) == animations[currentAnimation].keyframeDispl.size()) r = true;
 			currentKeyframe = (currentKeyframe + 1) % animations[currentAnimation].keyframeDispl.size();
 		}
 		texCoordDispl = animations[currentAnimation].keyframeDispl[currentKeyframe];
 	}
+	return r;
 }
 
 void Sprite::render() const
