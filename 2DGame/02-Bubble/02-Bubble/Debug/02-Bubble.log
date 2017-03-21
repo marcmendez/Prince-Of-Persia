@@ -1,10 +1,20 @@
-﻿Compilación iniciada a las 19/03/2017 12:34:49.
+﻿Compilación iniciada a las 21/03/2017 22:52:10.
      1>Proyecto "C:\Users\Marc\Desktop\Prince-Of-Persia\2DGame\02-Bubble\02-Bubble\02-Bubble.vcxproj" en el nodo 2 (Build destinos).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"..\..\..\libs\Simple OpenGL Image Library\src" /I..\..\..\libs\freeglut\include /I"..\..\..\libs\glew-1.13.0\include" /I..\..\..\libs\glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Player.cpp
          Player.cpp
-     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(194): warning C4244: '-=' : conversión de 'double' a 'int'; posible pérdida de datos
-     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(228): warning C4244: '+=' : conversión de 'double' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(391): warning C4244: '+=' : conversión de 'double' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(393): warning C4244: '+=' : conversión de 'double' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(394): warning C4244: '+=' : conversión de 'double' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(400): warning C4244: '-=' : conversión de 'double' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(402): warning C4244: '-=' : conversión de 'double' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(403): warning C4244: '-=' : conversión de 'double' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(411): warning C4244: '-=' : conversión de 'double' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(413): warning C4244: '-=' : conversión de 'double' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(414): warning C4244: '-=' : conversión de 'double' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(425): warning C4244: '+=' : conversión de 'double' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(427): warning C4244: '+=' : conversión de 'double' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(428): warning C4244: '+=' : conversión de 'double' a 'int'; posible pérdida de datos
      1>c:\program files (x86)\microsoft visual studio 12.0\vc\include\utility(103): warning C4244: 'inicializando' : conversión de 'const double' a 'int'; posible pérdida de datos
                  c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\tilemap.h(34) : vea la referencia a la creación de instancias de plantilla de función 'std::pair<int,int>::pair<char,double,void>(const std::pair<char,double> &)' que se está compilando
                  c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\tilemap.h(34) : vea la referencia a la creación de instancias de plantilla de función 'std::pair<int,int>::pair<char,double,void>(const std::pair<char,double> &)' que se está compilando
@@ -27,4 +37,4 @@
 
 Compilación correcta.
 
-Tiempo transcurrido 00:00:01.13
+Tiempo transcurrido 00:00:00.74
