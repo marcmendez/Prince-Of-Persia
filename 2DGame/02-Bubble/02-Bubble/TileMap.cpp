@@ -192,28 +192,47 @@ bool TileMap::collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) 
 	return false;
 }
 
-bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, int *posY) const
+bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, char dir) const
 {
-	int x0, x1, y;
+	int x0, x1, y, p;
 
 	x0 = pos.x / tileSizeX;
 	x1 = (pos.x + size.x - 1) / tileSizeX;
+
+	p = ((pos.x + size.x - 1) / (tileSizeX / 2)) % 4;
+
 	y = (pos.y + size.y - 1) / tileSizeY;
 
-	for (int x = x0; x <= x1; x++)
-	{
-		if ((map[(y - 1)*mapSize.x + x] / 10) % 10 != 4) {
+	for (int x = x0; x <= x1; x++){
 
-			if (*posY - tileSizeY * y + size.y <= 4)
-			{
-				*posY = tileSizeY* y - size.y;
-				return true;
-			}
+		if ((map[(y-1)*mapSize.x + x] / 10) % 10 != 4) {
+
+			if (dir == 'l' && p <= 3  && (map[(y-1)*mapSize.x + x] / 10) % 10 != 3) return true;
+			else if (dir == 'l' && (map[(y-1)*mapSize.x + x] / 10) % 10 == 3) return true;
+
+			if (dir == 'r' && p >= 1 && (map[(y-1)*mapSize.x + x] / 10) % 10 != 3) return true;
+			else if (dir == 'r' && (map[(y-1)*mapSize.x + x] / 10) % 10 == 3) return true;
+
 		}
 	}
-
-	return true;
+	return false;
 }
+
+bool TileMap:: canIMoveUp(const glm::ivec2 &pos, const glm::ivec2 &size, char dir) const {
+
+	int x0, x1, y;
+	x0 = pos.x / tileSizeX;
+ 	x1 = (pos.x + size.x - 1) / tileSizeX;
+	y = (pos.y + size.y - 1) / tileSizeY;
+
+	if ((map[(y - 1)*mapSize.x + x0] / 10) % 10 != 4) return false;
+	else if ( dir == 'r' && (map[(y - 1)*mapSize.x + x0 + 1] / 10) % 10 == 3) return true;
+	else if (dir == 'l' && (map[(y - 1)*mapSize.x + x0 - 1] / 10) % 10 == 3) return true;
+	else return false;
+
+}
+
+
 
 
 

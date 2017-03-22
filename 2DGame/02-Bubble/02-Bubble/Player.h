@@ -20,16 +20,19 @@ public:
 	
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
+	float Player::GetScreenX(int widthScreen);
+	float Player::GetScreenY(int heightScreen);
 	
 private:
 	bool bJumping;
-	glm::ivec2 tileMapDispl, posPlayer;
+	glm::ivec2 tileMapDispl;
+	glm::vec2 posPlayer;
 	int jumpAngle, startY;
-	string direction;
 
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
+	char direction;
 
 };
 

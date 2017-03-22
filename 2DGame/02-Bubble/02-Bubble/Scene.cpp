@@ -8,8 +8,8 @@
 #define SCREEN_X 0
 #define SCREEN_Y 0
 
-#define INIT_PLAYER_X_TILES	4
-#define INIT_PLAYER_Y_TILES 2
+#define INIT_PLAYER_X_TILES	20
+#define INIT_PLAYER_Y_TILES 3
 
 Scene::Scene()
 {
@@ -35,7 +35,11 @@ void Scene::init()
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize().first, INIT_PLAYER_Y_TILES * map->getTileSize().second));
 	player->setTileMap(map);
-	projection = glm::ortho(0.f, float(SCREEN_WIDTH - 1), float(SCREEN_HEIGHT - 1), 0.f);
+
+	const float kOffsetX = static_cast<int>(player->GetScreenX(10 * 32)) * 10 * 32;
+	const float kOffsetY = static_cast<int>(player->GetScreenY(3 * 64)) * 3 * 64;
+	projection = glm::ortho(kOffsetX, SCREEN_WIDTH + kOffsetX, SCREEN_HEIGHT + kOffsetY, kOffsetY);
+
 	currentTime = 0.0f;
 }
 
@@ -43,6 +47,11 @@ void Scene::update(int deltaTime)
 {
 	currentTime += deltaTime;
 	player->update(deltaTime);
+
+	const float kOffsetX = static_cast<int>(player->GetScreenX(10 * 32)) * 10 * 32;
+	const float kOffsetY = static_cast<int>(player->GetScreenY(3 * 64)) * 3 * 64;
+
+	projection = glm::ortho(kOffsetX, SCREEN_WIDTH + kOffsetX, SCREEN_HEIGHT + kOffsetY, kOffsetY);
 }
 
 void Scene::render()
@@ -65,7 +74,7 @@ void Scene::render()
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
-	columns->render();
+	//columns->render();
 
 }
 
