@@ -24,7 +24,6 @@ public:
 	float Player::GetScreenY(int heightScreen);
 	
 private:
-	bool bJumping;
 	glm::ivec2 tileMapDispl;
 	glm::vec2 posPlayer;
 	int jumpAngle, startY;
