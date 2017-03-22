@@ -261,7 +261,7 @@ void Player::update(int deltaTime)
 
 		case STAND_RIGHT:
 			if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT) && Game::instance().getSpecialKey(GLUT_KEY_UP))sprite->changeAnimation(JUMP_STAND_RIGHT);
-			else if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT) && Game::instance().getSpecialKey(GLUT_ACTIVE_SHIFT)) sprite->changeAnimation(SHIFT_RIGHT);
+			else if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT) && (Game::instance().getSpecialKey(113) || Game::instance().getSpecialKey(112))) sprite->changeAnimation(SHIFT_RIGHT);
 			else if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT)) sprite->changeAnimation(START_RUN_RIGHT);
 			else if (Game::instance().getSpecialKey(GLUT_KEY_LEFT))sprite->changeAnimation(TURN_RIGHT_TO_LEFT);
 			else if (Game::instance().getSpecialKey(GLUT_KEY_UP))sprite->changeAnimation(JUMP_UP_RIGHT);
@@ -269,7 +269,7 @@ void Player::update(int deltaTime)
 			break;
 		case STAND_LEFT:
 			if (Game::instance().getSpecialKey(GLUT_KEY_LEFT) && Game::instance().getSpecialKey(GLUT_KEY_UP))sprite->changeAnimation(JUMP_STAND_LEFT);
-			else if (Game::instance().getSpecialKey(GLUT_KEY_LEFT) && Game::instance().getSpecialKey(GLUT_ACTIVE_SHIFT)) sprite->changeAnimation(SHIFT_LEFT);
+			else if (Game::instance().getSpecialKey(GLUT_KEY_LEFT) && (Game::instance().getSpecialKey(113) || Game::instance().getSpecialKey(112))) sprite->changeAnimation(SHIFT_LEFT);
 			else if (Game::instance().getSpecialKey(GLUT_KEY_LEFT)) sprite->changeAnimation(START_RUN_LEFT);
 			else if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT))sprite->changeAnimation(TURN_LEFT_TO_RIGHT);
 			else if (Game::instance().getSpecialKey(GLUT_KEY_UP))sprite->changeAnimation(JUMP_UP_LEFT);
@@ -385,13 +385,13 @@ void Player::update(int deltaTime)
 	}
 	else {
 		
-		if (sprite->animation() == START_RUN_RIGHT)posPlayer.x +=1;
-		else if (sprite->animation() == MOVE_RIGHT)posPlayer.x += 1;
-		else if (sprite->animation() == STOP_RUN_RIGHT)posPlayer.x += 1;
-		else if (sprite->animation() == SHIFT_RIGHT)posPlayer.x += 0.5;
-		else if (sprite->animation() == CHANGE_DIRECTION_TO_LEFT)posPlayer.x += 1;
-		else if (sprite->animation() == JUMP_RUN_RIGHT)posPlayer.x += 1.5;
-		else if (sprite->animation() == JUMP_STAND_RIGHT)posPlayer.x += 1.5;
+		if (sprite->animation() == START_RUN_RIGHT)posPlayer.x +=1.5;
+		else if (sprite->animation() == SHIFT_RIGHT)posPlayer.x +=1;
+		else if (sprite->animation() == MOVE_RIGHT)posPlayer.x += 1.5;
+		else if (sprite->animation() == STOP_RUN_RIGHT)posPlayer.x += 1.5;	
+		else if (sprite->animation() == CHANGE_DIRECTION_TO_LEFT)posPlayer.x += 1.5;
+		else if (sprite->animation() == JUMP_RUN_RIGHT)posPlayer.x += 2;
+		else if (sprite->animation() == JUMP_STAND_RIGHT)posPlayer.x += 2;
 
 		
 		if (sprite->animation() == START_RUN_LEFT)posPlayer.x -= 1;
@@ -419,18 +419,22 @@ void Player::update(int deltaTime)
 
 		if (map->collisionMoveLeft(posPlayer, glm::ivec2(32, 64)))
 		{
-			if (sprite->animation() == START_RUN_LEFT)posPlayer.x += 1;
-			else if (sprite->animation() == MOVE_LEFT)posPlayer.x += 1;
-			else if (sprite->animation() == STOP_RUN_LEFT)posPlayer.x += 1;
-			else if (sprite->animation() == SHIFT_LEFT)posPlayer.x += 0.5;
-			else if (sprite->animation() == CHANGE_DIRECTION_TO_RIGHT)posPlayer.x += 1;
-			else if (sprite->animation() == JUMP_RUN_LEFT)posPlayer.x += 1.5;
-			else if (sprite->animation() == JUMP_STAND_LEFT)posPlayer.x += 1.5;
+			if (sprite->animation() == START_RUN_LEFT)posPlayer.x += 1.5;
+			else if (sprite->animation() == MOVE_LEFT)posPlayer.x += 1.5;
+			else if (sprite->animation() == STOP_RUN_LEFT)posPlayer.x += 1.5;
+			else if (sprite->animation() == SHIFT_LEFT)posPlayer.x += 1;
+			else if (sprite->animation() == CHANGE_DIRECTION_TO_RIGHT)posPlayer.x += 1.5;
+			else if (sprite->animation() == JUMP_RUN_LEFT)posPlayer.x += 2;
+			else if (sprite->animation() == JUMP_STAND_LEFT)posPlayer.x += 2;
 
 
 			sprite->changeAnimation(STAND_LEFT);
 		}
-
+		posPlayer.y += FALL_STEP;
+		if (map->collisionMoveDown(posPlayer, glm::ivec2(32, 64), &posPlayer.y))
+		{
+		}
+		else posPlayer.y -= FALL_STEP;
 	}
 	
 	
