@@ -194,16 +194,20 @@ bool TileMap::collisionMoveDown(int posx, int posy, const glm::ivec2 &size, char
 
 }
 
-bool TileMap:: canIMoveUp(const glm::ivec2 &pos, const glm::ivec2 &size, char dir) const {
+bool TileMap:: canIMoveUp(int const posx, int  const posy, const glm::ivec2 &size, char dir) const {
 
-	int x0, x1, y;
-	x0 = pos.x / tileSizeX;
- 	x1 = pos.x  / tileSizeX;
-	y = pos.y / tileSizeY;
+	int x, y;
 
-	if ((map[(y - 1)*mapSize.x + x0] / 10) % 10 != 4) return false;
-	else if ( dir == 'r' && (map[(y - 1)*mapSize.x + x0 + 1] / 10) % 10 == 3) return true;
-	else if (dir == 'l' && (map[(y - 1)*mapSize.x + x0 - 1] / 10) % 10 == 3) return true;
+	x = posx / tileSizeX;
+	if (dir = 'r') ++x;
+	else --x;
+
+	y = posy / tileSizeY - 1;
+
+	if ((map[(y)*mapSize.x + x] / 10) % 10 != 4) return false;
+	else if ( dir == 'r' && (map[(y - 1)*mapSize.x + x + 1] / 10) % 10 == 3) return true;
+	else if (dir == 'l' && (map[(y - 1)*mapSize.x + x - 1] / 10) % 10 == 3) return true;
+
 	else return false;
 
 }

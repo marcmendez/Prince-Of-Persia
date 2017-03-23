@@ -445,25 +445,27 @@ void Player::update(int deltaTime)
 
 		case JUMP_UP_RIGHT:
 
-			if (map->canIMoveUp(posPlayer, glm::ivec2(32, 64), 'r')) sprite->changeAnimation(GO_UP_RIGHT);
+			if (map->canIMoveUp(posPlayer.x, posPlayer.y, glm::ivec2(32, 64), 'r')) sprite->changeAnimation(GO_UP_RIGHT);
 			else sprite->changeAnimation(STAND_RIGHT);
 			
 			break;
+
+		case GO_UP_RIGHT:
+			/* INDEPENDENTLY  OF KEY */ sprite->changeAnimation(STAND_RIGHT);
+			posPlayer.x += 48;
+			posPlayer.y -= 64;
+
 		case JUMP_UP_LEFT:
-			if (map->canIMoveUp(posPlayer, glm::ivec2(32, 64), 'l'))sprite->changeAnimation(GO_UP_LEFT);
+			if (map->canIMoveUp(posPlayer.x, posPlayer.y, glm::ivec2(32, 64), 'l'))sprite->changeAnimation(GO_UP_LEFT);
 			else sprite->changeAnimation(STAND_LEFT);
 
 			break;
 
-		case GO_UP_RIGHT:
-			sprite->changeAnimation(STAND_RIGHT);
-
-			break;
-
 		case GO_UP_LEFT:
-			sprite->changeAnimation(STAND_LEFT);
+			/* INDEPENDENTLY  OF KEY */ sprite->changeAnimation(STAND_LEFT);
+			posPlayer.x -= 48;
+			posPlayer.y -= 64;
 
-			break;
 		}
 	}
 
