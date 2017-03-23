@@ -26,12 +26,14 @@ public:
 private:
 	glm::ivec2 tileMapDispl;
 	glm::vec2 posPlayer;
-	int jumpAngle, startY;
+
+	bool bFalling, bJumping;
+	char direction;
 
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
-	char direction;
+	
 
 };
 

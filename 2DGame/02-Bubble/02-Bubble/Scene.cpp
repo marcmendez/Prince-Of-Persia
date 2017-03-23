@@ -8,7 +8,7 @@
 #define SCREEN_X 0
 #define SCREEN_Y 0
 
-#define INIT_PLAYER_X_TILES	20
+#define INIT_PLAYER_X_TILES	10
 #define INIT_PLAYER_Y_TILES 3
 
 Scene::Scene()
@@ -74,7 +74,7 @@ void Scene::render()
 	modelview = glm::mat4(1.0f);
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
-	//columns->render();
+	columns->render();
 
 }
 
