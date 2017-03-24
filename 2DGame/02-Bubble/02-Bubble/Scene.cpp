@@ -46,14 +46,21 @@ void Scene::init()
 	projection = glm::ortho(kOffsetX, SCREEN_WIDTH + kOffsetX, SCREEN_HEIGHT + kOffsetY, kOffsetY);
 
 	currentTime = 0.0f;
+
 }
 
 void Scene::update(int deltaTime)
 {
 	currentTime += deltaTime;
+
 	player->update(deltaTime);
+
 	for each (TrapSteelBars* trap in trapsFloor) 
 		trap->update(deltaTime);
+
+	for each (TrapFallingFloor* trap in trapsFallingFloor)
+		trap->update(deltaTime);
+	
 		
 	const float kOffsetX = static_cast<int>(player->GetScreenX(10 * 32)) * 10 * 32;
 	const float kOffsetY = static_cast<int>(player->GetScreenY(3 * 64)) * 3 * 64;
@@ -73,10 +80,14 @@ void Scene::render()
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	map->render();
 
+	for each (TrapFallingFloor* trap in trapsFallingFloor)
+		trap->render();
+
 	player->render();
 
 	for each (TrapSteelBars* trap in trapsFloor)
 		trap->render();
+
 
 
 	texProgram.use();
@@ -125,8 +136,8 @@ void Scene::initTraps(string trapsFile) {
 	string line, spriteTrapsFile;
 	stringstream sstream;
 	glm::ivec2 mapSize;
+	char trap[10];
 
-	int trap;
 	fin.open(trapsFile.c_str());
 	getline(fin, line);
 
@@ -140,26 +151,30 @@ void Scene::initTraps(string trapsFile) {
 		sstream.str(line);
 		sstream >> spriteTrapsFile;
 
-		for (int i = 0; i < mapSize.y; i++) {
+		for (int j = 0; j<mapSize.y; j++) {
+			for (int i = 0; i < mapSize.x; i++) {
 
-			int j = 0;
+				fin.getline(trap, 10, ',');
 
-			while (getline(fin, line, ',')) {
+				if (strcmp(trap, "2") == 0) {
 
-			stringstream(line) >> trap;
+					TrapFallingFloor* trap = new TrapFallingFloor();
+					trap->setPlayer(player);
+					trap->setTileMap(map);
+					trap->init(glm::vec2(i * map->getTileSize().first, j * map->getTileSize().second), glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+					trapsFallingFloor.push_back(trap);
 
-			if (trap == 1) {
+				}
+
+				if (strcmp(trap, "3") == 0) {
 
 				TrapSteelBars* trap = new TrapSteelBars();
 				trap->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-				trap->setPosition(glm::vec2(j * map->getTileSize().first, i * map->getTileSize().second));
+				trap->setPosition(glm::vec2(i * map->getTileSize().first, j * map->getTileSize().second));
 				trap->setPlayer(player);
 				trapsFloor.push_back(trap);
 
-			}
-
-			j++;
-
+				}
 			}
 		}
 	}

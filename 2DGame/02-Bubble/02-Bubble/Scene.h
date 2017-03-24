@@ -7,6 +7,7 @@
 #include "TileMap.h"
 #include "Player.h"
 #include "TrapSteelBars.h"
+#include "TrapFallingFloor.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
@@ -30,6 +31,7 @@ private:
 	TileMap *map, *columns;
 	Player *player;
 	vector<TrapSteelBars*> trapsFloor;
+	vector<TrapFallingFloor*> trapsFallingFloor;
 
 	ShaderProgram texProgram;
 	float currentTime;

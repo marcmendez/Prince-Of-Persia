@@ -4,14 +4,11 @@
 #include <vector>
 #include "TileMap.h"
 
-
 using namespace std;
-
 
 TileMap *TileMap::createTileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProgram &program)
 {
 	TileMap *map = new TileMap(levelFile, minCoords, program);
-
 	return map;
 }
 
@@ -82,6 +79,7 @@ bool TileMap::loadLevel(const string &levelFile)
 	tileTexSize = glm::vec2(1.f / tilesheetSize.x, 1.f / tilesheetSize.y);
 
 	map = new int[mapSize.x * mapSize.y];
+	mapTraps = new int[mapSize.x * mapSize.y];
 
 	for (int j = 0; j<mapSize.y; j++) {
 
@@ -173,7 +171,7 @@ bool TileMap::collisionMoveRight(int posx, int posy, const glm::ivec2 &size) con
 	int x, y, p;
 
 	// iniciar variables
-	x = posx / tileSizeX + 1;
+	x = (posx + size.x) / tileSizeX;
 	y = (posy / tileSizeY);
 	p = (posx / (tileSizeX / 4)) % 4; /* ---0---  ---1--- ---2--- ---3---*/
 
@@ -185,18 +183,22 @@ bool TileMap::collisionMoveRight(int posx, int posy, const glm::ivec2 &size) con
 
 bool TileMap::collisionMoveDown(int posx, int posy, const glm::ivec2 &size, char dir) const {
 	
-	// iniciar variables
-	int x, y, p;
-	x = posx / tileSizeX;
-	y = posy / tileSizeY;
+	int x0, x1, y;
 
-	// Si no es background retornar true
-	if ((map[y*mapSize.x + x] / 10) % 10 != 4) return true;
-	else return false;
+	x0 = posx / tileSizeX;
+	x1 = (posx + (size.x - 1)) / tileSizeX;
+	y = (posy) / tileSizeY;
+
+	for (int x = x0; x <= x1; x++) {
+		if ((map[y*mapSize.x + x] / 10) % 10 == 3) return true;
+		if (mapTraps[y*mapSize.x + x] == 1) return true;
+	}
+
+	return false;
 
 }
 
-bool TileMap:: canIMoveUp(int const posx, int  const posy, const glm::ivec2 &size, char dir) const {
+bool TileMap::canIMoveUp(int const posx, int  const posy, const glm::ivec2 &size, char dir) const {
 
 	int x, y;
 
@@ -214,9 +216,13 @@ bool TileMap:: canIMoveUp(int const posx, int  const posy, const glm::ivec2 &siz
 
 }
 
+void TileMap::addTrapCollision(int x, int y) {
+	mapTraps[(y/64) * tileSizeX + (x/32)] = 1;
+}
 
-
-
+void TileMap::deleteTrapCollision(int x, int y) {
+	mapTraps[(y / 64) * tileSizeX + (x / 32)] = 0;
+}
 
 
 

@@ -5,6 +5,7 @@
 #include <glm/glm.hpp>
 #include "Texture.h"
 #include "ShaderProgram.h"
+#include <set>
 
 
 // Class Tilemap is capable of loading a tile map from a text file in a very
@@ -43,8 +44,11 @@ public:
 	bool collisionMoveRight(int posx, int posy, const glm::ivec2 &size) const;
 	bool collisionMoveDown(int posx, int posy, const glm::ivec2 &size, char dir) const;
 	bool canIMoveUp(int posx, int posy, const glm::ivec2 &size, char dir) const;
-	
+	void addTrapCollision(int pox, int posy);
+	void deleteTrapCollision(int pox, int posy);
+
 private:
+
 	bool loadLevel(const string &levelFile);
 	void prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program);
 
@@ -58,7 +62,8 @@ private:
 	Texture tilesheet;
 	glm::vec2 tileTexSize;
 	int *map;
-
+	int *mapTraps;
+	
 };
 
 

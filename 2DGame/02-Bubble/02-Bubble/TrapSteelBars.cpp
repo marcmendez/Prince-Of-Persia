@@ -20,21 +20,23 @@ void TrapSteelBars::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProg
 {
 
 	// Configuring the spritesheet
-	spritesheet.loadFromFile("images/SpriteSheetTraps.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	spritesheet.loadFromFile("images/TrapsSheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
 
 	// Configuring a single sprite
-	sprite = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.33f, 1.f), &spritesheet, &shaderProgram);
+	sprite = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.1f, 0.1f), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(3);
 
 	//KeyFrames
-	sprite->setAnimationSpeed(DOWN, 150);
-	sprite->addKeyframe(DOWN, glm::vec2(0.f, 0.f));
+	sprite->setAnimationSpeed(DOWN, 10);
+	sprite->addKeyframe(DOWN, glm::vec2(0.f, 0.9f));
 
-	sprite->setAnimationSpeed(MOVING, 150);
-	sprite->addKeyframe(MOVING, glm::vec2(0.33f, 0.f));
+	sprite->setAnimationSpeed(MOVING, 10);
+	sprite->addKeyframe(MOVING, glm::vec2(0.1f, 0.3f));
+	sprite->addKeyframe(MOVING, glm::vec2(0.2f, 0.3f));
+	sprite->addKeyframe(MOVING, glm::vec2(0.3f, 0.3f));
 
-	sprite->setAnimationSpeed(UP, 150);
-	sprite->addKeyframe(UP, glm::vec2(0.66f, 0.f));
+	sprite->setAnimationSpeed(UP, 10);
+	sprite->addKeyframe(UP, glm::vec2(0.4f, 0.3f));
 
 	//Init sprite and position
 	sprite->changeAnimation(DOWN);
@@ -76,6 +78,7 @@ void TrapSteelBars::update(int deltaTime)
 			break;
 		}
 	}
+
 
 }
 
