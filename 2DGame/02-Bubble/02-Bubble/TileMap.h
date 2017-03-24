@@ -21,6 +21,7 @@ public:
 	static TileMap *createTileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProgram &program);
 
 	TileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProgram &program);
+
 	~TileMap();
 
 	void render() const;
@@ -34,6 +35,9 @@ public:
 		return tileSize;
 
 	}
+
+	string getTrapsFile() { return trapsFile; }
+	string getColumnsFile() { return columnsFile; }
 
 	bool collisionMoveLeft(int posx, int posy, const glm::ivec2 &size) const;
 	bool collisionMoveRight(int posx, int posy, const glm::ivec2 &size) const;
@@ -50,6 +54,7 @@ private:
 	GLint posLocation, texCoordLocation;
 	glm::ivec2 position, mapSize, tilesheetSize;
 	int tileSizeX, tileSizeY, blockSize;
+	string trapsFile, columnsFile;
 	Texture tilesheet;
 	glm::vec2 tileTexSize;
 	int *map;

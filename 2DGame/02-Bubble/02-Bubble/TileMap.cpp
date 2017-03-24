@@ -15,7 +15,6 @@ TileMap *TileMap::createTileMap(const string &levelFile, const glm::vec2 &minCoo
 	return map;
 }
 
-
 TileMap::TileMap(const string &levelFile, const glm::vec2 &minCoords, ShaderProgram &program)
 {
 	loadLevel(levelFile);
@@ -27,7 +26,6 @@ TileMap::~TileMap()
 	if (map != NULL)
 		map = NULL;
 }
-
 
 void TileMap::render() const
 {
@@ -67,6 +65,12 @@ bool TileMap::loadLevel(const string &levelFile)
 	getline(fin, line);
 	sstream.str(line);
 	sstream >> tilesheetFile;
+	getline(fin, line);
+	sstream.str(line);
+	sstream >> columnsFile;
+	getline(fin, line);
+	sstream.str(line);
+	sstream >> trapsFile;
 	tilesheet.loadFromFile(tilesheetFile, TEXTURE_PIXEL_FORMAT_RGBA);
 	tilesheet.setWrapS(GL_CLAMP_TO_EDGE);
 	tilesheet.setWrapT(GL_CLAMP_TO_EDGE);
@@ -146,9 +150,7 @@ void TileMap::prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program)
 	texCoordLocation = program.bindVertexAttribute("texCoord", 2, 4 * sizeof(float), (void *)(2 * sizeof(float)));
 }
 
-// Collision tests for axis aligned bounding boxes.
-// Method collisionMoveDown also corrects Y coordinate if the box is
-// already intersecting a tile below.
+// Collision tests
 
 bool TileMap::collisionMoveLeft(int posx, int posy, const glm::ivec2 &size) const
 {

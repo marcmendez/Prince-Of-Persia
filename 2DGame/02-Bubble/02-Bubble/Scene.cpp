@@ -1,15 +1,18 @@
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <cmath>
 #include <glm/gtc/matrix_transform.hpp>
 #include "Scene.h"
 #include "Game.h"
+#include "TrapSteelBars.h"
 
 
 #define SCREEN_X 0
 #define SCREEN_Y 0
 
-#define INIT_PLAYER_X_TILES	30
-#define INIT_PLAYER_Y_TILES 3
+#define INIT_PLAYER_X_TILES	5
+#define INIT_PLAYER_Y_TILES 0
 
 Scene::Scene()
 {
@@ -25,16 +28,18 @@ Scene::~Scene()
 		delete player;
 }
 
-
 void Scene::init()
 {
 	initShaders();
 	map = TileMap::createTileMap("levels/level1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
-	columns = TileMap::createTileMap("levels/level01columns.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	columns = TileMap::createTileMap(map->getColumnsFile(), glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+
 	player = new Player();
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize().first, INIT_PLAYER_Y_TILES * map->getTileSize().second));
 	player->setTileMap(map);
+
+	initTraps(map->getTrapsFile());
 
 	const float kOffsetX = static_cast<int>(player->GetScreenX(10 * 32)) * 10 * 32;
 	const float kOffsetY = static_cast<int>(player->GetScreenY(3 * 64)) * 3 * 64;
@@ -47,7 +52,9 @@ void Scene::update(int deltaTime)
 {
 	currentTime += deltaTime;
 	player->update(deltaTime);
-
+	for each (TrapSteelBars* trap in trapsFloor) 
+		trap->update(deltaTime);
+		
 	const float kOffsetX = static_cast<int>(player->GetScreenX(10 * 32)) * 10 * 32;
 	const float kOffsetY = static_cast<int>(player->GetScreenY(3 * 64)) * 3 * 64;
 
@@ -67,6 +74,10 @@ void Scene::render()
 	map->render();
 
 	player->render();
+
+	for each (TrapSteelBars* trap in trapsFloor)
+		trap->render();
+
 
 	texProgram.use();
 	texProgram.setUniformMatrix4f("projection", projection);
@@ -106,4 +117,53 @@ void Scene::initShaders()
 	texProgram.bindFragmentOutput("outColor");
 	vShader.free();
 	fShader.free();
+}
+
+void Scene::initTraps(string trapsFile) {
+
+	ifstream fin;
+	string line, spriteTrapsFile;
+	stringstream sstream;
+	glm::ivec2 mapSize;
+
+	int trap;
+	fin.open(trapsFile.c_str());
+	getline(fin, line);
+
+	if (line.compare(0, 7, "TRAPSMAP!") != 0) {
+
+		getline(fin, line);
+		sstream.str(line);
+		sstream >> mapSize.x >> mapSize.y;
+
+		getline(fin, line);
+		sstream.str(line);
+		sstream >> spriteTrapsFile;
+
+		for (int i = 0; i < mapSize.y; i++) {
+
+			int j = 0;
+
+			while (getline(fin, line, ',')) {
+
+			stringstream(line) >> trap;
+
+			if (trap == 1) {
+
+				TrapSteelBars* trap = new TrapSteelBars();
+				trap->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+				trap->setPosition(glm::vec2(j * map->getTileSize().first, i * map->getTileSize().second));
+				trap->setPlayer(player);
+				trapsFloor.push_back(trap);
+
+			}
+
+			j++;
+
+			}
+		}
+	}
+
+	fin.close();
+
 }

@@ -6,11 +6,10 @@
 #include "ShaderProgram.h"
 #include "TileMap.h"
 #include "Player.h"
-
+#include "TrapSteelBars.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
-
 
 class Scene
 {
@@ -25,10 +24,13 @@ public:
 
 private:
 	void initShaders();
+	void initTraps(string TrapsFile);
 
 private:
 	TileMap *map, *columns;
 	Player *player;
+	vector<TrapSteelBars*> trapsFloor;
+
 	ShaderProgram texProgram;
 	float currentTime;
 	glm::mat4 projection;
