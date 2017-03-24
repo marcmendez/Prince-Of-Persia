@@ -9,14 +9,19 @@ class TrapSteelBars
 {
 
 public:
+
 	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
 	void update(int deltaTime);
 	void render();
 
 	void setPlayer(Player *player);
 	void setPosition(const glm::vec2 &pos);
+
 	float TrapSteelBars::GetScreenX(int widthScreen);
 	float TrapSteelBars::GetScreenY(int heightScreen);
+
+private:
+	bool AmISteppingOn() const;
 
 private:
 	glm::ivec2 tileMapDispl;

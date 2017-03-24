@@ -65,7 +65,7 @@ void TrapFallingFloor::update(int deltaTime)
 
 			if (!bDetected && int(player->getPosition().x / 32) <= int(posTrap.x / 32) + 2 && int(player->getPosition().x / 32) >= int(posTrap.x / 32) - 3)
 				sprite->changeAnimation(SHAKE);
-			if (bDetected && AmISteppingOn(player->getPosition().x, player->getPosition().y, glm::ivec2(32, 64))) 
+			if (bDetected && AmISteppingOn(player->getPosition().x, player->getPosition().y, glm::ivec2(64, 64))) 
 				sprite->changeAnimation(SHAKE);
 			break;
 

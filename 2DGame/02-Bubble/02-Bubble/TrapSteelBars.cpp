@@ -79,6 +79,7 @@ void TrapSteelBars::update(int deltaTime)
 		}
 	}
 
+	if (sprite->animation() == UP && AmISteppingOn()) player->dealDamage(4);
 
 }
 
@@ -107,5 +108,20 @@ float TrapSteelBars::GetScreenX(int widthScreen) {
 float TrapSteelBars::GetScreenY(int heightScreen) {
 
 	return float(tileMapDispl.y + posTrap.y) / heightScreen;
+
+}
+
+bool TrapSteelBars::AmISteppingOn() const {
+
+	int x0, x1, y;
+
+	x0 = player->getPosition().x / 32;
+	x1 = (player->getPosition().x + (32 - 1)) / 32;
+	y = (player->getPosition().y) / 64;
+
+	if (x0 == (posTrap.x / 32) && y == (posTrap.y / 64)) return true;
+	else if (x1 == (posTrap.x / 32) && y == (posTrap.y / 64)) return true;
+
+	return false;
 
 }

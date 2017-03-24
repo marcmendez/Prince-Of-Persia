@@ -22,6 +22,7 @@ public:
 	
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
+	void dealDamage(int damage);
 	float Player::GetScreenX(int widthScreen);
 	float Player::GetScreenY(int heightScreen);
 	
@@ -30,11 +31,14 @@ private:
 	glm::vec2 posPlayer;
 
 	bool bFalling, bJumping;
+	int fallenDistance;
 	char direction;
 
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
+	
+	int healthPoints;
 	
 
 };

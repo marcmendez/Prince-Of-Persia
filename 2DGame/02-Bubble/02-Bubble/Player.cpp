@@ -311,7 +311,8 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	direction = 'r';
 	
 	// Init bFalling + bJumping
-	bFalling = false; bJumping = false;
+	bFalling = false; bJumping = false; fallenDistance = 0; 
+	healthPoints = 4;
 
 }
 
@@ -469,12 +470,14 @@ void Player::update(int deltaTime)
 	}
 
 	if (!map->collisionMoveDown(posPlayer.x, posPlayer.y + FALL_STEP, glm::ivec2(32, 64), direction) && !bJumping) {
-		bFalling = true; posPlayer.y += FALL_STEP;
+		bFalling = true; posPlayer.y += FALL_STEP; fallenDistance += FALL_STEP;
 		sprite->changeAnimation(STAND_LEFT);
 	}
 
 	if (map->collisionMoveDown(posPlayer.x, posPlayer.y + FALL_STEP, glm::ivec2(32, 64), direction) && bFalling) {
-		bFalling = false; posPlayer.y += FALL_STEP;
+		bFalling = false; posPlayer.y += FALL_STEP; 
+		healthPoints -= (fallenDistance - 64) / 64; if (healthPoints < 0) healthPoints = 0;
+		fallenDistance = 0;
 	}
 
 	if (sprite->animation() == START_RUN_RIGHT  && !map->collisionMoveRight(posPlayer.x + 1.f, posPlayer.y, glm::ivec2(32, 64))) { posPlayer.x += 1.f; direction = 'r'; bJumping = false; }
@@ -533,7 +536,9 @@ float Player::GetScreenY(int heightScreen) {
 
 }
 
-
+void Player::dealDamage(int damage) {
+	healthPoints -= damage;
+}
 
 
 
