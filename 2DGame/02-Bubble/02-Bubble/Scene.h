@@ -1,17 +1,21 @@
 #ifndef _SCENE_INCLUDE
 #define _SCENE_INCLUDE
 
-
 #include <glm/glm.hpp>
 #include <vector>
+
 #include "ShaderProgram.h"
+#include "HealthInterface.h"
+
 #include "TileMap.h"
+#include "Torch.h"
+
 #include "Player.h"
+#include "IA.h"
+
+#include "TrapDoor.h"
 #include "TrapSteelBars.h"
 #include "TrapFallingFloor.h"
-#include "Torch.h"
-#include "HealthInterface.h"
-#include "IA.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
@@ -31,6 +35,7 @@ private:
 	void initShaders();
 	void initTraps(string TrapsFile);
 	void initTorches(string TorchesFile);
+	void initDoors(string doorsFile);
 	void intiIA(string IAFile);
 
 private:
@@ -40,6 +45,7 @@ private:
 	IA *sultans;
 
 	vector<TrapSteelBars*> trapsFloor;
+	vector<TrapDoor *> trapsDoor;
 	vector<TrapFallingFloor*> trapsFallingFloor;
 	vector<Torch*> torches;
 

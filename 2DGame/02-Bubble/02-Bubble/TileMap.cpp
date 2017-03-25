@@ -160,10 +160,11 @@ bool TileMap::collisionMoveLeft(int posx, int posy, const glm::ivec2 &size) cons
 	// iniciar variables
 	x = posx / tileSizeX;
 	y = (posy / tileSizeY);
-	p = (posx / (tileSizeX / 2)) % 2; /* ------0------ ------1------*/
+	p = (posx / (tileSizeX / 4)) % 4; /* ------0------ ------1------*/
 
 	// Si no es background o cami i esta a la meitat dreta
-	if (map[y*mapSize.x + x] / 10 % 10 != 4 && (map[y*mapSize.x + x] / 10) % 10 != 3 && p == 0) return true;
+	if (map[y*mapSize.x + x] / 10 % 10 != 4 && (map[y*mapSize.x + x] / 10) % 10 != 3 && p == 0 ) return true;
+	if (mapTraps[y*mapSize.x + x] == 2) return true;
 
 	else return false;
 
@@ -180,7 +181,7 @@ bool TileMap::collisionMoveRight(int posx, int posy, const glm::ivec2 &size) con
 
 	// Si no es background o cami i esta a la meitat dreta
 	if (map[y*mapSize.x + x] / 10 % 10 != 4 && (map[y*mapSize.x + x] / 10) % 10 != 3 && p >= 1) return true;
-
+	else if (mapTraps[y*mapSize.x + x] == 2 && p == 3) return true;
 	else return false;
 }
 
@@ -219,12 +220,12 @@ bool TileMap::canIMoveUp(int const posx, int  const posy, const glm::ivec2 &size
 
 }
 
-void TileMap::addTrapCollision(int x, int y) {
-	mapTraps[(y/64) * tileSizeX + (x/32)] = 1;
+void TileMap::addTrapCollision(int x, int y, int type) {
+	mapTraps[(y/64) * mapSize.x + (x/32)] = type; //1 = down and 2 = left or right
 }
 
 void TileMap::deleteTrapCollision(int x, int y) {
-	mapTraps[(y / 64) * tileSizeX + (x / 32)] = 0;
+	mapTraps[(y / 64) * mapSize.x + (x / 32)] = 0;
 }
 
 

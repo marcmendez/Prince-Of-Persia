@@ -30,7 +30,7 @@ void TrapFallingFloor::init(glm::vec2 &trapPos ,const glm::ivec2 &tileMapPos, Sh
 	sprite->setAnimationSpeed(NORMAL, 8);
 	sprite->addKeyframe(NORMAL, glm::vec2(0.f, 0.2f));
 
-	sprite->setAnimationSpeed(SHAKE, 5.5);
+	sprite->setAnimationSpeed(SHAKE, 3);
 	sprite->addKeyframe(SHAKE, glm::vec2(0.1f, 0.2f));
 	sprite->addKeyframe(SHAKE, glm::vec2(0.2f, 0.2f));
 
@@ -45,7 +45,7 @@ void TrapFallingFloor::init(glm::vec2 &trapPos ,const glm::ivec2 &tileMapPos, Sh
 	tileMapDispl = tileMapPos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + trapPos.x), float(tileMapDispl.y + trapPos.y)));
 
-	map->addTrapCollision(tileMapDispl.x + trapPos.x, tileMapDispl.y + trapPos.y);
+	map->addTrapCollision(tileMapDispl.x + trapPos.x, tileMapDispl.y + trapPos.y, 1);
 
 	posTrap = trapPos;
 	bDetected = false;

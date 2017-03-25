@@ -51,7 +51,10 @@ void TrapDoor::init(glm::vec2 &doorPos, glm::vec2 &pressurePlatePos, const glm::
 	spriteDoor->addKeyframe(MOVING_DOWN, glm::vec2(0.2f, 0.1f));
 	spriteDoor->addKeyframe(MOVING_DOWN, glm::vec2(0.1f, 0.1f));
 
-	spriteDoor->setAnimationSpeed(OPEN, 8);
+	spriteDoor->setAnimationSpeed(OPEN, 1);
+	spriteDoor->addKeyframe(OPEN, glm::vec2(0.7f, 0.1f));
+	spriteDoor->addKeyframe(OPEN, glm::vec2(0.7f, 0.1f));
+	spriteDoor->addKeyframe(OPEN, glm::vec2(0.7f, 0.1f));
 	spriteDoor->addKeyframe(OPEN, glm::vec2(0.7f, 0.1f));
 
 	//Init sprite and position
@@ -62,10 +65,9 @@ void TrapDoor::init(glm::vec2 &doorPos, glm::vec2 &pressurePlatePos, const glm::
 	posDoor = doorPos; posPressurePlate = pressurePlatePos;
 
 	spritePressurePlate->setPosition(glm::vec2(float(tileMapDispl.x + pressurePlatePos.x), float(tileMapDispl.y + pressurePlatePos.y)));
-	spriteDoor->setPosition(glm::vec2(float(tileMapDispl.x + doorPos.x), float(tileMapDispl.y + doorPos.y)));
+	spriteDoor->setPosition(glm::vec2(float(tileMapDispl.x + doorPos.x + 32), float(tileMapDispl.y + doorPos.y - 10)));
 
-	map->addTrapCollision(tileMapDispl.x + doorPos.x, tileMapDispl.y + doorPos.y);
-
+	map->addTrapCollision(doorPos.x, doorPos.y, 2);
 	bPressed = false;
 
 }
@@ -73,6 +75,7 @@ void TrapDoor::init(glm::vec2 &doorPos, glm::vec2 &pressurePlatePos, const glm::
 void TrapDoor::update(int deltaTime) {
 
 	bool finishActionPressurePlate = spritePressurePlate->update(deltaTime);
+
 	if (finishActionPressurePlate) {
 
 		switch (spritePressurePlate->animation()) {
@@ -95,11 +98,14 @@ void TrapDoor::update(int deltaTime) {
 
 		case CLOSED:
 			if (bPressed) spriteDoor->changeAnimation(MOVING_UP);
+			map->addTrapCollision(posDoor.x, posDoor.y, 2);
 			break;
 		case MOVING_UP:
+			map->deleteTrapCollision(posDoor.x, posDoor.y);
 			spriteDoor->changeAnimation(OPEN);
 			break;
 		case MOVING_DOWN:
+			map->addTrapCollision(posDoor.x, posDoor.y, 2);
 			spriteDoor->changeAnimation(CLOSED);
 			break;
 		case OPEN:

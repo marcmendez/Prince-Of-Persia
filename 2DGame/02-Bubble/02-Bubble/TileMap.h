@@ -8,6 +8,7 @@
 #include <set>
 
 
+
 // Class Tilemap is capable of loading a tile map from a text file in a very
 // simple format (see level01.txt for an example). With this information
 // it builds a single VBO that contains all tiles. As a result the render
@@ -45,7 +46,7 @@ public:
 	bool collisionMoveRight(int posx, int posy, const glm::ivec2 &size) const;
 	bool collisionMoveDown(int posx, int posy, const glm::ivec2 &size, char dir) const;
 	bool canIMoveUp(int posx, int posy, const glm::ivec2 &size, char dir) const;
-	void addTrapCollision(int pox, int posy);
+	void addTrapCollision(int pox, int posy, int type);
 	void deleteTrapCollision(int pox, int posy);
 
 private:

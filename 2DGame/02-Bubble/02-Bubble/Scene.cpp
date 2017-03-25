@@ -12,7 +12,7 @@
 #define SCREEN_X 0
 #define SCREEN_Y 0
 
-#define INIT_PLAYER_X_TILES	5
+#define INIT_PLAYER_X_TILES 5
 #define INIT_PLAYER_Y_TILES 0
 
 #define SCREEN_X_SULTAN 0
@@ -48,7 +48,6 @@ void Scene::init()
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize().first, INIT_PLAYER_Y_TILES * map->getTileSize().second));
 	player->setTileMap(map);
 
-
 	sultans = new IA();
 	sultans->init(glm::ivec2(SCREEN_X_SULTAN, SCREEN_Y_SULTAN), texProgram);
 	sultans->setPosition(glm::vec2(INIT_SULTAN_X_TILES * map->getTileSize().first, INIT_SULTAN_Y_TILES * map->getTileSize().second));
@@ -56,6 +55,7 @@ void Scene::init()
 	sultans->setPlayer(player);
 
 	initTraps(map->getTrapsFile());
+	initDoors("levels/level01doors.txt");
 
 	healthInterface = HealthInterface::createHealthInterface(1, glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
@@ -83,6 +83,9 @@ void Scene::update(int deltaTime)
 	for each (TrapFallingFloor* trap in trapsFallingFloor)
 		trap->update(deltaTime);
 	
+	for each (TrapDoor* trap in trapsDoor)
+		trap->update(deltaTime);
+
 	const float kOffsetX = static_cast<int>(player->GetScreenX(10 * 32)) * 10 * 32;
 	const float kOffsetY = static_cast<int>(player->GetScreenY(3 * 64)) * 3 * 64;
 	projection = glm::ortho(kOffsetX, SCREEN_WIDTH + kOffsetX, SCREEN_HEIGHT + kOffsetY, kOffsetY);
@@ -112,6 +115,7 @@ void Scene::render()
 	sultans->render();
 
 	for each (TrapSteelBars* trap in trapsFloor) trap->render();
+	for each (TrapDoor* trap in trapsDoor) trap->render();
 
 	texProgram.use();
 	texProgram.setUniformMatrix4f("projection", projection);
@@ -214,6 +218,49 @@ void Scene::initTraps(string trapsFile) {
 
 }
 
+void Scene::initDoors(string doorsFile) {
+
+	ifstream fin;
+	string line, spriteTrapsFile;
+	stringstream sstream;
+	glm::ivec2 mapSize;
+	int numberOfTraps;
+	int doorx, doory, pplatex, pplatey;
+
+	fin.open(doorsFile.c_str());
+	getline(fin, line);
+
+	if (line.compare(0, 7, "DOORMAP!") != 0) {
+
+		getline(fin, line);
+		sstream.str(line);
+		sstream >> numberOfTraps;
+
+		getline(fin, line);
+		sstream.str(line);
+		sstream >> spriteTrapsFile;
+
+		for (int i = 0; i < numberOfTraps; ++i) {
+			
+			getline(fin, line);
+			sstream.str(line);
+			sstream >> doorx >> doory >> pplatex >> pplatey;
+
+			TrapDoor* door = new TrapDoor();
+			door->setPlayer(player);
+			door->setTileMap(map);
+			door->init(glm::vec2(doorx*32, doory*64), glm::vec2(pplatex*32, pplatey*64), glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			trapsDoor.push_back(door);
+
+		}
+
+		
+	}
+
+	fin.close();
+
+}
+
 void Scene::initTorches(string torchesFile) {
 
 	ifstream fin;
@@ -254,3 +301,4 @@ void Scene::initTorches(string torchesFile) {
 	fin.close();
 
 }
+
