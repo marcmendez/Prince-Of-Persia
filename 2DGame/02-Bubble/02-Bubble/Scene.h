@@ -47,6 +47,8 @@ private:
 	vector<TrapSteelBars*> trapsFloor;
 	vector<TrapDoor *> trapsDoor;
 	vector<TrapFallingFloor*> trapsFallingFloor;
+	vector<TrapSaw *> trapsSaw;
+
 	vector<Torch*> torches;
 
 	HealthInterface *healthInterface;

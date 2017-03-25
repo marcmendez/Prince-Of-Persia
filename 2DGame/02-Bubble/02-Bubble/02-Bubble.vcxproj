@@ -25,6 +25,7 @@
     <ClInclude Include="Torch.h" />
     <ClInclude Include="TrapDoor.h" />
     <ClInclude Include="TrapFallingFloor.h" />
+    <ClInclude Include="TrapSaw.h" />
     <ClInclude Include="TrapSteelBars.h" />
   </ItemGroup>
   <ItemGroup>
@@ -42,6 +43,7 @@
     <ClCompile Include="Torch.cpp" />
     <ClCompile Include="TrapDoor.cpp" />
     <ClCompile Include="TrapFallingFloor.cpp" />
+    <ClCompile Include="TrapSaw.cpp" />
     <ClCompile Include="TrapSteelBars.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

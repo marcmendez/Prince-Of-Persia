@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "TrapSteelBars.h"
 #include "Torch.h"
+#include "TrapSaw.h"
 
 
 #define SCREEN_X 0
@@ -208,6 +209,16 @@ void Scene::initTraps(string trapsFile) {
 				trap->setPosition(glm::vec2(i * map->getTileSize().first, j * map->getTileSize().second));
 				trap->setPlayer(player);
 				trapsFloor.push_back(trap);
+
+				}
+
+				if (strcmp(trap, "4") == 0) {
+
+					TrapSaw* trap = new TrapSaw();
+					trap->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+					trap->setPosition(glm::vec2(i * map->getTileSize().first, j * map->getTileSize().second));
+					trap->setPlayer(player);
+					trapsSaw.push_back(trap);
 
 				}
 			}
