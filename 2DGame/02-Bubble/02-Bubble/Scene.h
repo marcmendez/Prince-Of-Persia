@@ -10,6 +10,7 @@
 #include "TrapSteelBars.h"
 #include "TrapFallingFloor.h"
 #include "Torch.h"
+#include "HealthInterface.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
@@ -38,6 +39,8 @@ private:
 	vector<TrapSteelBars*> trapsFloor;
 	vector<TrapFallingFloor*> trapsFallingFloor;
 	vector<Torch*> torches;
+
+	HealthInterface *healthInterface;
 
 	ShaderProgram texProgram;
 	float currentTime;

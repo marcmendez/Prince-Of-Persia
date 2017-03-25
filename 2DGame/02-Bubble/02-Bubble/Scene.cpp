@@ -44,6 +44,8 @@ void Scene::init()
 
 	initTraps(map->getTrapsFile());
 
+	healthInterface = HealthInterface::createHealthInterface(4, glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+
 	const float kOffsetX = static_cast<int>(player->GetScreenX(10 * 32)) * 10 * 32;
 	const float kOffsetY = static_cast<int>(player->GetScreenY(3 * 64)) * 3 * 64;
 	projection = glm::ortho(kOffsetX, SCREEN_WIDTH + kOffsetX, SCREEN_HEIGHT + kOffsetY, kOffsetY);
@@ -104,6 +106,14 @@ void Scene::render()
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	columns->render();
+
+	texProgram.use();
+	texProgram.setUniformMatrix4f("projection", projection);
+	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
+	modelview = glm::mat4(1.0f);
+	texProgram.setUniformMatrix4f("modelview", modelview);
+	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
+	healthInterface->render();
 
 }
 
