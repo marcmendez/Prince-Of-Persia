@@ -25,6 +25,10 @@ public:
 	void dealDamage(int damage);
 	float Player::GetScreenX(int widthScreen);
 	float Player::GetScreenY(int heightScreen);
+
+	int getHealth () {
+		return healthPoints;
+	}
 	
 private:
 	glm::ivec2 tileMapDispl;

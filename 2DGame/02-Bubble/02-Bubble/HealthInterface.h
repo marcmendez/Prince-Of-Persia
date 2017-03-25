@@ -13,16 +13,19 @@ public:
 
 	void render() const;
 	void free();
+	void update(int health, glm::vec2 poscam);
 
 private:
 
 	bool loadInterface(int health);
-	void prepareArrays(const glm::vec2 &minCoords, ShaderProgram &program);
+	void prepareArrays(glm::vec2 poscam);
 
 private:
 	GLuint vao;
 	GLuint vbo;
 	GLint posLocation, texCoordLocation;
 	Texture interfacesheet;
+	glm::vec2 minCoords;
+	ShaderProgram program;
 
 };

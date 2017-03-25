@@ -44,10 +44,10 @@ void Scene::init()
 
 	initTraps(map->getTrapsFile());
 
-	healthInterface = HealthInterface::createHealthInterface(4, glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	healthInterface = HealthInterface::createHealthInterface(1, glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
-	const float kOffsetX = static_cast<int>(player->GetScreenX(10 * 32)) * 10 * 32;
-	const float kOffsetY = static_cast<int>(player->GetScreenY(3 * 64)) * 3 * 64;
+	const float kOffsetX = static_cast<int>(player->GetScreenX(10 * map->getTileSize().first)) * 10 * map->getTileSize().first;
+	const float kOffsetY = static_cast<int>(player->GetScreenY(3 * map->getTileSize().second)) * 3 * map->getTileSize().second;
 	projection = glm::ortho(kOffsetX, SCREEN_WIDTH + kOffsetX, SCREEN_HEIGHT + kOffsetY, kOffsetY);
 
 	currentTime = 0.0f;
@@ -69,11 +69,14 @@ void Scene::update(int deltaTime)
 	for each (TrapFallingFloor* trap in trapsFallingFloor)
 		trap->update(deltaTime);
 	
-		
 	const float kOffsetX = static_cast<int>(player->GetScreenX(10 * 32)) * 10 * 32;
 	const float kOffsetY = static_cast<int>(player->GetScreenY(3 * 64)) * 3 * 64;
-
 	projection = glm::ortho(kOffsetX, SCREEN_WIDTH + kOffsetX, SCREEN_HEIGHT + kOffsetY, kOffsetY);
+
+	glm::vec2 poscam; poscam.x = kOffsetX; poscam.y = kOffsetY;
+	healthInterface->update(player->getHealth(), poscam);
+
+
 }
 
 void Scene::render()
@@ -88,16 +91,12 @@ void Scene::render()
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	map->render();
 
-	for each (Torch* torch in torches)
-		torch->render();
-
-	for each (TrapFallingFloor* trap in trapsFallingFloor)
-		trap->render();
+	for each (Torch* torch in torches) torch->render();
+	for each (TrapFallingFloor* trap in trapsFallingFloor) trap->render();
 
 	player->render();
 
-	for each (TrapSteelBars* trap in trapsFloor)
-		trap->render();
+	for each (TrapSteelBars* trap in trapsFloor) trap->render();
 
 	texProgram.use();
 	texProgram.setUniformMatrix4f("projection", projection);

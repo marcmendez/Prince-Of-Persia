@@ -80,7 +80,7 @@ void TrapFallingFloor::update(int deltaTime)
 		case FALLING:
 
 			map->deleteTrapCollision(posTrap.x, posTrap.y);
-			posTrap.y +=35;
+			posTrap.y +=32;
 			sprite->setPosition(glm::vec2(float(tileMapDispl.x + posTrap.x), float(tileMapDispl.y + posTrap.y)));
 			if (map->collisionMoveDown(posTrap.x, posTrap.y, glm::ivec2(32, 64), 'l')) sprite->changeAnimation(BROKEN);
 			break;
