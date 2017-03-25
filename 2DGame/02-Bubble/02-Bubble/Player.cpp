@@ -312,7 +312,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	
 	// Init bFalling + bJumping
 	bFalling = false; bJumping = false; fallenDistance = 0; 
-	healthPoints = 4;
+	healthPoints = 3;
 
 }
 
@@ -537,7 +537,8 @@ float Player::GetScreenY(int heightScreen) {
 }
 
 void Player::dealDamage(int damage) {
-	healthPoints -= damage;
+	if (healthPoints > damage) healthPoints -= damage;
+	else healthPoints = 0;
 }
 
 
