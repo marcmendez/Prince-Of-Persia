@@ -23,6 +23,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Torch.h" />
+    <ClInclude Include="TrapDoor.h" />
     <ClInclude Include="TrapFallingFloor.h" />
     <ClInclude Include="TrapSteelBars.h" />
   </ItemGroup>
@@ -39,6 +40,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="Torch.cpp" />
+    <ClCompile Include="TrapDoor.cpp" />
     <ClCompile Include="TrapFallingFloor.cpp" />
     <ClCompile Include="TrapSteelBars.cpp" />
   </ItemGroup>
