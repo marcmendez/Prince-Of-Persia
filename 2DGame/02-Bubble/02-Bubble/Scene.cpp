@@ -56,7 +56,7 @@ void Scene::init()
 	sultans->setPlayer(player);
 
 	initTraps(map->getTrapsFile());
-	initDoors("levels/level01doors.txt");
+	//initDoors("levels/level01doors.txt");
 
 	healthInterface = HealthInterface::createHealthInterface(1, glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
@@ -84,7 +84,10 @@ void Scene::update(int deltaTime)
 	for each (TrapFallingFloor* trap in trapsFallingFloor)
 		trap->update(deltaTime);
 	
-	for each (TrapDoor* trap in trapsDoor)
+	//for each (TrapDoor* trap in trapsDoor)
+		//trap->update(deltaTime);
+
+	for each (TrapSaw* trap in trapsSaw)
 		trap->update(deltaTime);
 
 	const float kOffsetX = static_cast<int>(player->GetScreenX(10 * 32)) * 10 * 32;
@@ -111,12 +114,13 @@ void Scene::render()
 
 	for each (Torch* torch in torches) torch->render();
 	for each (TrapFallingFloor* trap in trapsFallingFloor) trap->render();
+	for each (TrapSaw* trap in trapsSaw) trap->render();
 
 	player->render();
 	sultans->render();
 
 	for each (TrapSteelBars* trap in trapsFloor) trap->render();
-	for each (TrapDoor* trap in trapsDoor) trap->render();
+	//for each (TrapDoor* trap in trapsDoor) trap->render();
 
 	texProgram.use();
 	texProgram.setUniformMatrix4f("projection", projection);

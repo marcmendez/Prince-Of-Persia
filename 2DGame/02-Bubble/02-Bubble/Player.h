@@ -22,7 +22,7 @@ public:
 	
 	void setTileMap(TileMap *tileMap);
 	void setPosition(const glm::vec2 &pos);
-	void dealDamage(int damage);
+	void dealDamage(int damage, string type);
 	float Player::GetScreenX(int widthScreen);
 	float Player::GetScreenY(int heightScreen);
 	bool Player::isAttacking();
@@ -44,6 +44,7 @@ private:
 	TileMap *map;
 	
 	int healthPoints;
+	float jumped;
 	
 
 };

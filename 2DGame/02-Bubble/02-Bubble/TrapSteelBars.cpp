@@ -79,7 +79,7 @@ void TrapSteelBars::update(int deltaTime)
 		}
 	}
 
-	if (sprite->animation() == UP && AmISteppingOn()) player->dealDamage(4);
+	if (sprite->animation() == UP && AmISteppingOn()) player->dealDamage(4, "steelbars");
 
 }
 

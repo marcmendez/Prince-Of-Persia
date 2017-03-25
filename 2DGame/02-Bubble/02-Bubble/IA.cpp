@@ -173,7 +173,7 @@ void IA::update(int deltaTime)
 	if (sprite->animation() == MOVE_LEFT) posIA.x -= 1;
 	if (sprite->animation() == MOVE_RIGHT) posIA.x += 1;
 
-	if ((sprite->animation() == ATTACK_LEFT || sprite->animation() == ATTACK_RIGHT) && !player->isAttacking()) player->dealDamage(1);
+	if ((sprite->animation() == ATTACK_LEFT || sprite->animation() == ATTACK_RIGHT) && !player->isAttacking()) player->dealDamage(1, "attack");
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posIA.x), float(tileMapDispl.y + posIA.y)));
 }
 

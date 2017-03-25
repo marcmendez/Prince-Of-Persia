@@ -16,6 +16,7 @@
 #include "TrapDoor.h"
 #include "TrapSteelBars.h"
 #include "TrapFallingFloor.h"
+#include "TrapSaw.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.

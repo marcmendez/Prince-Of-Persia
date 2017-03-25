@@ -45,7 +45,9 @@ public:
 	bool collisionMoveLeft(int posx, int posy, const glm::ivec2 &size) const;
 	bool collisionMoveRight(int posx, int posy, const glm::ivec2 &size) const;
 	bool collisionMoveDown(int posx, int posy, const glm::ivec2 &size, char dir) const;
-	bool canIMoveUp(int posx, int posy, const glm::ivec2 &size, char dir) const;
+	bool canIMoveUpRight(int posx, int posy, const glm::ivec2 &size) const;
+	bool canIMoveUpLeft(int posx, int posy, const glm::ivec2 &size) const;
+
 	void addTrapCollision(int pox, int posy, int type);
 	void deleteTrapCollision(int pox, int posy);
 

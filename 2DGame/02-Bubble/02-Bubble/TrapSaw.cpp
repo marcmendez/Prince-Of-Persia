@@ -28,15 +28,14 @@ void TrapSaw::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 	//KeyFrames
 	sprite->setAnimationSpeed(UNACTIVE, 10);
-	sprite->addKeyframe(UNACTIVE, glm::vec2(0.f, 0.9f));
+	sprite->addKeyframe(UNACTIVE, glm::vec2(0.f, 0.4f));
 
 	sprite->setAnimationSpeed(MOVING, 10);
-	sprite->addKeyframe(MOVING, glm::vec2(0.1f, 0.3f));
-	sprite->addKeyframe(MOVING, glm::vec2(0.2f, 0.3f));
-	sprite->addKeyframe(MOVING, glm::vec2(0.3f, 0.3f));
+	sprite->addKeyframe(MOVING, glm::vec2(0.1f, 0.4f));
+	
 
 	sprite->setAnimationSpeed(ACTIVE, 10);
-	sprite->addKeyframe(ACTIVE, glm::vec2(0.4f, 0.3f));
+	sprite->addKeyframe(ACTIVE, glm::vec2(0.2f, 0.4f));
 
 	//Init sprite and position
 	sprite->changeAnimation(UNACTIVE);
@@ -79,7 +78,7 @@ void TrapSaw::update(int deltaTime)
 		}
 	}
 
-	if (sprite->animation() == ACTIVE && AmISteppingOn()) player->dealDamage(4);
+	if (sprite->animation() == ACTIVE && AmISteppingOn()) player->dealDamage(4, "saw");
 
 }
 

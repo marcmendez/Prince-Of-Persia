@@ -18,7 +18,7 @@ enum PlayerAnims
 	CHANGE_DIRECTION_TO_LEFT, CHANGE_DIRECTION_TO_RIGHT,JUMP_RUN_RIGHT, JUMP_RUN_LEFT,
 	START_JUMP_STAND_RIGHT, START_JUMP_STAND_LEFT, JUMP_STAND_RIGHT, JUMP_STAND_LEFT,
 	STOP_JUMP_STAND_RIGHT, STOP_JUMP_STAND_LEFT,
-	JUMP_UP_RIGHT, JUMP_UP_LEFT, GO_UP_RIGHT, GO_UP_LEFT
+	JUMP_UP_RIGHT_FLOOR, JUMP_UP_LEFT_FLOOR, JUMP_UP_RIGHT, JUMP_UP_LEFT, GO_UP_RIGHT, GO_UP_LEFT
 };
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
@@ -30,7 +30,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 	// Configuring a single sprite
 	sprite = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.1, 0.1), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(26);
+	sprite->setNumberAnimations(28);
 
 	// STAND LEFT
 	sprite->setAnimationSpeed(STAND_LEFT, 8);
@@ -247,14 +247,17 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	// JUMP WHILE NOT MOVING RIGHT (UP)
 
 	/* START JUMP */
+	sprite->setAnimationSpeed(JUMP_UP_RIGHT_FLOOR, 8);
+	sprite->addKeyframe(JUMP_UP_RIGHT_FLOOR, glm::vec2(0.0f, 0.8f));
+	sprite->addKeyframe(JUMP_UP_RIGHT_FLOOR, glm::vec2(0.1f, 0.8f));
+	sprite->addKeyframe(JUMP_UP_RIGHT_FLOOR, glm::vec2(0.2f, 0.8f));
+	sprite->addKeyframe(JUMP_UP_RIGHT_FLOOR, glm::vec2(0.3f, 0.8f));
+	sprite->addKeyframe(JUMP_UP_RIGHT_FLOOR, glm::vec2(0.4f, 0.8f));
+	sprite->addKeyframe(JUMP_UP_RIGHT_FLOOR, glm::vec2(0.5f, 0.8f));
+	sprite->addKeyframe(JUMP_UP_RIGHT_FLOOR, glm::vec2(0.6f, 0.8f));
+
+	/* AIR */
 	sprite->setAnimationSpeed(JUMP_UP_RIGHT, 8);
-	sprite->addKeyframe(JUMP_UP_RIGHT, glm::vec2(0.0f, 0.8f));
-	sprite->addKeyframe(JUMP_UP_RIGHT, glm::vec2(0.1f, 0.8f));
-	sprite->addKeyframe(JUMP_UP_RIGHT, glm::vec2(0.2f, 0.8f));
-	sprite->addKeyframe(JUMP_UP_RIGHT, glm::vec2(0.3f, 0.8f));
-	sprite->addKeyframe(JUMP_UP_RIGHT, glm::vec2(0.4f, 0.8f));
-	sprite->addKeyframe(JUMP_UP_RIGHT, glm::vec2(0.5f, 0.8f));
-	sprite->addKeyframe(JUMP_UP_RIGHT, glm::vec2(0.6f, 0.8f));
 	sprite->addKeyframe(JUMP_UP_RIGHT, glm::vec2(0.7f, 0.8f));
 	sprite->addKeyframe(JUMP_UP_RIGHT, glm::vec2(0.8f, 0.8f));
 	sprite->addKeyframe(JUMP_UP_RIGHT, glm::vec2(0.9f, 0.8f));
@@ -276,14 +279,17 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	// JUMP WHILE NOT MOVING RIGHT (UP)
 
 	/* START JUMP */
+	sprite->setAnimationSpeed(JUMP_UP_LEFT_FLOOR, 8);
+	sprite->addKeyframe(JUMP_UP_LEFT_FLOOR, glm::vec2(-0.1f, 0.8f));
+	sprite->addKeyframe(JUMP_UP_LEFT_FLOOR, glm::vec2(-0.2f, 0.8f));
+	sprite->addKeyframe(JUMP_UP_LEFT_FLOOR, glm::vec2(-0.3f, 0.8f));
+	sprite->addKeyframe(JUMP_UP_LEFT_FLOOR, glm::vec2(-0.4f, 0.8f));
+	sprite->addKeyframe(JUMP_UP_LEFT_FLOOR, glm::vec2(-0.5f, 0.8f));
+	sprite->addKeyframe(JUMP_UP_LEFT_FLOOR, glm::vec2(-0.6f, 0.8f));
+	sprite->addKeyframe(JUMP_UP_LEFT_FLOOR, glm::vec2(-0.7f, 0.8f));
+
+	/* AIR */
 	sprite->setAnimationSpeed(JUMP_UP_LEFT, 8);
-	sprite->addKeyframe(JUMP_UP_LEFT, glm::vec2(-0.1f, 0.8f));
-	sprite->addKeyframe(JUMP_UP_LEFT, glm::vec2(-0.2f, 0.8f));
-	sprite->addKeyframe(JUMP_UP_LEFT, glm::vec2(-0.3f, 0.8f));
-	sprite->addKeyframe(JUMP_UP_LEFT, glm::vec2(-0.4f, 0.8f));
-	sprite->addKeyframe(JUMP_UP_LEFT, glm::vec2(-0.5f, 0.8f));
-	sprite->addKeyframe(JUMP_UP_LEFT, glm::vec2(-0.6f, 0.8f));
-	sprite->addKeyframe(JUMP_UP_LEFT, glm::vec2(-0.7f, 0.8f));
 	sprite->addKeyframe(JUMP_UP_LEFT, glm::vec2(-0.8f, 0.8f));
 	sprite->addKeyframe(JUMP_UP_LEFT, glm::vec2(-0.9f, 0.8f));
 	sprite->addKeyframe(JUMP_UP_LEFT, glm::vec2(-1.0f, 0.8f));
@@ -312,7 +318,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	
 	// Init bFalling + bJumping
 	bFalling = false; bJumping = false; fallenDistance = 0; 
-	healthPoints = 3;
+	healthPoints = 3; jumped = 0;
 
 }
 
@@ -331,7 +337,7 @@ void Player::update(int deltaTime)
 			/* IF RIGHT + SHIFT */ else if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT) && (Game::instance().getSpecialKey(113) || Game::instance().getSpecialKey(112))) sprite->changeAnimation(SHIFT_RIGHT);
 			/* IF RIGHT */ else if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT)) sprite->changeAnimation(START_RUN_RIGHT); 
 			/* IF LEFT */ else if (Game::instance().getSpecialKey(GLUT_KEY_LEFT)) sprite->changeAnimation(TURN_RIGHT_TO_LEFT);
-			/* IF UP */ else if (Game::instance().getSpecialKey(GLUT_KEY_UP)) sprite->changeAnimation(JUMP_UP_RIGHT);
+			/* IF UP */ else if (Game::instance().getSpecialKey(GLUT_KEY_UP)) sprite->changeAnimation(JUMP_UP_RIGHT_FLOOR);
 			
 			break;
 
@@ -341,7 +347,7 @@ void Player::update(int deltaTime)
 			/* IF LEFT + SHIFT */ else if (Game::instance().getSpecialKey(GLUT_KEY_LEFT) && (Game::instance().getSpecialKey(113) || Game::instance().getSpecialKey(112))) sprite->changeAnimation(SHIFT_LEFT);
 			/* IF LEFT */ else if (Game::instance().getSpecialKey(GLUT_KEY_LEFT)) sprite->changeAnimation(START_RUN_LEFT);
 			/* IF RIGHT */ else if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT)) sprite->changeAnimation(TURN_LEFT_TO_RIGHT);
-			/* IF UP */ else if (Game::instance().getSpecialKey(GLUT_KEY_UP)) sprite->changeAnimation(JUMP_UP_LEFT);
+			/* IF UP */ else if (Game::instance().getSpecialKey(GLUT_KEY_UP))  sprite->changeAnimation(JUMP_UP_LEFT_FLOOR); bJumping = true;
 		
 			break;
 
@@ -443,28 +449,39 @@ void Player::update(int deltaTime)
 			/* INDEPENDENTLY  OF KEY */ sprite->changeAnimation(STAND_LEFT);
 			break;
 
+		case JUMP_UP_RIGHT_FLOOR:
+			bJumping = true;
+			sprite->changeAnimation(JUMP_UP_RIGHT);
+			break;
+
 		case JUMP_UP_RIGHT:
 
-			if (map->canIMoveUp(posPlayer.x, posPlayer.y, glm::ivec2(32, 64), 'r')) sprite->changeAnimation(GO_UP_RIGHT);
-			else sprite->changeAnimation(STAND_RIGHT);
-			
+			if (map->canIMoveUpRight(posPlayer.x, posPlayer.y, glm::ivec2(32, 64))) sprite->changeAnimation(GO_UP_RIGHT);
+			else { sprite->changeAnimation(STAND_RIGHT); bJumping = false; }
 			break;
 
 		case GO_UP_RIGHT:
 			/* INDEPENDENTLY  OF KEY */ sprite->changeAnimation(STAND_RIGHT);
-			posPlayer.x += 48;
-			posPlayer.y -= 64;
+			posPlayer.x += 10; posPlayer.y -= 64;
+			bJumping = false;  jumped = 0;
+			break;
 
 		case JUMP_UP_LEFT:
-			if (map->canIMoveUp(posPlayer.x, posPlayer.y, glm::ivec2(32, 64), 'l'))sprite->changeAnimation(GO_UP_LEFT);
-			else sprite->changeAnimation(STAND_LEFT);
+			if (map->canIMoveUpLeft(posPlayer.x, posPlayer.y, glm::ivec2(32, 64))) sprite->changeAnimation(GO_UP_LEFT);
+			else { sprite->changeAnimation(STAND_LEFT); bJumping = false; jumped = 0; }
 
+			break;
+
+		case JUMP_UP_LEFT_FLOOR:
+			bJumping = true;
+			sprite->changeAnimation(JUMP_UP_LEFT);
 			break;
 
 		case GO_UP_LEFT:
 			/* INDEPENDENTLY  OF KEY */ sprite->changeAnimation(STAND_LEFT);
-			posPlayer.x -= 48;
 			posPlayer.y -= 64;
+			bJumping = false; jumped = 0;
+			break;
 
 		}
 	}
@@ -504,7 +521,15 @@ void Player::update(int deltaTime)
 	else if (sprite->animation() == STOP_JUMP_STAND_LEFT || sprite->animation() == JUMP_STAND_LEFT || sprite->animation() == JUMP_RUN_LEFT || sprite->animation() == CHANGE_DIRECTION_TO_RIGHT ||
 		sprite->animation() == STOP_RUN_LEFT || sprite->animation() == MOVE_LEFT || sprite->animation() == SHIFT_LEFT || sprite->animation() == START_RUN_LEFT) sprite->changeAnimation(STAND_LEFT);
 
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y - 6)));
+	if (sprite->animation() == JUMP_UP_LEFT || sprite->animation() == JUMP_UP_LEFT) jumped += 1; 
+	if (sprite->animation() == GO_UP_LEFT || sprite->animation() == GO_UP_RIGHT) { 
+		if (jumped + 0.75 <= 64) {
+			jumped += 0.75;
+		} else jumped = 64;
+	}
+
+
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y - 8 - jumped)));
 
 }
 
@@ -536,9 +561,19 @@ float Player::GetScreenY(int heightScreen) {
 
 }
 
-void Player::dealDamage(int damage) {
-	if (healthPoints > damage) healthPoints -= damage;
-	else healthPoints = 0;
+void Player::dealDamage(int damage, string type) {
+
+	if ((type == "saw" || type == "steelbars") && 
+		(sprite->animation() != SHIFT_LEFT && sprite->animation() != SHIFT_RIGHT && 
+		sprite->animation() != STAND_RIGHT && sprite->animation() != STAND_LEFT)) {
+		if (healthPoints > damage) healthPoints -= damage;
+		else healthPoints = 0;
+	}
+	/*else if (type != "saw" && type != "steelbars"){
+		if (healthPoints > damage) healthPoints -= damage;
+		else healthPoints = 0;
+	}*/
+
 }
 
 bool Player::isAttacking() {
