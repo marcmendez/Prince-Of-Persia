@@ -15,12 +15,8 @@ public:
 	void update(int deltaTime);
 	void render();
 
-	void setPosition(const glm::vec2 &pos);
-
 
 private:
-	glm::ivec2 tileMapDispl;
-	glm::vec2 posTorch;
 	Texture spritesheet;
 	Sprite *sprite;
 

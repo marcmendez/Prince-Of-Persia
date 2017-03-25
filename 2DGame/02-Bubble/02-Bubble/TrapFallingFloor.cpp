@@ -1,23 +1,14 @@
 #include "TrapFallingFloor.h"
-#include <cmath>
-#include <iostream>
-#include <GL/glew.h>
 #include <GL/glut.h>
-#include "Game.h"
 #include "Player.h"
 #include "TileMap.h"
 
-#define JUMP_ANGLE_STEP 4
-#define JUMP_HEIGHT 0
-#define FALL_STEP 4
-
-enum PlayerAnims
+enum TrapFallingFloorAnims
 {
 	NORMAL, SHAKE, FALLING, BROKEN
 };
 
-void TrapFallingFloor::init(glm::vec2 &trapPos ,const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
-{
+void TrapFallingFloor::init(glm::vec2 &trapPos, const glm::ivec2 &tileMapPos, Player *player, TileMap *map, ShaderProgram &shaderProgram) {
 
 	// Configuring the spritesheet
 	spritesheet.loadFromFile("images/TrapsSheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -39,6 +30,11 @@ void TrapFallingFloor::init(glm::vec2 &trapPos ,const glm::ivec2 &tileMapPos, Sh
 
 	sprite->setAnimationSpeed(BROKEN, 8);
 	sprite->addKeyframe(BROKEN, glm::vec2(0.3f, 0.2f));
+
+
+	//Init map and player
+	this->map = map;
+	this->player = player;
 
 	//Init sprite and position
 	sprite->changeAnimation(NORMAL);
@@ -93,29 +89,6 @@ void TrapFallingFloor::update(int deltaTime)
 void TrapFallingFloor::render()
 {
 	sprite->render();
-}
-
-void TrapFallingFloor::setPlayer(Player *player)
-{
-	this->player = player;
-}
-
-void TrapFallingFloor::setTileMap(TileMap *map) { 
-
-	this->map = map; 
-
-}
-
-float TrapFallingFloor::GetScreenX(int widthScreen) {
-
-	return float(tileMapDispl.x + posTrap.x) / widthScreen;
-
-}
-
-float TrapFallingFloor::GetScreenY(int heightScreen) {
-
-	return float(tileMapDispl.y + posTrap.y) / heightScreen;
-
 }
 
 bool TrapFallingFloor::AmISteppingOn(int posx, int posy, const glm::ivec2 &size) const {

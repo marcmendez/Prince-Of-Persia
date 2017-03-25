@@ -2,12 +2,8 @@
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include "Torch.h"
-#include "Game.h"
 
-enum PlayerAnims
-{
-	FIRE
-};
+enum PlayerAnims { FIRE };
 
 void Torch::init(const glm::vec2 torchPos, glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram) {
 
@@ -27,10 +23,7 @@ void Torch::init(const glm::vec2 torchPos, glm::ivec2 &tileMapPos, ShaderProgram
 	sprite->addKeyframe(FIRE, glm::vec2(0.8f, 0.0f));
 
 	sprite->changeAnimation(0);
-	tileMapDispl = tileMapPos;
-
-	posTorch = torchPos;
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + torchPos.x + 43), float(tileMapDispl.y + torchPos.y - 43)));
+	sprite->setPosition(glm::vec2(float(tileMapPos.x + torchPos.x + 43), float(tileMapPos.y + torchPos.y - 43)));
 
 }
 
@@ -38,13 +31,6 @@ void Torch::update(int deltaTime) {
 	sprite->update(deltaTime);
 }
 
-void Torch::render()
-{
+void Torch::render() {
 	sprite->render();
-}
-
-void Torch::setPosition(const glm::vec2 &pos)
-{
-	posTorch = pos;
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posTorch.x), float(tileMapDispl.y + posTorch.y)));
 }

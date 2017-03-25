@@ -11,7 +11,7 @@
 enum PressurePlateAnims { PRESSED, UNPRESSED };
 enum Door { CLOSED, MOVING_UP, MOVING_DOWN, OPEN };
 
-void TrapDoor::init(glm::vec2 &doorPos, glm::vec2 &pressurePlatePos, const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram) {
+void TrapDoor::init(glm::vec2 &doorPos, glm::vec2 &pressurePlatePos, const glm::ivec2 &tileMapPos, Player *player, TileMap *map, ShaderProgram &shaderProgram) {
 
 	// Configuring the spritesheet
 	spritesheet.loadFromFile("images/TrapsSheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -56,6 +56,9 @@ void TrapDoor::init(glm::vec2 &doorPos, glm::vec2 &pressurePlatePos, const glm::
 	spriteDoor->addKeyframe(OPEN, glm::vec2(0.7f, 0.1f));
 	spriteDoor->addKeyframe(OPEN, glm::vec2(0.7f, 0.1f));
 	spriteDoor->addKeyframe(OPEN, glm::vec2(0.7f, 0.1f));
+
+	this->player = player;
+	this->map = map;
 
 	//Init sprite and position
 	spritePressurePlate->changeAnimation(UNPRESSED);
@@ -122,14 +125,6 @@ void TrapDoor::update(int deltaTime) {
 void TrapDoor::render() {
 	spriteDoor->render();
 	spritePressurePlate->render();
-}
-
-void TrapDoor::setPlayer(Player *player) {
-	this->player = player;
-}
-
-void TrapDoor::setTileMap(TileMap *map) {
-	this->map = map;
 }
 
 bool TrapDoor::AmISteppingOn(int posx, int posy, const glm::ivec2 &size) const {

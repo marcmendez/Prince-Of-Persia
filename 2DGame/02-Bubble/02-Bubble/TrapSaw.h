@@ -10,7 +10,7 @@ class TrapSaw
 
 public:
 
-	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
+	void init(const glm::vec2 &pos, const glm::ivec2 &tileMapPos, Player *player, ShaderProgram &shaderProgram);
 	void update(int deltaTime);
 	void render();
 

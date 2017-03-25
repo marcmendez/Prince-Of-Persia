@@ -1,9 +1,6 @@
 #include "trapSaw.h"
-#include <cmath>
 #include <iostream>
-#include <GL/glew.h>
 #include <GL/glut.h>
-#include "Game.h"
 #include "Player.h"
 
 
@@ -16,7 +13,7 @@ enum PlayerAnims
 	UNACTIVE, MOVING, ACTIVE
 };
 
-void TrapSaw::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
+void TrapSaw::init(const glm::vec2 &pos, const glm::ivec2 &tileMapPos, Player *player, ShaderProgram &shaderProgram)
 {
 
 	// Configuring the spritesheet
@@ -37,10 +34,12 @@ void TrapSaw::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	sprite->setAnimationSpeed(ACTIVE, 10);
 	sprite->addKeyframe(ACTIVE, glm::vec2(0.2f, 0.4f));
 
+	this->player = player;
 	//Init sprite and position
 	sprite->changeAnimation(UNACTIVE);
 	tileMapDispl = tileMapPos;
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x), float(tileMapDispl.y)));
+	posTrap = pos;
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posTrap.x), float(tileMapDispl.y + posTrap.y)));
 
 	bUp = false;
 
@@ -85,17 +84,6 @@ void TrapSaw::update(int deltaTime)
 void TrapSaw::render()
 {
 	sprite->render();
-}
-
-void TrapSaw::setPlayer(Player *player)
-{
-	this->player = player;
-}
-
-void TrapSaw::setPosition(const glm::vec2 &pos)
-{
-	posTrap = pos;
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posTrap.x), float(tileMapDispl.y + posTrap.y)));
 }
 
 bool TrapSaw::AmISteppingOn() const {

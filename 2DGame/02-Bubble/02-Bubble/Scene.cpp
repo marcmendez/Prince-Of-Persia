@@ -56,7 +56,7 @@ void Scene::init()
 	sultans->setPlayer(player);
 
 	initTraps(map->getTrapsFile());
-	//initDoors("levels/level01doors.txt");
+	initDoors("levels/level01doors.txt");
 
 	healthInterface = HealthInterface::createHealthInterface(1, glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 
@@ -84,8 +84,8 @@ void Scene::update(int deltaTime)
 	for each (TrapFallingFloor* trap in trapsFallingFloor)
 		trap->update(deltaTime);
 	
-	//for each (TrapDoor* trap in trapsDoor)
-		//trap->update(deltaTime);
+	for each (TrapDoor* trap in trapsDoor)
+		trap->update(deltaTime);
 
 	for each (TrapSaw* trap in trapsSaw)
 		trap->update(deltaTime);
@@ -120,7 +120,7 @@ void Scene::render()
 	sultans->render();
 
 	for each (TrapSteelBars* trap in trapsFloor) trap->render();
-	//for each (TrapDoor* trap in trapsDoor) trap->render();
+	for each (TrapDoor* trap in trapsDoor) trap->render();
 
 	texProgram.use();
 	texProgram.setUniformMatrix4f("projection", projection);
@@ -199,9 +199,7 @@ void Scene::initTraps(string trapsFile) {
 				if (strcmp(trap, "2") == 0) {
 
 					TrapFallingFloor* trap = new TrapFallingFloor();
-					trap->setPlayer(player);
-					trap->setTileMap(map);
-					trap->init(glm::vec2(i * map->getTileSize().first, j * map->getTileSize().second), glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+					trap->init(glm::vec2(i * map->getTileSize().first, j * map->getTileSize().second), glm::ivec2(SCREEN_X, SCREEN_Y), player, map, texProgram);
 					trapsFallingFloor.push_back(trap);
 
 				}
@@ -209,9 +207,7 @@ void Scene::initTraps(string trapsFile) {
 				if (strcmp(trap, "3") == 0) {
 
 				TrapSteelBars* trap = new TrapSteelBars();
-				trap->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-				trap->setPosition(glm::vec2(i * map->getTileSize().first, j * map->getTileSize().second));
-				trap->setPlayer(player);
+				trap->init(glm::vec2(i * map->getTileSize().first, j * map->getTileSize().second), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
 				trapsFloor.push_back(trap);
 
 				}
@@ -219,9 +215,7 @@ void Scene::initTraps(string trapsFile) {
 				if (strcmp(trap, "4") == 0) {
 
 					TrapSaw* trap = new TrapSaw();
-					trap->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-					trap->setPosition(glm::vec2(i * map->getTileSize().first, j * map->getTileSize().second));
-					trap->setPlayer(player);
+					trap->init(glm::vec2(i * map->getTileSize().first, j * map->getTileSize().second), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
 					trapsSaw.push_back(trap);
 
 				}
@@ -262,9 +256,7 @@ void Scene::initDoors(string doorsFile) {
 			sstream >> doorx >> doory >> pplatex >> pplatey;
 
 			TrapDoor* door = new TrapDoor();
-			door->setPlayer(player);
-			door->setTileMap(map);
-			door->init(glm::vec2(doorx*32, doory*64), glm::vec2(pplatex*32, pplatey*64), glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			door->init(glm::vec2(doorx*32, doory*64), glm::vec2(pplatex*32, pplatey*64), glm::ivec2(SCREEN_X, SCREEN_Y), player, map, texProgram);
 			trapsDoor.push_back(door);
 
 		}

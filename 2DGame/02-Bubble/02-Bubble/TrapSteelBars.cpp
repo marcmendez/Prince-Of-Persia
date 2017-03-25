@@ -1,23 +1,13 @@
 #include "TrapSteelBars.h"
-#include <cmath>
 #include <iostream>
-#include <GL/glew.h>
 #include <GL/glut.h>
-#include "Game.h"
-#include "Player.h"
-
-
-#define JUMP_ANGLE_STEP 4
-#define JUMP_HEIGHT 0
-#define FALL_STEP 4
 
 enum PlayerAnims
 {
 	DOWN, MOVING, UP
 };
 
-void TrapSteelBars::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
-{
+void TrapSteelBars::init(const glm::vec2 &pos, const glm::ivec2 &tileMapPos, Player *player, ShaderProgram &shaderProgram) {
 
 	// Configuring the spritesheet
 	spritesheet.loadFromFile("images/TrapsSheet.png", TEXTURE_PIXEL_FORMAT_RGBA);
@@ -38,10 +28,13 @@ void TrapSteelBars::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProg
 	sprite->setAnimationSpeed(UP, 10);
 	sprite->addKeyframe(UP, glm::vec2(0.4f, 0.3f));
 
+	this->player = player;
+
 	//Init sprite and position
 	sprite->changeAnimation(DOWN);
 	tileMapDispl = tileMapPos;
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x), float(tileMapDispl.y)));
+	posTrap = pos;
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x) + posTrap.x, float(tileMapDispl.y) + posTrap.y));
 
 	bUp = false;
 
@@ -86,29 +79,6 @@ void TrapSteelBars::update(int deltaTime)
 void TrapSteelBars::render()
 {
 	sprite->render();
-}
-
-void TrapSteelBars::setPlayer(Player *player)
-{
-	this->player = player;
-}
-
-void TrapSteelBars::setPosition(const glm::vec2 &pos)
-{
-	posTrap = pos;
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posTrap.x), float(tileMapDispl.y + posTrap.y)));
-}
-
-float TrapSteelBars::GetScreenX(int widthScreen) {
-
-	return float(tileMapDispl.x + posTrap.x) / widthScreen;
-
-}
-
-float TrapSteelBars::GetScreenY(int heightScreen) {
-
-	return float(tileMapDispl.y + posTrap.y) / heightScreen;
-
 }
 
 bool TrapSteelBars::AmISteppingOn() const {
