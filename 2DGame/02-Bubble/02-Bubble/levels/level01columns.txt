@@ -2,6 +2,7 @@ TILEMAP
 90 9  				     		-- Size of tile map in tiles
 32 64 128 					-- Tile size & block size
 images/TilesheetFront.png 			-- Tilesheet
+noTorchesFile					-- TorchesFile
 noColumnsFile					-- Columns file
 noTrapsFile					-- Traps file
 10 2						-- Number of tiles in tilesheet

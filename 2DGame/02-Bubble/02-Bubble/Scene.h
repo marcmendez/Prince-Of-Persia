@@ -3,11 +3,13 @@
 
 
 #include <glm/glm.hpp>
+#include <vector>
 #include "ShaderProgram.h"
 #include "TileMap.h"
 #include "Player.h"
 #include "TrapSteelBars.h"
 #include "TrapFallingFloor.h"
+#include "Torch.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
@@ -26,12 +28,16 @@ public:
 private:
 	void initShaders();
 	void initTraps(string TrapsFile);
+	void initTorches(string TorchesFile);
 
 private:
 	TileMap *map, *columns;
+
 	Player *player;
+
 	vector<TrapSteelBars*> trapsFloor;
 	vector<TrapFallingFloor*> trapsFallingFloor;
+	vector<Torch*> torches;
 
 	ShaderProgram texProgram;
 	float currentTime;

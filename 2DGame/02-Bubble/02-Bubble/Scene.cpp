@@ -6,6 +6,7 @@
 #include "Scene.h"
 #include "Game.h"
 #include "TrapSteelBars.h"
+#include "Torch.h"
 
 
 #define SCREEN_X 0
@@ -31,8 +32,10 @@ Scene::~Scene()
 void Scene::init()
 {
 	initShaders();
-	map = TileMap::createTileMap("levels/level1.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+
+	map = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	columns = TileMap::createTileMap(map->getColumnsFile(), glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	initTorches(map->getTorchesFile());
 
 	player = new Player();
 	player->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -52,6 +55,9 @@ void Scene::init()
 void Scene::update(int deltaTime)
 {
 	currentTime += deltaTime;
+
+	for each (Torch* torch in torches)
+		torch->update(deltaTime);
 
 	player->update(deltaTime);
 
@@ -80,6 +86,9 @@ void Scene::render()
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	map->render();
 
+	for each (Torch* torch in torches)
+		torch->render();
+
 	for each (TrapFallingFloor* trap in trapsFallingFloor)
 		trap->render();
 
@@ -87,8 +96,6 @@ void Scene::render()
 
 	for each (TrapSteelBars* trap in trapsFloor)
 		trap->render();
-
-
 
 	texProgram.use();
 	texProgram.setUniformMatrix4f("projection", projection);
@@ -173,6 +180,47 @@ void Scene::initTraps(string trapsFile) {
 				trap->setPosition(glm::vec2(i * map->getTileSize().first, j * map->getTileSize().second));
 				trap->setPlayer(player);
 				trapsFloor.push_back(trap);
+
+				}
+			}
+		}
+	}
+
+	fin.close();
+
+}
+
+void Scene::initTorches(string torchesFile) {
+
+	ifstream fin;
+	string line, spriteTrapsFile;
+	stringstream sstream;
+	glm::ivec2 mapSize;
+	char trap[10];
+
+	fin.open(torchesFile.c_str());
+	getline(fin, line);
+
+	if (line.compare(0, 7, "TORCHESMAP!") != 0) {
+
+		getline(fin, line);
+		sstream.str(line);
+		sstream >> mapSize.x >> mapSize.y;
+
+		getline(fin, line);
+		sstream.str(line);
+		sstream >> spriteTrapsFile;
+
+		for (int j = 0; j<mapSize.y; j++) {
+			for (int i = 0; i < mapSize.x; i++) {
+
+				fin.getline(trap, 10, ',');
+
+				if (strcmp(trap, "1") == 0) {
+
+					Torch* torch = new Torch();
+					torch->init(glm::vec2(i * map->getTileSize().first, j * map->getTileSize().second), glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+					torches.push_back(torch);
 
 				}
 			}

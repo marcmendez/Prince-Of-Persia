@@ -64,6 +64,9 @@ bool TileMap::loadLevel(const string &levelFile)
 	sstream >> tilesheetFile;
 	getline(fin, line);
 	sstream.str(line);
+	sstream >> torchesFile;
+	getline(fin, line);
+	sstream.str(line);
 	sstream >> columnsFile;
 	getline(fin, line);
 	sstream.str(line);

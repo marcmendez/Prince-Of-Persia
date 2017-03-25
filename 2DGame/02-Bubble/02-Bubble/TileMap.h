@@ -39,6 +39,7 @@ public:
 
 	string getTrapsFile() { return trapsFile; }
 	string getColumnsFile() { return columnsFile; }
+	string getTorchesFile() { return torchesFile; }
 
 	bool collisionMoveLeft(int posx, int posy, const glm::ivec2 &size) const;
 	bool collisionMoveRight(int posx, int posy, const glm::ivec2 &size) const;
@@ -58,7 +59,7 @@ private:
 	GLint posLocation, texCoordLocation;
 	glm::ivec2 position, mapSize, tilesheetSize;
 	int tileSizeX, tileSizeY, blockSize;
-	string trapsFile, columnsFile;
+	string trapsFile, columnsFile, torchesFile;
 	Texture tilesheet;
 	glm::vec2 tileTexSize;
 	int *map;
