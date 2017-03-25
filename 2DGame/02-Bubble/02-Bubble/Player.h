@@ -25,6 +25,7 @@ public:
 	void dealDamage(int damage);
 	float Player::GetScreenX(int widthScreen);
 	float Player::GetScreenY(int heightScreen);
+	bool Player::isAttacking();
 
 	int getHealth () {
 		return healthPoints;

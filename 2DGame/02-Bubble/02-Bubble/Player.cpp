@@ -541,5 +541,7 @@ void Player::dealDamage(int damage) {
 	else healthPoints = 0;
 }
 
-
+bool Player::isAttacking() {
+	return false;
+}
 

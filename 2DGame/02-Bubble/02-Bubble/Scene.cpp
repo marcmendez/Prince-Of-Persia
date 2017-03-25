@@ -15,6 +15,12 @@
 #define INIT_PLAYER_X_TILES	5
 #define INIT_PLAYER_Y_TILES 0
 
+#define SCREEN_X_SULTAN 0
+#define SCREEN_Y_SULTAN 0
+
+#define INIT_SULTAN_X_TILES 8
+#define INIT_SULTAN_Y_TILES 0
+
 Scene::Scene()
 {
 	map = NULL;
@@ -42,6 +48,13 @@ void Scene::init()
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize().first, INIT_PLAYER_Y_TILES * map->getTileSize().second));
 	player->setTileMap(map);
 
+
+	sultans = new IA();
+	sultans->init(glm::ivec2(SCREEN_X_SULTAN, SCREEN_Y_SULTAN), texProgram);
+	sultans->setPosition(glm::vec2(INIT_SULTAN_X_TILES * map->getTileSize().first, INIT_SULTAN_Y_TILES * map->getTileSize().second));
+	sultans->setTileMap(map);
+	sultans->setPlayer(player);
+
 	initTraps(map->getTrapsFile());
 
 	healthInterface = HealthInterface::createHealthInterface(1, glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
@@ -62,6 +75,7 @@ void Scene::update(int deltaTime)
 		torch->update(deltaTime);
 
 	player->update(deltaTime);
+	sultans->update(deltaTime);
 
 	for each (TrapSteelBars* trap in trapsFloor) 
 		trap->update(deltaTime);
@@ -95,6 +109,7 @@ void Scene::render()
 	for each (TrapFallingFloor* trap in trapsFallingFloor) trap->render();
 
 	player->render();
+	sultans->render();
 
 	for each (TrapSteelBars* trap in trapsFloor) trap->render();
 

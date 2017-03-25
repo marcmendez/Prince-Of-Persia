@@ -11,6 +11,7 @@
 #include "TrapFallingFloor.h"
 #include "Torch.h"
 #include "HealthInterface.h"
+#include "IA.h"
 
 // Scene contains all the entities of our game.
 // It is responsible for updating and render them.
@@ -30,11 +31,13 @@ private:
 	void initShaders();
 	void initTraps(string TrapsFile);
 	void initTorches(string TorchesFile);
+	void intiIA(string IAFile);
 
 private:
 	TileMap *map, *columns;
 
 	Player *player;
+	IA *sultans;
 
 	vector<TrapSteelBars*> trapsFloor;
 	vector<TrapFallingFloor*> trapsFallingFloor;
