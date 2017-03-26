@@ -13,14 +13,14 @@
 #define SCREEN_X 0
 #define SCREEN_Y 0
 
-#define INIT_PLAYER_X_TILES 5
-#define INIT_PLAYER_Y_TILES 0
+#define INIT_PLAYER_X_TILES 70
+#define INIT_PLAYER_Y_TILES 4
 
 #define SCREEN_X_SULTAN 0
 #define SCREEN_Y_SULTAN 0
 
-#define INIT_SULTAN_X_TILES 8
-#define INIT_SULTAN_Y_TILES 0
+#define INIT_SULTAN_X_TILES 77
+#define INIT_SULTAN_Y_TILES 4
 
 Scene::Scene()
 {

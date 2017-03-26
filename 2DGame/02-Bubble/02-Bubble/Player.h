@@ -51,6 +51,7 @@ private:
 
 	int healthPoints;
 	float jumped;
+	bool fallStraight;
 	
 
 };
