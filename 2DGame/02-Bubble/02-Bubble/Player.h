@@ -6,9 +6,12 @@
 #include "TileMap.h"
 
 
+
+
 // Player is basically a Sprite that represents the player. As such it has
 // all properties it needs to track its movement, jumping, and collisions.
 
+class IA;
 
 class Player
 {
@@ -26,6 +29,7 @@ public:
 	float Player::GetScreenX(int widthScreen);
 	float Player::GetScreenY(int heightScreen);
 	bool Player::isAttacking();
+	void setSultans(IA *sultans);
 
 	int getHealth () {
 		return healthPoints;
@@ -42,12 +46,17 @@ private:
 	Texture spritesheet;
 	Sprite *sprite;
 	TileMap *map;
-	
+
+	IA *sultans;
+
 	int healthPoints;
 	float jumped;
 	
 
 };
+
+
+
 
 
 #endif // _PLAYER_INCLUDE

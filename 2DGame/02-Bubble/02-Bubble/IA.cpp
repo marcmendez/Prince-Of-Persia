@@ -131,18 +131,17 @@ void IA::update(int deltaTime)
 
 		case MOVE_LEFT:
 			if (player->getPosition().y - posIA.y <= 0 && posIA.x - player->getPosition().x <= 32)sprite->changeAnimation(ATTACK_LEFT);
-			else if (player->getPosition().y - posIA.y <= 0 && posIA.x - player->getPosition().x <= 0)
-				sprite->changeAnimation(STAND_RIGHT);
+		
 			break;
 
 		case MOVE_RIGHT:
 			if (player->getPosition().y - posIA.y <= 0 && player->getPosition().x - posIA.x <= 32)sprite->changeAnimation(ATTACK_RIGHT);
-			if (player->getPosition().y - posIA.y <= 0 && posIA.x - player->getPosition().x <= 0)
-				sprite->changeAnimation(STAND_LEFT);
+			
 			break;
 
 		case ATTACK_LEFT:
 			if (player->getPosition().y - posIA.y <= 0 && posIA.x < player->getPosition().x)sprite->changeAnimation(ATTACK_RIGHT);
+			else if (player->getPosition().y - posIA.y <= 0 && posIA.x - player->getPosition().x >= 32)sprite->changeAnimation(MOVE_LEFT);
 
 			notAttackedYet = true;  //Reset
 
@@ -150,6 +149,7 @@ void IA::update(int deltaTime)
 
 		case ATTACK_RIGHT:
 			if (player->getPosition().y - posIA.y <= 0 && posIA.x > player->getPosition().x)sprite->changeAnimation(ATTACK_LEFT);
+			else if (player->getPosition().y - posIA.y <= 0 && player->getPosition().x - posIA.x >= 32)sprite->changeAnimation(MOVE_RIGHT);
 
 			notAttackedYet = true;  //Reset
 
@@ -172,11 +172,10 @@ void IA::update(int deltaTime)
 			break;
 		}
 	}
-	if (sprite->animation() == MOVE_LEFT &&
-		sprite->getFrame() == 0) posIA.x -= 1;
-	if (sprite->animation() == MOVE_RIGHT) posIA.x += 1;
+	if (sprite->animation() == MOVE_LEFT && sprite->getFrame() == 0) posIA.x -= 1;
+	if (sprite->animation() == MOVE_RIGHT && sprite->getFrame() == 0) posIA.x += 1;
 
-	if ((sprite->animation() == ATTACK_LEFT || sprite->animation() == ATTACK_RIGHT) && !player->isAttacking() && sprite->getFrame() == 5 && notAttackedYet) {
+	if ((sprite->animation() == ATTACK_LEFT || sprite->animation() == ATTACK_RIGHT) && sprite->getFrame() == 5 && notAttackedYet) {
 		player->dealDamage(1,"enemy");
 		notAttackedYet = false;
 	}
@@ -204,4 +203,15 @@ void IA::setPosition(const glm::vec2 &pos)
 void IA::setTileMap(TileMap *tileMap)
 {
 	map = tileMap;
+}
+
+void IA::dealDamageEnemy(int damage) {
+	
+	if (sprite->animation() != ATTACK_RIGHT && sprite->animation() != ATTACK_LEFT  && sprite->getFrame() != 5 && sprite->getFrame() != 3) {
+		healthPoints -= 1;
+			
+	}
+
+
+
 }

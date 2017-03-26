@@ -23,6 +23,7 @@ public:
 	void setPosition(const glm::vec2 &pos);
 	void dealDamage(int damage);
 	void IA::setTileMap(TileMap *tileMap);
+	void dealDamageEnemy(int damage);
 
 	bool enemyHitPlayer() const;
 
@@ -34,6 +35,7 @@ private:
 	Sprite *sprite;
 	Player *player;
 	TileMap *map;
+
 	bool notAttackedYet;
 	int healthPoints;
 };

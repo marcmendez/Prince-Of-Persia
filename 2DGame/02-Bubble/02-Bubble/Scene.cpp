@@ -55,6 +55,8 @@ void Scene::init()
 	sultans->setTileMap(map);
 	sultans->setPlayer(player);
 
+	player->setSultans(sultans);
+
 	initTraps(map->getTrapsFile());
 	initDoors("levels/level01doors.txt");
 
