@@ -7,9 +7,8 @@
 #include "IA.h"
 
 
-#define JUMP_ANGLE_STEP 4
-#define JUMP_HEIGHT 0
-#define FALL_STEP 4
+#define IA_VISION 32*6
+
 
 
 enum PlayerAnims
@@ -49,7 +48,7 @@ void IA::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	sprite->addKeyframe(MOVE_LEFT, glm::vec2(-0.5f, 0.0f));
 	sprite->addKeyframe(MOVE_LEFT, glm::vec2(-0.6f, 0.0f));
 
-	sprite->setAnimationSpeed(ATTACK_RIGHT, 7);
+	sprite->setAnimationSpeed(ATTACK_RIGHT, 10);
 	sprite->addKeyframe(ATTACK_RIGHT, glm::vec2(0.6f, 0.0f));
 	sprite->addKeyframe(ATTACK_RIGHT, glm::vec2(0.7f, 0.0f));
 	sprite->addKeyframe(ATTACK_RIGHT, glm::vec2(0.8f, 0.0f));
@@ -59,7 +58,7 @@ void IA::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	sprite->addKeyframe(ATTACK_RIGHT, glm::vec2(0.3f, 0.1f));
 	sprite->addKeyframe(ATTACK_RIGHT, glm::vec2(0.4f, 0.1f));
 
-	sprite->setAnimationSpeed(ATTACK_LEFT, 7);
+	sprite->setAnimationSpeed(ATTACK_LEFT, 10);
 	sprite->addKeyframe(ATTACK_LEFT, glm::vec2(-0.5f, 0.0f));
 	sprite->addKeyframe(ATTACK_LEFT, glm::vec2(-0.6f, 0.0f));
 	sprite->addKeyframe(ATTACK_LEFT, glm::vec2(-0.7f, 0.0f));
@@ -98,7 +97,8 @@ void IA::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	sprite->changeAnimation(STAND_LEFT);
 	tileMapDispl = tileMapPos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posIA.x), float(tileMapDispl.y + posIA.y)));
-
+	notAttackedYet = true;
+	healthPoints = 3;
 }
 
 void IA::update(int deltaTime)
@@ -115,22 +115,17 @@ void IA::update(int deltaTime)
 	if (finishAction) {
 
 		switch (sprite->animation()) {
-			//	STAND_RIGHT, STAND_LEFT,
-			//		MOVE_RIGHT, MOVE_LEFT,
-			//      ATTACK_RIGHT, ATTACK_LEFT,
-			//		DYING_RIGHT, DYING_LEFT,
-			//		DEAD_LEFT, DEAD_RIGHT
 
 		case STAND_LEFT:
 
 
-			if (player->getPosition().y - posIA.y <= 0 && posIA.x - player->getPosition().x <= 320 && posIA.x - player->getPosition().x >= 0)
+			if (player->getPosition().y - posIA.y <= 0 && posIA.x - player->getPosition().x <= IA_VISION && posIA.x - player->getPosition().x >= 0)
 				sprite->changeAnimation(MOVE_LEFT);
 			break;
 
 		case STAND_RIGHT:
 
-			if (player->getPosition().y - posIA.y <= 0 && player->getPosition().x - posIA.x <= 320 && player->getPosition().x - posIA.x >= 0)
+			if (player->getPosition().y - posIA.y <= 0 && player->getPosition().x - posIA.x <= IA_VISION && player->getPosition().x - posIA.x >= 0)
 				sprite->changeAnimation(MOVE_RIGHT);
 			break;
 
@@ -141,15 +136,22 @@ void IA::update(int deltaTime)
 			break;
 
 		case MOVE_RIGHT:
+			if (player->getPosition().y - posIA.y <= 0 && player->getPosition().x - posIA.x <= 32)sprite->changeAnimation(ATTACK_RIGHT);
 			if (player->getPosition().y - posIA.y <= 0 && posIA.x - player->getPosition().x <= 0)
 				sprite->changeAnimation(STAND_LEFT);
 			break;
 
 		case ATTACK_LEFT:
+			if (player->getPosition().y - posIA.y <= 0 && posIA.x < player->getPosition().x)sprite->changeAnimation(ATTACK_RIGHT);
+
+			notAttackedYet = true;  //Reset
 
 			break;
 
 		case ATTACK_RIGHT:
+			if (player->getPosition().y - posIA.y <= 0 && posIA.x > player->getPosition().x)sprite->changeAnimation(ATTACK_LEFT);
+
+			notAttackedYet = true;  //Reset
 
 			break;
 
@@ -170,10 +172,15 @@ void IA::update(int deltaTime)
 			break;
 		}
 	}
-	if (sprite->animation() == MOVE_LEFT) posIA.x -= 1;
+	if (sprite->animation() == MOVE_LEFT &&
+		sprite->getFrame() == 0) posIA.x -= 1;
 	if (sprite->animation() == MOVE_RIGHT) posIA.x += 1;
 
-	if ((sprite->animation() == ATTACK_LEFT || sprite->animation() == ATTACK_RIGHT) && !player->isAttacking()) player->dealDamage(1, "attack");
+	if ((sprite->animation() == ATTACK_LEFT || sprite->animation() == ATTACK_RIGHT) && !player->isAttacking() && sprite->getFrame() == 5 && notAttackedYet) {
+		player->dealDamage(1,"enemy");
+		notAttackedYet = false;
+	}
+
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posIA.x), float(tileMapDispl.y + posIA.y)));
 }
 
@@ -198,4 +205,3 @@ void IA::setTileMap(TileMap *tileMap)
 {
 	map = tileMap;
 }
-

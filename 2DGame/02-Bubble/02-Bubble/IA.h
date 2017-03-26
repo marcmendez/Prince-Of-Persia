@@ -2,6 +2,7 @@
 #ifndef _IA_INCLUDE
 #define _IA_INCLUDE
 
+
 #include "Sprite.h"
 #include "Player.h"
 #include "TileMap.h"
@@ -16,12 +17,13 @@ public:
 	void update(int deltaTime);
 	void render();
 
+	glm::vec2 getPosition() { return posIA; }
+
 	void setPlayer(Player *player);
 	void setPosition(const glm::vec2 &pos);
-
+	void dealDamage(int damage);
 	void IA::setTileMap(TileMap *tileMap);
 
-private:
 	bool enemyHitPlayer() const;
 
 private:
@@ -32,6 +34,8 @@ private:
 	Sprite *sprite;
 	Player *player;
 	TileMap *map;
+	bool notAttackedYet;
+	int healthPoints;
 };
 
 #endif // _IA_INCLUDE
