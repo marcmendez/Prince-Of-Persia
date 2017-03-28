@@ -29,7 +29,9 @@ public:
 	float Player::GetScreenX(int widthScreen);
 	float Player::GetScreenY(int heightScreen);
 	bool Player::isAttacking();
-	void setSultans(IA *sultans);
+	void Player::setSultans(IA *sultans);
+	bool isBlocking();
+	bool isSwordOut();
 
 	int getHealth () {
 		return healthPoints;
@@ -52,6 +54,7 @@ private:
 	int healthPoints;
 	float jumped;
 	bool fallStraight;
+	bool saved; // quan guardes la espasa voluntariament
 	
 
 };

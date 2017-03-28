@@ -21,11 +21,13 @@ public:
 
 	void setPlayer(Player *player);
 	void setPosition(const glm::vec2 &pos);
-	void dealDamage(int damage);
 	void IA::setTileMap(TileMap *tileMap);
+	bool isBlockingEnemy();
 	void dealDamageEnemy(int damage);
 
-	bool enemyHitPlayer() const;
+	int getHealthEnemy() {
+		return healthPoints;
+	}
 
 private:
 	glm::ivec2 tileMapDispl;
@@ -36,7 +38,7 @@ private:
 	Player *player;
 	TileMap *map;
 
-	bool notAttackedYet;
+
 	int healthPoints;
 };
 
