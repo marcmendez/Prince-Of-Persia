@@ -37,8 +37,11 @@ enum PlayerAnims
 	STAND_SWORD_RIGHT, STAND_SWORD_LEFT,
 	ATTACK_RIGHT, ATTACK_LEFT, 
 	BLOCK_RIGHT, BLOCK_LEFT,
-	HIDE_SWORD_RIGHT, HIDE_SWORD_LEFT
-	
+	HIDE_SWORD_RIGHT, HIDE_SWORD_LEFT,
+	DEATH_BY_FALLING_RIGHT, DEATH_BY_FALLING_LEFT,
+	DEATH_BY_STEELBARS_RIGHT, DEATH_BY_STEELBARS_LEFT,
+	DEATH_BY_ENEMY_RIGHT, DEATH_BY_ENEMY_RIGHT_STOP, DEATH_BY_ENEMY_LEFT, DEATH_BY_ENEMY_LEFT_STOP,
+	DEATH_BY_SAW
 
 };
 
@@ -51,7 +54,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 	// Configuring a single sprite
 	sprite = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.1, 0.05), &spritesheet, &shaderProgram);
-	sprite->setNumberAnimations(48);
+	sprite->setNumberAnimations(57);
 
 	// STAND LEFT
 	sprite->setAnimationSpeed(STAND_LEFT, 8);
@@ -458,6 +461,32 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	sprite->addKeyframe(HIDE_SWORD_LEFT, glm::vec2(-0.8f, 0.6f));
 	sprite->addKeyframe(HIDE_SWORD_LEFT, glm::vec2(-0.9f, 0.6f));
 
+	/* DEATH BY FALLING RIGHT*/
+	sprite->setAnimationSpeed(DEATH_BY_FALLING_RIGHT, 8);
+	sprite->addKeyframe(DEATH_BY_FALLING_RIGHT, glm::vec2(0.1f, 0.7f));
+
+	/* DEATH BY FALLING LEFT*/
+	sprite->setAnimationSpeed(DEATH_BY_FALLING_LEFT, 8);
+	sprite->addKeyframe(DEATH_BY_FALLING_LEFT, glm::vec2(-0.2f, 0.7f));
+
+	/* DEATH BY STEELBARS RIGHT*/
+	sprite->setAnimationSpeed(DEATH_BY_STEELBARS_RIGHT, 8);
+	sprite->addKeyframe(DEATH_BY_STEELBARS_RIGHT, glm::vec2(0.2f, 0.7f));
+
+	/* DEATH BY STEELBARS LEFT*/
+	sprite->setAnimationSpeed(DEATH_BY_FALLING_LEFT, 8);
+	sprite->addKeyframe(DEATH_BY_FALLING_LEFT, glm::vec2(-0.3f, 0.7f));
+
+	/* DEATH BY ENEMY RIGHT ACTION*/
+	sprite->setAnimationSpeed(DEATH_BY_ENEMY_RIGHT, 8);
+	sprite->addKeyframe(DEATH_BY_ENEMY_RIGHT, glm::vec2(0.2f, 0.7f));
+	sprite->addKeyframe(DEATH_BY_ENEMY_RIGHT, glm::vec2(0.3f, 0.7f));
+	sprite->addKeyframe(DEATH_BY_ENEMY_RIGHT, glm::vec2(0.4f, 0.7f));
+
+	/* DEATH BY SAW*/
+	sprite->setAnimationSpeed(DEATH_BY_SAW, 8);
+	sprite->addKeyframe(DEATH_BY_SAW, glm::vec2(0.6f, 0.7f));
+
 
 	//Init sprite and position
 	sprite->changeAnimation(1);
@@ -802,6 +831,10 @@ void Player::update(int deltaTime)
 			sprite->changeAnimation(STAND_RIGHT);
 
 			break;
+		
+		case DEATH_BY_ENEMY_RIGHT:
+			sprite->changeAnimation(DEATH_BY_ENEMY_RIGHT_STOP);
+			break;
 
 			
 		}
@@ -818,10 +851,9 @@ void Player::update(int deltaTime)
 	if (map->collisionMoveDown(posPlayer.x, posPlayer.y + FALL_STEP, glm::ivec2(32, 64), direction) && bFalling) {
 		bFalling = false; posPlayer.y += FALL_STEP; 
 		healthPoints -= fallenDistance / 64; if (healthPoints < 0) healthPoints = 0;
-		if (fallenDistance / 64 >= 1) lastDamageType = "fall";
-		if (fallenDistance / 64 >= 1 && sprite->animation() == FALLING_RIGHT) sprite->changeAnimation(TOUCH_FLOOR_RIGHT);
+		if (fallenDistance / 64 >= 1 && sprite->animation() == FALLING_RIGHT) { sprite->changeAnimation(TOUCH_FLOOR_RIGHT); lastDamageType = "fall_right"; }
 		else if (sprite->animation() == FALLING_RIGHT) sprite->changeAnimation(WAKE_UP_RIGHT);
-		else if ((fallenDistance) / 64 >= 1 && sprite->animation() == FALLING_LEFT) sprite->changeAnimation(TOUCH_FLOOR_LEFT);
+		else if ((fallenDistance) / 64 >= 1 && sprite->animation() == FALLING_LEFT) { sprite->changeAnimation(TOUCH_FLOOR_LEFT); lastDamageType = "fall_left"; }
 		else if (sprite->animation() == FALLING_LEFT) sprite->changeAnimation(WAKE_UP_LEFT);
 		fallenDistance = 0;
 	}
@@ -862,10 +894,16 @@ void Player::update(int deltaTime)
 	}
 
 	if (healthPoints == 0)  {
-		if (lastDamageType == "fall")
-			sprite->changeAnimation(STAND_LEFT);
+		if (lastDamageType == "fall_right") sprite->changeAnimation(DEATH_BY_FALLING_RIGHT);
+		else if (lastDamageType == "fall_left") sprite->changeAnimation(DEATH_BY_FALLING_LEFT);
+		else if (lastDamageType == "steelbars") sprite->changeAnimation(DEATH_BY_STEELBARS_RIGHT);
+		else if (lastDamageType == "saw")  sprite->changeAnimation(DEATH_BY_SAW);
+		else if (lastDamageType == "enemy") sprite->changeAnimation(DEATH_BY_ENEMY_RIGHT);
 	}
 
+	if ((posPlayer.y / 64) == 4 && posPlayer.x >= 2680) {
+		posPlayer.y = 640, posPlayer.x = 1450;
+	}
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y - 8 - jumped)));
 
 }

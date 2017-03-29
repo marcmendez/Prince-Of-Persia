@@ -13,7 +13,7 @@
 #define SCREEN_X 0
 #define SCREEN_Y 0
 
-#define INIT_PLAYER_X_TILES 20
+#define INIT_PLAYER_X_TILES 5
 #define INIT_PLAYER_Y_TILES 9
 
 #define SCREEN_X_SULTAN 0
@@ -198,7 +198,7 @@ void Scene::initTraps(string trapsFile) {
 
 				fin.getline(trap, 10, ',');
 
-				if (strcmp(trap, "2") == 0) {
+				if (strcmp(trap, "0") == 0) {
 
 					TrapFallingFloor* trap = new TrapFallingFloor();
 					trap->init(glm::vec2(i * map->getTileSize().first, j * map->getTileSize().second), glm::ivec2(SCREEN_X, SCREEN_Y), player, map, texProgram);
@@ -206,7 +206,7 @@ void Scene::initTraps(string trapsFile) {
 
 				}
 
-				if (strcmp(trap, "3") == 0) {
+				if (strcmp(trap, "1") == 0) {
 
 				TrapSteelBars* trap = new TrapSteelBars();
 				trap->init(glm::vec2(i * map->getTileSize().first, j * map->getTileSize().second), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
@@ -214,7 +214,7 @@ void Scene::initTraps(string trapsFile) {
 
 				}
 
-				if (strcmp(trap, "4") == 0) {
+				if (strcmp(trap, "2") == 0) {
 
 					TrapSaw* trap = new TrapSaw();
 					trap->init(glm::vec2(i * map->getTileSize().first, j * map->getTileSize().second), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
@@ -296,7 +296,7 @@ void Scene::initTorches(string torchesFile) {
 
 				fin.getline(trap, 10, ',');
 
-				if (strcmp(trap, "1") == 0) {
+				if (strcmp(trap, "0") == 0) {
 
 					Torch* torch = new Torch();
 					torch->init(glm::vec2(i * map->getTileSize().first, j * map->getTileSize().second), glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);

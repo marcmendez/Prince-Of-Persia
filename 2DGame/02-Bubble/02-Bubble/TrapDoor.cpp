@@ -6,8 +6,6 @@
 #include "Game.h"
 #include "Player.h"
 
-
-
 enum PressurePlateAnims { PRESSED, UNPRESSED };
 enum Door { CLOSED, MOVING_UP, MOVING_DOWN, OPEN };
 

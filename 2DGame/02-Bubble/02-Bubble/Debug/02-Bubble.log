@@ -1,32 +1,32 @@
-﻿Build started 29/03/2017 08:30:30.
+﻿Build started 29/03/2017 12:07:23.
      1>Project "C:\Users\Jordi Estape Canal\Desktop\Prince-Of-Persia\2DGame\02-Bubble\02-Bubble\02-Bubble.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"..\..\..\libs\Simple OpenGL Image Library\src" /I..\..\..\libs\freeglut\include /I"..\..\..\libs\glew-1.13.0\include" /I..\..\..\libs\glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Player.cpp
          Player.cpp
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(647): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(658): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(810): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(818): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(830): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(831): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(832): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(833): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(834): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(835): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(836): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(837): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(838): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(839): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(844): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(845): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(846): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(847): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(848): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(849): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(850): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(676): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(687): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(843): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
      1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(851): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(852): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
-     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(853): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(862): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(863): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(864): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(865): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(866): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(867): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(868): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(869): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(870): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(871): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(876): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(877): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(878): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(879): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(880): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(881): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(882): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(883): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(884): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(885): warning C4244: 'argument' : conversion from 'float' to 'int', possible loss of data
      1>c:\program files (x86)\microsoft visual studio 12.0\vc\include\utility(103): warning C4244: 'initializing' : conversion from 'const double' to 'int', possible loss of data
                  c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\tilemap.h(37) : see reference to function template instantiation 'std::pair<int,int>::pair<char,double,void>(const std::pair<char,double> &)' being compiled
                  c:\users\jordi estape canal\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\tilemap.h(37) : see reference to function template instantiation 'std::pair<int,int>::pair<char,double,void>(const std::pair<char,double> &)' being compiled
@@ -56,4 +56,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.56
+Time Elapsed 00:00:01.55
