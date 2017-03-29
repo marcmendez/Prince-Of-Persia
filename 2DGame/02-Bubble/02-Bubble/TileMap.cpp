@@ -163,8 +163,8 @@ bool TileMap::collisionMoveLeft(int posx, int posy, const glm::ivec2 &size) cons
 	p = (posx / (tileSizeX / 4)) % 4; /* ------0------ ------1------*/
 
 	// Si no es background o cami i esta a la meitat dreta
-	if (map[y*mapSize.x + x] / 10 % 10 != 4 && (map[y*mapSize.x + x] / 10) % 10 != 3 && p <= 1 ) return true;
-	if (mapTraps[y*mapSize.x + x] == 2) return true;
+	if (map[y*mapSize.x + x] / 10 % 10 != 4 && (map[y*mapSize.x + x] / 10) % 10 != 3 && (map[y*mapSize.x + x] / 10) % 10 != 8 && p <= 1) return true;
+	if (mapTraps[y*mapSize.x + x] == 2 || mapTraps[y*mapSize.x + x] == 6) return true;
 
 	else return false;
 
@@ -180,7 +180,7 @@ bool TileMap::collisionMoveRight(int posx, int posy, const glm::ivec2 &size) con
 	p = (posx / (tileSizeX / 4)) % 4; /* ---0---  ---1--- ---2--- ---3---*/
 
 	// Si no es background o cami i esta a la meitat dreta
-	if (map[y*mapSize.x + x] / 10 % 10 != 4 && (map[y*mapSize.x + x] / 10) % 10 != 3 && p >= 1) return true;
+	if (map[y*mapSize.x + x] / 10 % 10 != 4 && (map[y*mapSize.x + x] / 10) % 10 != 3 && (map[y*mapSize.x + x] / 10) % 10 != 8 && p >= 1) return true;
 	else if (mapTraps[y*mapSize.x + x] == 2 && p == 3) return true;
 	else return false;
 }
@@ -194,7 +194,7 @@ bool TileMap::collisionMoveDown(int posx, int posy, const glm::ivec2 &size, char
 	y = (posy) / tileSizeY;
 
 	for (int x = x0; x <= x1; x++) {
-		if ((map[y*mapSize.x + x] / 10) % 10 == 3) return true;
+		if ((map[y*mapSize.x + x] / 10) % 10 == 3 || ((map[y*mapSize.x + x] / 10) % 10) == 8) return true;
 		if (mapTraps[y*mapSize.x + x] == 1) return true;
 	}
 
@@ -208,7 +208,7 @@ bool TileMap::canIMoveUpLeft(int posx, int posy, const glm::ivec2 &size) const{
 	x = posx / 32;
 	y = round((double)posy / (double)64);
 
-	if ((map[(y-1)*mapSize.x + x]/10)%10 == 3 && map[(y-1)*mapSize.x + x+1] >= 40) return true;
+	if (((map[(y - 1)*mapSize.x + x] / 10) % 10 == 3 && map[(y - 1)*mapSize.x + x + 1] >= 40) || ((map[(y - 1)*mapSize.x + x] / 10) % 10 == 8 && (map[(y - 1)*mapSize.x + x + 1] / 10) % 10 == 4)) return true;
 	
 	return false;
 
@@ -218,7 +218,7 @@ bool TileMap::canIMoveUpRight(int posx, int posy, const glm::ivec2 &size) const 
 	int x, y;
 	x = (posx + size.x / 2 - 1) / 32;
 	y = round((double)posy / (double)64);
-	if ((map[(y - 1)*mapSize.x + x + 1]/10)%10 == 3 && map[(y - 1)*mapSize.x + (x)] >= 40) return true;
+	if ((map[(y - 1)*mapSize.x + x + 1] / 10) % 10 == 3 && map[(y - 1)*mapSize.x + (x)] >= 40 || (map[(y - 1)*mapSize.x + x + 1] / 10) % 10 == 8 && (map[(y - 1)*mapSize.x + (x)]/10) %10 == 4) return true;
 	return false;
 }
 

@@ -38,6 +38,8 @@ enum PlayerAnims
 	ATTACK_RIGHT, ATTACK_LEFT, 
 	BLOCK_RIGHT, BLOCK_LEFT,
 	HIDE_SWORD_RIGHT, HIDE_SWORD_LEFT
+	
+
 };
 
 void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
@@ -520,20 +522,21 @@ void Player::update(int deltaTime)
 
 			/* IF RIGHT + UP */ if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT) && Game::instance().getSpecialKey(GLUT_KEY_UP)) sprite->changeAnimation(START_JUMP_STAND_RIGHT);
 			/* IF RIGHT + SHIFT */ else if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT) && (Game::instance().getSpecialKey(113) || Game::instance().getSpecialKey(112))) sprite->changeAnimation(SHIFT_RIGHT);
-			/* IF RIGHT */ else if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT)) sprite->changeAnimation(START_RUN_RIGHT); 
+			/* IF RIGHT */ else if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT)) sprite->changeAnimation(START_RUN_RIGHT);
 			/* IF LEFT */ else if (Game::instance().getSpecialKey(GLUT_KEY_LEFT)) sprite->changeAnimation(TURN_RIGHT_TO_LEFT);
 			/* IF UP */ else if (Game::instance().getSpecialKey(GLUT_KEY_UP)) sprite->changeAnimation(JUMP_UP_RIGHT_FLOOR);
-			
+
 			break;
 
 		case STAND_LEFT:
 
+			
 			/* IF LEFT + UP */ if (Game::instance().getSpecialKey(GLUT_KEY_LEFT) && Game::instance().getSpecialKey(GLUT_KEY_UP)) sprite->changeAnimation(START_JUMP_STAND_LEFT);
 			/* IF LEFT + SHIFT */ else if (Game::instance().getSpecialKey(GLUT_KEY_LEFT) && (Game::instance().getSpecialKey(113) || Game::instance().getSpecialKey(112))) sprite->changeAnimation(SHIFT_LEFT);
 			/* IF LEFT */ else if (Game::instance().getSpecialKey(GLUT_KEY_LEFT)) sprite->changeAnimation(START_RUN_LEFT);
 			/* IF RIGHT */ else if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT)) sprite->changeAnimation(TURN_LEFT_TO_RIGHT);
 			/* IF UP */ else if (Game::instance().getSpecialKey(GLUT_KEY_UP))  sprite->changeAnimation(JUMP_UP_LEFT_FLOOR); bJumping = true;
-		
+			
 			break;
 
 		case START_RUN_RIGHT:
@@ -805,22 +808,23 @@ void Player::update(int deltaTime)
 	}
 
 	if (!map->collisionMoveDown(posPlayer.x, posPlayer.y + FALL_STEP, glm::ivec2(32, 64), direction) && !bJumping) {
-		bFalling = true; posPlayer.y += FALL_STEP; fallenDistance += FALL_STEP;
-		//if (sprite->animation() != STAND_LEFT && fallStraight) fallStraight = false;
-		//if (sprite->animation() != GOING_TO_FALL_LEFT && sprite->animation() != FALLING_LEFT)sprite->changeAnimation(GOING_TO_FALL_LEFT);
-		//if (!fallStraight) posPlayer.x -= FALLEN_ANGLE;
+		bFalling = true; posPlayer.y += FALL_STEP; fallenDistance += FALL_STEP; 
+		if (sprite->animation() == STOP_JUMP_STAND_RIGHT || sprite->animation() == JUMP_STAND_RIGHT || sprite->animation() == JUMP_RUN_RIGHT || sprite->animation() == CHANGE_DIRECTION_TO_LEFT ||
+			sprite->animation() == STOP_RUN_RIGHT || sprite->animation() == MOVE_RIGHT || sprite->animation() == SHIFT_RIGHT || sprite->animation() == START_RUN_RIGHT)sprite->changeAnimation(FALLING_RIGHT);
+		else sprite->changeAnimation(FALLING_LEFT);
+
 	}
 
 	if (map->collisionMoveDown(posPlayer.x, posPlayer.y + FALL_STEP, glm::ivec2(32, 64), direction) && bFalling) {
 		bFalling = false; posPlayer.y += FALL_STEP; 
-		healthPoints -= (fallenDistance - 64) / 64; if (healthPoints < 0) healthPoints = 0;
+		healthPoints -= fallenDistance / 64; if (healthPoints < 0) healthPoints = 0;
+		if (fallenDistance / 64 >= 1) lastDamageType = "fall";
+		if (fallenDistance / 64 >= 1 && sprite->animation() == FALLING_RIGHT) sprite->changeAnimation(TOUCH_FLOOR_RIGHT);
+		else if (sprite->animation() == FALLING_RIGHT) sprite->changeAnimation(WAKE_UP_RIGHT);
+		else if ((fallenDistance) / 64 >= 1 && sprite->animation() == FALLING_LEFT) sprite->changeAnimation(TOUCH_FLOOR_LEFT);
+		else if (sprite->animation() == FALLING_LEFT) sprite->changeAnimation(WAKE_UP_LEFT);
 		fallenDistance = 0;
-		//sprite->changeAnimation(TOUCH_FLOOR_LEFT);
-		//fallStraight = true;
-		}
-
-
-	
+	}
 
 
 	if (sprite->animation() == START_RUN_RIGHT  && !map->collisionMoveRight(posPlayer.x + 1.f, posPlayer.y, glm::ivec2(32, 64))) { posPlayer.x += 1.f; bJumping = false; }
@@ -857,7 +861,10 @@ void Player::update(int deltaTime)
 		else jumped = 64;
 	}
 
-
+	if (healthPoints == 0)  {
+		if (lastDamageType == "fall")
+			sprite->changeAnimation(STAND_LEFT);
+	}
 
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y - 8 - jumped)));
 
@@ -896,13 +903,10 @@ void Player::dealDamage(int damage, string type) {
 	if ((type == "saw" || type == "steelbars") && 
 		(sprite->animation() != SHIFT_LEFT && sprite->animation() != SHIFT_RIGHT && 
 		sprite->animation() != STAND_RIGHT && sprite->animation() != STAND_LEFT)) {
-		if (healthPoints > damage) healthPoints -= damage;
-		else healthPoints = 0;
+		if (healthPoints > damage) { healthPoints -= damage; lastDamageType = type; }
+		else { healthPoints = 0; lastDamageType = type; }
 	}
-	/*else if (type != "saw" && type != "steelbars"){
-		if (healthPoints > damage) healthPoints -= damage;
-		else healthPoints = 0;
-	}*/
+	
 	else if ((type == "enemy") ) {
 		if (sprite->animation() != ATTACK_LEFT && sprite->animation() != ATTACK_RIGHT 
 			&& sprite->animation() != MOVE_SWORD_LEFT && sprite->animation() != MOVE_SWORD_RIGHT  

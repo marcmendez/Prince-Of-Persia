@@ -52,6 +52,7 @@ private:
 	IA *sultans;
 
 	int healthPoints;
+	string lastDamageType;
 	float jumped;
 	bool fallStraight;
 	bool saved; // quan guardes la espasa voluntariament
