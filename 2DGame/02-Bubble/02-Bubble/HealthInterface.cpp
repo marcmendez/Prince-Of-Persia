@@ -39,8 +39,7 @@ void HealthInterface::update(int health, glm::vec2 poscam) {
 
 bool HealthInterface::loadInterface(int health, int poscamY) {
 
-	if (health >= 0 && poscamY < 576) { interfacesheet.loadFromFile("images/interface/HealthInterfaceSheet" + to_string(health) + ".png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = false; }
-	else if (health >= 0 && poscamY >= 576) { interfacesheet.loadFromFile("images/interface/HealthInterfaceSheet" + to_string(health) + "_1.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = false; }
+	if (health >= 0) { interfacesheet.loadFromFile("images/interface/HealthInterfaceSheet" + to_string(health) + ".png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = false; }
 	else if (health == -1) { interfacesheet.loadFromFile("images/menu/Menu.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }
 	else if (health == -2) { interfacesheet.loadFromFile("images/menu/instructions.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }
 	else if (health == -3) { interfacesheet.loadFromFile("images/menu/story1.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }

@@ -208,8 +208,9 @@ bool TileMap::canIMoveUpLeft(int posx, int posy, const glm::ivec2 &size) const{
 	x = posx / 32;
 	y = round((double)posy / (double)64);
 
-	if (((map[(y - 1)*mapSize.x + x] / 10) % 10 == 3 && map[(y - 1)*mapSize.x + x + 1] >= 40) || ((map[(y - 1)*mapSize.x + x] / 10) % 10 == 8 && (map[(y - 1)*mapSize.x + x + 1] / 10) % 10 == 4)) return true;
-	
+	if (((map[(y - 1)*mapSize.x + x] / 10) % 10 == 3 && map[(y - 1)*mapSize.x + x + 1] >= 40 && mapTraps[(y - 1)*mapSize.x + x + 1] != 1) 
+		|| ((map[(y - 1)*mapSize.x + x] / 10) % 10 == 8 && (map[(y - 1)*mapSize.x + x + 1] / 10) % 10 == 4) && (mapTraps[(y - 1)*mapSize.x + x + 1] / 10) % 10 != 1) return true;
+
 	return false;
 
 }

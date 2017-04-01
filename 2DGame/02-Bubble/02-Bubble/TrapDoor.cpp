@@ -61,7 +61,7 @@ void TrapDoor::init(glm::vec2 &doorPos, glm::vec2 &pressurePlatePos, const glm::
 	spriteDoor->addKeyframe(MOVING_DOWN, glm::vec2(0.2f, 0.1f));
 	spriteDoor->addKeyframe(MOVING_DOWN, glm::vec2(0.1f, 0.1f));
 
-	spriteDoor->setAnimationSpeed(OPEN, 1);
+	spriteDoor->setAnimationSpeed(OPEN, 0.5);
 	spriteDoor->addKeyframe(OPEN, glm::vec2(0.7f, 0.1f));
 	spriteDoor->addKeyframe(OPEN, glm::vec2(0.7f, 0.1f));
 	spriteDoor->addKeyframe(OPEN, glm::vec2(0.7f, 0.1f));

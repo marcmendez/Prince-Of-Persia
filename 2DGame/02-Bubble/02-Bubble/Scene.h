@@ -45,7 +45,7 @@ private:
 	void intiIA(string IAFile);
 
 private:
-	TileMap *map, *columns;
+	TileMap *map, *columns,*doors;
 
 	Player *player;
 	IA *sultans;

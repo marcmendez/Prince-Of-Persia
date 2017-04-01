@@ -16,8 +16,8 @@
 #define SCREEN_X 0
 #define SCREEN_Y 0
 
-#define INIT_PLAYER_X_TILES 74
-#define INIT_PLAYER_Y_TILES 10
+#define INIT_PLAYER_X_TILES 60
+#define INIT_PLAYER_Y_TILES 0
 
 #define SCREEN_X_SULTAN 0
 #define SCREEN_Y_SULTAN 0
@@ -46,6 +46,8 @@ void Scene::init()
 
 	map = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	columns = TileMap::createTileMap(map->getColumnsFile(), glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	doors = TileMap::createTileMap("levels/level01stairs.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+
 	initTorches(map->getTorchesFile());
 
 	player = new Player();
@@ -80,9 +82,9 @@ void Scene::init()
 	princess->init("images/SpriteSheetPV.png", glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 
 	coin1 = new CoinEasterEgg();
-	coin1->init(glm::vec2(72 * 32, 10 * 64), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
+	coin1->init(glm::vec2(7 * 32, 0 * 64), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
 	coin2 = new CoinEasterEgg();
-	coin2->init(glm::vec2(76 * 32, 10 * 64), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
+	coin2->init(glm::vec2(25 * 32, 8 * 64), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
 
 }
 
@@ -211,6 +213,7 @@ void Scene::render()
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	map->render();
+	doors->render();
 
 	for each (Torch* torch in torches) torch->render();
 	for each (TrapFallingFloor* trap in trapsFallingFloor) trap->render();
