@@ -10,11 +10,12 @@ HealthInterface *HealthInterface::createHealthInterface(const int health, const 
 }
 
 HealthInterface::HealthInterface(const int health, const glm::vec2 &minCoords, ShaderProgram &program) {
-	loadInterface(health);
+	loadInterface(health,0);
 	this->minCoords = minCoords;
 	this->program = program;
 	glm::vec2 poscam; poscam.x = 0; poscam.y = 0;
 	prepareArrays(poscam);
+	bMenu = true;
 }
 
 void HealthInterface::render() const {
@@ -32,13 +33,21 @@ void HealthInterface::free() {
 }
 
 void HealthInterface::update(int health, glm::vec2 poscam) {
-	loadInterface(health);
+	loadInterface(health, poscam.y);
 	prepareArrays(poscam);
 }
 
-bool HealthInterface::loadInterface(int health) {
+bool HealthInterface::loadInterface(int health, int poscamY) {
 
-	interfacesheet.loadFromFile("images/interface/HealthInterfaceSheet" + to_string(health) + ".png", TEXTURE_PIXEL_FORMAT_RGBA);
+	if (health >= 0 && poscamY < 576) { interfacesheet.loadFromFile("images/interface/HealthInterfaceSheet" + to_string(health) + ".png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = false; }
+	else if (health >= 0 && poscamY >= 576) { interfacesheet.loadFromFile("images/interface/HealthInterfaceSheet" + to_string(health) + "_1.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = false; }
+	else if (health == -1) { interfacesheet.loadFromFile("images/menu/Menu.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }
+	else if (health == -2) { interfacesheet.loadFromFile("images/menu/instructions.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }
+	else if (health == -3) { interfacesheet.loadFromFile("images/menu/story1.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }
+	else if (health == -4) { interfacesheet.loadFromFile("images/menu/story2.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }
+	else if (health == -5) { interfacesheet.loadFromFile("images/menu/credits.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }
+	else { interfacesheet.loadFromFile("images/menu/credits.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }
+
 	interfacesheet.setWrapS(GL_CLAMP_TO_EDGE);
 	interfacesheet.setWrapT(GL_CLAMP_TO_EDGE);
 	interfacesheet.setMinFilter(GL_NEAREST);

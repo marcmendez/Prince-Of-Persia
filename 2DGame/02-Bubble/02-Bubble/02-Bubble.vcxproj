@@ -12,10 +12,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimKeyframes.h" />
+    <ClInclude Include="CoinEasterEgg.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="HealthInterface.h" />
     <ClInclude Include="IA.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Princess.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderProgram.h" />
@@ -29,11 +31,13 @@
     <ClInclude Include="TrapSteelBars.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CoinEasterEgg.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="HealthInterface.cpp" />
     <ClCompile Include="IA.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Princess.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderProgram.cpp" />

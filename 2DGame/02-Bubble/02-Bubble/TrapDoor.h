@@ -12,6 +12,7 @@ public:
 	void init(glm::vec2 &doorPos, glm::vec2 &pressurePlatePos, const glm::ivec2 &tileMapPos, Player *player, TileMap *map, ShaderProgram &shaderProgram);
 	void update(int deltaTime);
 	void render();
+	void restart();
 
 private:
 

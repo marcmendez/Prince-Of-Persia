@@ -1,4 +1,5 @@
 DOORMAP
-1								-- Number of doors
+3								-- Number of doors
 images/Spritesheet_Traps.png 					-- Sprite Traps Sheet
-15 2 18 2
+59 0 56 0
+49 3 54 0

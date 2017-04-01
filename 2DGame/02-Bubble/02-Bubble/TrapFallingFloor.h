@@ -13,9 +13,10 @@ public:
 	void init(glm::vec2 &trapPos,const glm::ivec2 &tileMapPos, Player *player, TileMap *map, ShaderProgram &shaderProgram);
 	void update(int deltaTime);
 	void render();
+	void restart();
 
 private:
-	bool TrapFallingFloor::AmISteppingOn(int posx, int posy, const glm::ivec2 &size) const;
+	bool TrapFallingFloor::AmISteppingOn() const;
 
 private:
 	glm::ivec2 tileMapDispl;
@@ -26,6 +27,7 @@ private:
 	Player *player;
 	TileMap *map;
 
+	int fallen;
 	bool bDetected;
 };
 

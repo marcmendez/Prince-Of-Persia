@@ -15,9 +15,10 @@ public:
 	void free();
 	void update(int health, glm::vec2 poscam);
 
+	bool isMenu() { return bMenu; }
 private:
 
-	bool loadInterface(int health);
+	bool loadInterface(int health, int poscamY);
 	void prepareArrays(glm::vec2 poscam);
 
 private:
@@ -27,5 +28,7 @@ private:
 	Texture interfacesheet;
 	glm::vec2 minCoords;
 	ShaderProgram program;
+
+	bool bMenu;
 
 };

@@ -19,11 +19,23 @@ void TrapDoor::init(glm::vec2 &doorPos, glm::vec2 &pressurePlatePos, const glm::
 	spritePressurePlate->setNumberAnimations(2);
 
 	//KeyFrames pressure plate sprite
-	spritePressurePlate->setAnimationSpeed(UNPRESSED, 8);
-	spritePressurePlate->addKeyframe(UNPRESSED, glm::vec2(0.1f, 0.f));
 
-	spritePressurePlate->setAnimationSpeed(PRESSED, 8);
-	spritePressurePlate->addKeyframe(PRESSED, glm::vec2(0.0f, 0.f));
+	if (pressurePlatePos.y <= 512) {
+		spritePressurePlate->setAnimationSpeed(UNPRESSED, 8);
+		spritePressurePlate->addKeyframe(UNPRESSED, glm::vec2(0.1f, 0.f));
+
+		spritePressurePlate->setAnimationSpeed(PRESSED, 8);
+		spritePressurePlate->addKeyframe(PRESSED, glm::vec2(0.0f, 0.f));
+	}
+	else {
+
+		spritePressurePlate->setAnimationSpeed(UNPRESSED, 8);
+		spritePressurePlate->addKeyframe(UNPRESSED, glm::vec2(0.2f, 0.f));
+
+		spritePressurePlate->setAnimationSpeed(PRESSED, 8);
+		spritePressurePlate->addKeyframe(PRESSED, glm::vec2(0.3f, 0.f));
+
+	}
 
 	// Configuring a door sprite
 
@@ -73,6 +85,12 @@ void TrapDoor::init(glm::vec2 &doorPos, glm::vec2 &pressurePlatePos, const glm::
 
 }
 
+void TrapDoor::restart() {
+	bPressed = false;
+	spritePressurePlate->changeAnimation(UNPRESSED);
+	spriteDoor->changeAnimation(CLOSED);
+	map->addTrapCollision(posDoor.x, posDoor.y, 2);
+}
 void TrapDoor::update(int deltaTime) {
 
 	bool finishActionPressurePlate = spritePressurePlate->update(deltaTime);

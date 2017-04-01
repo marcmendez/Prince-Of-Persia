@@ -40,6 +40,10 @@ void TrapSteelBars::init(const glm::vec2 &pos, const glm::ivec2 &tileMapPos, Pla
 
 }
 
+void TrapSteelBars::restart() {
+
+	bUp = false;
+}
 void TrapSteelBars::update(int deltaTime)
 {
 

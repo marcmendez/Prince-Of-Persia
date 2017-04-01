@@ -485,7 +485,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 	/* DEATH BY SAW*/
 	sprite->setAnimationSpeed(DEATH_BY_SAW, 8);
-	sprite->addKeyframe(DEATH_BY_SAW, glm::vec2(0.6f, 0.7f));
+	sprite->addKeyframe(DEATH_BY_SAW , glm::vec2(0.6f, 0.7f));
 
 
 	//Init sprite and position
@@ -498,9 +498,17 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	
 	// Init bFalling + bJumping
 	bFalling = false; bJumping = false; fallenDistance = 0; 
-	healthPoints = 3; jumped = 0;
+	healthPoints = 3; easterEggPoint = 0; jumped = 0;
 	fallStraight = true;
 	saved = false;
+}
+
+void Player::restart() {
+	bFalling = false; bJumping = false; fallenDistance = 0;
+	healthPoints = 3; easterEggPoint = 0; jumped = 0;
+	fallStraight = true;
+	saved = false;
+	sprite->changeAnimation(STAND_RIGHT);
 }
 
 void Player::update(int deltaTime)
@@ -510,42 +518,7 @@ void Player::update(int deltaTime)
 	
 	if (finishAction) {
 
-		if (sultans->getPosition().y - posPlayer.y <= 0 
-			&& sultans->getPosition().x - posPlayer.x <= PLAYER_VISION 
-			&& sultans->getPosition().x - posPlayer.x > 0 
-			&& !isSwordOut() 
-			&& sultans->getHealthEnemy() > 0
-			&& !saved)
-			sprite->changeAnimation(SWORD_OUT_RIGHT);
-
-		else if (sultans->getPosition().y - posPlayer.y <= 0
-			&& sultans->getPosition().x - posPlayer.x <= PLAYER_VISION
-			&& sultans->getPosition().x - posPlayer.x > 0
-			&& !isSwordOut()
-			&& sultans->getHealthEnemy() > 0
-			&& saved 
-			&& Game::instance().getSpecialKey(GLUT_KEY_UP))
-			sprite->changeAnimation(SWORD_OUT_RIGHT);
-
-
-		else if (sultans->getPosition().y - posPlayer.y <= 0 
-			&& posPlayer.x - sultans->getPosition().x <= PLAYER_VISION 
-			&& posPlayer.x - sultans->getPosition().x > 0 
-			&& !isSwordOut()
-			&& sultans->getHealthEnemy() > 0
-			&& !saved)
-			sprite->changeAnimation(SWORD_OUT_LEFT);
-
-		else if (sultans->getPosition().y - posPlayer.y <= 0
-			&& posPlayer.x - sultans->getPosition().x <= PLAYER_VISION
-			&& posPlayer.x - sultans->getPosition().x > 0
-			&& !isSwordOut()
-			&& sultans->getHealthEnemy() > 0
-			&& saved
-			&& Game::instance().getSpecialKey(GLUT_KEY_UP))
-			sprite->changeAnimation(SWORD_OUT_LEFT);
-
-		else switch (sprite->animation()) {
+		switch (sprite->animation()) {
 
 		case STAND_RIGHT:
 
@@ -840,6 +813,22 @@ void Player::update(int deltaTime)
 		}
 	}
 
+	/*if (sultans->getPosition().y - posPlayer.y == 0 
+		&& sultans->getPosition().x - posPlayer.x <= PLAYER_VISION 
+		&& sultans->getPosition().x - posPlayer.x > 0 
+		&& !isSwordOut() 
+		&& sultans->getHealthEnemy() > 0)
+		if (!saved) sprite->changeAnimation(SWORD_OUT_RIGHT);
+		else if (saved && Game::instance().getSpecialKey(GLUT_KEY_UP)) sprite->changeAnimation(SWORD_OUT_RIGHT);
+
+	else if (sultans->getPosition().y - posPlayer.y == 0 
+		&& posPlayer.x - sultans->getPosition().x <= PLAYER_VISION 
+		&& posPlayer.x - sultans->getPosition().x > 0 
+		&& !isSwordOut()
+		&& sultans->getHealthEnemy() > 0)
+		if (!saved) sprite->changeAnimation(SWORD_OUT_LEFT);
+		else if (saved&& Game::instance().getSpecialKey(GLUT_KEY_UP)) sprite->changeAnimation(SWORD_OUT_LEFT);*/
+
 	if (!map->collisionMoveDown(posPlayer.x, posPlayer.y + FALL_STEP, glm::ivec2(32, 64), direction) && !bJumping) {
 		bFalling = true; posPlayer.y += FALL_STEP; fallenDistance += FALL_STEP; 
 		if (sprite->animation() == STOP_JUMP_STAND_RIGHT || sprite->animation() == JUMP_STAND_RIGHT || sprite->animation() == JUMP_RUN_RIGHT || sprite->animation() == CHANGE_DIRECTION_TO_LEFT ||
@@ -850,7 +839,7 @@ void Player::update(int deltaTime)
 
 	if (map->collisionMoveDown(posPlayer.x, posPlayer.y + FALL_STEP, glm::ivec2(32, 64), direction) && bFalling) {
 		bFalling = false; posPlayer.y += FALL_STEP; 
-		healthPoints -= fallenDistance / 64; if (healthPoints < 0) healthPoints = 0;
+		/*healthPoints -= fallenDistance / 64;*/ if (healthPoints < 0) healthPoints = 0;
 		if (fallenDistance / 64 >= 1 && sprite->animation() == FALLING_RIGHT) { sprite->changeAnimation(TOUCH_FLOOR_RIGHT); lastDamageType = "fall_right"; }
 		else if (sprite->animation() == FALLING_RIGHT) sprite->changeAnimation(WAKE_UP_RIGHT);
 		else if ((fallenDistance) / 64 >= 1 && sprite->animation() == FALLING_LEFT) { sprite->changeAnimation(TOUCH_FLOOR_LEFT); lastDamageType = "fall_left"; }
@@ -897,13 +886,22 @@ void Player::update(int deltaTime)
 		if (lastDamageType == "fall_right") sprite->changeAnimation(DEATH_BY_FALLING_RIGHT);
 		else if (lastDamageType == "fall_left") sprite->changeAnimation(DEATH_BY_FALLING_LEFT);
 		else if (lastDamageType == "steelbars") sprite->changeAnimation(DEATH_BY_STEELBARS_RIGHT);
-		else if (lastDamageType == "saw")  sprite->changeAnimation(DEATH_BY_SAW);
-		else if (lastDamageType == "enemy") sprite->changeAnimation(DEATH_BY_ENEMY_RIGHT);
+		else if (lastDamageType == "saw")  {
+			sprite->changeAnimation(DEATH_BY_SAW);
+			int xPlayer = (posPlayer.x + 32 - 1) / 32;
+			int yPlayer = posPlayer.y / 64;
+			posPlayer.x = xPlayer * 32 - 12;
+			posPlayer.y = yPlayer * 64 + 5;
+		} else if (lastDamageType == "enemy") sprite->changeAnimation(DEATH_BY_ENEMY_RIGHT);
 	}
 
 	if ((posPlayer.y / 64) == 4 && posPlayer.x >= 2680) {
 		posPlayer.y = 640, posPlayer.x = 1450;
 	}
+	else if ((posPlayer.y / 64) == 10 && (posPlayer.x / 32) == 82) {
+		posPlayer.y = 13 * 64; posPlayer.x = 73 * 32; sprite->changeAnimation(STAND_RIGHT);
+	}
+
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y - 8 - jumped)));
 
 }
@@ -926,7 +924,7 @@ void Player::setPosition(const glm::vec2 &pos)
 
 float Player::GetScreenX(int widthScreen) {
 
-	return float(tileMapDispl.x + posPlayer.x) / widthScreen;
+	return float(tileMapDispl.x + posPlayer.x +32) / widthScreen;
 
 }
 
@@ -963,6 +961,7 @@ bool Player::isAttacking() {
 
 	else return true;
 }
+
 
 
 
