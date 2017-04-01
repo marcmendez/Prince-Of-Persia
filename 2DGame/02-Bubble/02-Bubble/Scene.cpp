@@ -16,14 +16,10 @@
 #define SCREEN_X 0
 #define SCREEN_Y 0
 
-#define INIT_PLAYER_X_TILES 74
-#define INIT_PLAYER_Y_TILES 10
+#define INIT_PLAYER_X_TILES 70
+#define INIT_PLAYER_Y_TILES 4
 
-#define SCREEN_X_SULTAN 0
-#define SCREEN_Y_SULTAN 0
-
-#define INIT_SULTAN_X_TILES 7
-#define INIT_SULTAN_Y_TILES 4
+#define NUMBER_ENEMIES 2
 
 Scene::Scene()
 {
@@ -46,6 +42,7 @@ void Scene::init()
 
 	map = TileMap::createTileMap("levels/level01.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	columns = TileMap::createTileMap(map->getColumnsFile(), glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
+	doors = TileMap::createTileMap("levels/level01stairs.txt", glm::vec2(SCREEN_X, SCREEN_Y), texProgram);
 	initTorches(map->getTorchesFile());
 
 	player = new Player();
@@ -53,12 +50,8 @@ void Scene::init()
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize().first, INIT_PLAYER_Y_TILES * map->getTileSize().second));
 	player->setTileMap(map);
 
-	sultans = new IA();
-	sultans->init(glm::ivec2(SCREEN_X_SULTAN, SCREEN_Y_SULTAN), texProgram);
-	sultans->setPosition(glm::vec2(INIT_SULTAN_X_TILES * map->getTileSize().first, INIT_SULTAN_Y_TILES * map->getTileSize().second));
-	sultans->setTileMap(map);
-	sultans->setPlayer(player);
-
+	
+	initIA("levels/level01IA.txt");
 	player->setSultans(sultans);
 
 	initTraps(map->getTrapsFile());
@@ -170,11 +163,16 @@ void Scene::update(int deltaTime)
 
 		if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT) && player->getHealth() <= 0) restart();
 
-		for each (Torch* torch in torches)
-			torch->update(deltaTime);
+		for each (IA* sultan in sultans)
+			sultan->update(deltaTime);
 
 		player->update(deltaTime);
-		//sultans->update(deltaTime);
+
+
+		
+
+		for each (Torch* torch in torches)
+			torch->update(deltaTime);		
 
 		for each (TrapSteelBars* trap in trapsFloor)
 			trap->update(deltaTime);
@@ -211,6 +209,7 @@ void Scene::render()
 	texProgram.setUniformMatrix4f("modelview", modelview);
 	texProgram.setUniform2f("texCoordDispl", 0.f, 0.f);
 	map->render();
+	doors->render();
 
 	for each (Torch* torch in torches) torch->render();
 	for each (TrapFallingFloor* trap in trapsFallingFloor) trap->render();
@@ -218,7 +217,7 @@ void Scene::render()
 	for each (TrapDoor* trap in trapsDoor) trap->render();
 
 	player->render();
-	//sultans->render();
+	for each (IA* sultan in sultans) sultan->render();
 
 	for each (TrapSteelBars* trap in trapsFloor) trap->render();
 
@@ -432,3 +431,42 @@ void Scene::restartTraps() {
 	coin2->restart();
 
 }
+
+void Scene::initIA(string IAFile) {
+
+	ifstream fin;
+	string line;
+	stringstream sstream;
+	glm::ivec2 mapSize;
+	int numberOfEnemies;
+	int sultanX, sultanY ,maxPos, minPos;
+
+	fin.open(IAFile.c_str());
+	getline(fin, line);
+
+	if (line.compare(0, 7, "IAMAP!") != 0) {
+
+		getline(fin, line);
+		sstream.str(line);
+		sstream >> numberOfEnemies;
+
+
+		for (int i = 0; i < numberOfEnemies; i++)
+		{
+			fin >> sultanX >> sultanY >> minPos >> maxPos;
+			IA* sultan = new IA();
+			sultan->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, player, minPos* map->getTileSize().first, maxPos * map->getTileSize().second);
+			sultan->setTileMap(map);
+			sultan->setPosition(glm::ivec2(sultanX * map->getTileSize().first, sultanY * map->getTileSize().second));
+			sultans.push_back(sultan);
+
+		}
+
+		}
+
+	fin.close();
+	}
+
+	
+
+

@@ -4,26 +4,27 @@
 
 
 #include "Sprite.h"
-#include "Player.h"
 #include "TileMap.h"
 
-
+class Player;
 class IA
 {
 
 public:
 
-	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram);
+	void init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, Player *player, int minPos, int maxPos);
 	void update(int deltaTime);
 	void render();
 
 	glm::vec2 getPosition() { return posIA; }
 
-	void setPlayer(Player *player);
+	void setPlayerStats(Player *player);
 	void setPosition(const glm::vec2 &pos);
 	void IA::setTileMap(TileMap *tileMap);
 	bool isBlockingEnemy();
 	void dealDamageEnemy(int damage);
+	bool sultanIsBlockking();
+	bool sultanIsAttacking();
 
 	int getHealthEnemy() {
 		return healthPoints;
@@ -32,14 +33,19 @@ public:
 private:
 	glm::ivec2 tileMapDispl;
 	glm::vec2 posIA;
+	glm::vec2 posPlayer;
 
 	Texture spritesheet;
 	Sprite *sprite;
-	Player *player;
 	TileMap *map;
+	Player *player;
 
 
 	int healthPoints;
+	bool playerBlocking;
+	bool playerAttacking;
+	int playerHealth;
+	int minPos, maxPos;
 };
 
 #endif // _IA_INCLUDE

@@ -62,7 +62,7 @@ private:
 	GLint posLocation, texCoordLocation;
 	glm::ivec2 position, mapSize, tilesheetSize;
 	int tileSizeX, tileSizeY, blockSize;
-	string trapsFile, columnsFile, torchesFile;
+	string trapsFile, columnsFile, torchesFile, IAFile;
 	Texture tilesheet;
 	glm::vec2 tileTexSize;
 	int *map;

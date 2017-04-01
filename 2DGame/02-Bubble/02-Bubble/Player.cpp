@@ -11,6 +11,7 @@
 #define FALL_STEP 4
 #define  FALLEN_ANGLE 0.4
 #define PLAYER_VISION 32*6
+#define NUMBER_ENEMIES 2
 
 enum PlayerAnims
 {
@@ -61,7 +62,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	sprite->addKeyframe(STAND_LEFT, glm::vec2(-0.1f, 0.f));
 
 	// STAND RIGHT
-	sprite->setAnimationSpeed(STAND_RIGHT, 8);
+	sprite->setAnimationSpeed(STAND_RIGHT, 1000);
 	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.f));
 
 	// RUN LEFT
@@ -427,21 +428,18 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 	/* BLOCKING */
 	sprite->setAnimationSpeed(BLOCK_RIGHT, 8);
-	sprite->addKeyframe(BLOCK_RIGHT, glm::vec2(0.3f, 0.6f));
-	sprite->addKeyframe(BLOCK_RIGHT, glm::vec2(0.4f, 0.6f));
-	sprite->addKeyframe(BLOCK_RIGHT, glm::vec2(0.5f, 0.6f));
-	sprite->addKeyframe(BLOCK_RIGHT, glm::vec2(0.6f, 0.6f));
-	sprite->addKeyframe(BLOCK_RIGHT, glm::vec2(0.7f, 0.6f));
-	sprite->addKeyframe(BLOCK_RIGHT, glm::vec2(0.8f, 0.6f));
-	
+	sprite->addKeyframe(BLOCK_RIGHT, glm::vec2(0.0f, 0.75f));
+	sprite->addKeyframe(BLOCK_RIGHT, glm::vec2(0.1f, 0.75f));
+	sprite->addKeyframe(BLOCK_RIGHT, glm::vec2(0.2f, 0.75f));
+	sprite->addKeyframe(BLOCK_RIGHT, glm::vec2(0.3f, 0.75f));
+
 	/* BLOCKING */
 	sprite->setAnimationSpeed(BLOCK_LEFT, 8);
-	sprite->addKeyframe(BLOCK_LEFT, glm::vec2(-0.4f, 0.6f));
-	sprite->addKeyframe(BLOCK_LEFT, glm::vec2(-0.5f, 0.6f));
-	sprite->addKeyframe(BLOCK_LEFT, glm::vec2(-0.6f, 0.6f));
-	sprite->addKeyframe(BLOCK_LEFT, glm::vec2(-0.7f, 0.6f));
-	sprite->addKeyframe(BLOCK_LEFT, glm::vec2(-0.8f, 0.6f));
-	sprite->addKeyframe(BLOCK_LEFT, glm::vec2(-0.9f, 0.6f));
+	sprite->addKeyframe(BLOCK_LEFT, glm::vec2(-0.1f, 0.75f));
+	sprite->addKeyframe(BLOCK_LEFT, glm::vec2(-0.2f, 0.75f));
+	sprite->addKeyframe(BLOCK_LEFT, glm::vec2(-0.3f, 0.75f));
+	sprite->addKeyframe(BLOCK_LEFT, glm::vec2(-0.4f, 0.75f));
+
 
 	/* HIDE SWORD */
 	sprite->setAnimationSpeed(HIDE_SWORD_RIGHT, 8);
@@ -501,6 +499,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	healthPoints = 3; easterEggPoint = 0; jumped = 0;
 	fallStraight = true;
 	saved = false;
+	
 }
 
 void Player::restart() {
@@ -513,12 +512,54 @@ void Player::restart() {
 
 void Player::update(int deltaTime)
 {
-
 	bool finishAction = sprite->update(deltaTime);
+
+	int minDistX = 50000000;
+	IA* sultan = new IA();
+
+	int contador = 0;
+	
+
+	for each (IA* sultanIter in sultans){
+		if (abs(minDistX > abs(sultanIter->getPosition().x - posPlayer.x)) && posPlayer.y == sultanIter->getPosition().y) {
+			minDistX = abs(sultanIter->getPosition().x - posPlayer.x);
+			sultan = sultanIter;
+			contador++;
+		}
+	}
+	if (contador == 0) sultan = sultans[0];
 	
 	if (finishAction) {
 
-		switch (sprite->animation()) {
+		if (sultan->getPosition().y - posPlayer.y == 0
+			&& sultan->getPosition().x - posPlayer.x <= PLAYER_VISION
+			&& sultan->getPosition().x - posPlayer.x > 0
+			&& !isSwordOut()
+			&& sultan->getHealthEnemy() > 0
+			&& !saved) sprite->changeAnimation(SWORD_OUT_RIGHT);
+		
+		else if (sultan->getPosition().y - posPlayer.y == 0
+			&& sultan->getPosition().x - posPlayer.x <= PLAYER_VISION
+			&& sultan->getPosition().x - posPlayer.x > 0
+			&& !isSwordOut()
+			&& sultan->getHealthEnemy() > 0
+			&& saved && Game::instance().getSpecialKey(GLUT_KEY_UP)) sprite->changeAnimation(SWORD_OUT_RIGHT);
+
+		else if (sultan->getPosition().y - posPlayer.y == 0
+			&& posPlayer.x - sultan->getPosition().x <= PLAYER_VISION
+			&& posPlayer.x - sultan->getPosition().x > 0
+			&& !isSwordOut()
+			&& sultan->getHealthEnemy() > 0
+			&& !saved) sprite->changeAnimation(SWORD_OUT_LEFT);
+		
+		else if (sultan->getPosition().y - posPlayer.y == 0
+			&& posPlayer.x - sultan->getPosition().x <= PLAYER_VISION
+			&& posPlayer.x - sultan->getPosition().x > 0
+			&& !isSwordOut()
+			&& sultan->getHealthEnemy() > 0
+			&& saved&& Game::instance().getSpecialKey(GLUT_KEY_UP)) sprite->changeAnimation(SWORD_OUT_LEFT);
+
+		else switch (sprite->animation()) {
 
 		case STAND_RIGHT:
 
@@ -731,7 +772,7 @@ void Player::update(int deltaTime)
 				sprite->changeAnimation(HIDE_SWORD_LEFT); saved = true;
 			}
 
-			if (sultans->getPosition().y - posPlayer.y <= 0 && posPlayer.x - sultans->getPosition().x <= PLAYER_VISION && posPlayer.x - sultans->getPosition().x <= 0)
+			if (sultan->getPosition().y - posPlayer.y <= 0 && posPlayer.x - sultan->getPosition().x <= PLAYER_VISION && posPlayer.x - sultan->getPosition().x <= 0)
 				sprite->changeAnimation(STAND_SWORD_RIGHT);
 				
 			break;
@@ -746,7 +787,7 @@ void Player::update(int deltaTime)
 				sprite->changeAnimation(HIDE_SWORD_RIGHT); saved = true;
 			}
 
-			if (sultans->getPosition().y - posPlayer.y <= 0 && sultans->getPosition().x - posPlayer.x <= PLAYER_VISION && posPlayer.x - sultans->getPosition().x > 0)
+			if (sultan->getPosition().y - posPlayer.y <= 0 && sultan->getPosition().x - posPlayer.x <= PLAYER_VISION && posPlayer.x - sultan->getPosition().x > 0)
 				sprite->changeAnimation(STAND_SWORD_LEFT);
 
 			break;
@@ -755,7 +796,7 @@ void Player::update(int deltaTime)
 			if (Game::instance().getSpecialKey(113) || Game::instance().getSpecialKey(112)) sprite->changeAnimation(ATTACK_LEFT);
 			else if (!Game::instance().getSpecialKey(GLUT_KEY_LEFT) && !Game::instance().getSpecialKey(GLUT_KEY_RIGHT))sprite->changeAnimation(STAND_SWORD_LEFT);
 
-			if (sultans->getPosition().y - posPlayer.y <= 0 && posPlayer.x - sultans->getPosition().x <= PLAYER_VISION && posPlayer.x - sultans->getPosition().x < 0)
+			if (sultan->getPosition().y - posPlayer.y <= 0 && posPlayer.x - sultan->getPosition().x <= PLAYER_VISION && posPlayer.x - sultan->getPosition().x < 0)
 				sprite->changeAnimation(STAND_SWORD_RIGHT);
 
 			break;
@@ -769,14 +810,14 @@ void Player::update(int deltaTime)
 
 		case ATTACK_LEFT:
 
-			if (!sultans->isBlockingEnemy())sultans->dealDamageEnemy(1);
+			if (!sultan->sultanIsBlockking())sultan->dealDamageEnemy(1);
 			sprite->changeAnimation(STAND_SWORD_LEFT);
 
 			break;
 
 		case ATTACK_RIGHT:
 
-			if (!sultans->isBlockingEnemy())sultans->dealDamageEnemy(1);
+			if (!sultan->sultanIsBlockking())sultan->dealDamageEnemy(1);
 			sprite->changeAnimation(STAND_SWORD_RIGHT);
 
 			break;
@@ -812,22 +853,6 @@ void Player::update(int deltaTime)
 			
 		}
 	}
-
-	/*if (sultans->getPosition().y - posPlayer.y == 0 
-		&& sultans->getPosition().x - posPlayer.x <= PLAYER_VISION 
-		&& sultans->getPosition().x - posPlayer.x > 0 
-		&& !isSwordOut() 
-		&& sultans->getHealthEnemy() > 0)
-		if (!saved) sprite->changeAnimation(SWORD_OUT_RIGHT);
-		else if (saved && Game::instance().getSpecialKey(GLUT_KEY_UP)) sprite->changeAnimation(SWORD_OUT_RIGHT);
-
-	else if (sultans->getPosition().y - posPlayer.y == 0 
-		&& posPlayer.x - sultans->getPosition().x <= PLAYER_VISION 
-		&& posPlayer.x - sultans->getPosition().x > 0 
-		&& !isSwordOut()
-		&& sultans->getHealthEnemy() > 0)
-		if (!saved) sprite->changeAnimation(SWORD_OUT_LEFT);
-		else if (saved&& Game::instance().getSpecialKey(GLUT_KEY_UP)) sprite->changeAnimation(SWORD_OUT_LEFT);*/
 
 	if (!map->collisionMoveDown(posPlayer.x, posPlayer.y + FALL_STEP, glm::ivec2(32, 64), direction) && !bJumping) {
 		bFalling = true; posPlayer.y += FALL_STEP; fallenDistance += FALL_STEP; 
@@ -902,6 +927,10 @@ void Player::update(int deltaTime)
 		posPlayer.y = 13 * 64; posPlayer.x = 73 * 32; sprite->changeAnimation(STAND_RIGHT);
 	}
 
+	if (sultan->sultanIsAttacking())dealDamage(1, "enemy");
+
+	for each (IA* sultan in sultans) sultan->setPlayerStats(this);
+
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y - 8 - jumped)));
 
 }
@@ -943,13 +972,10 @@ void Player::dealDamage(int damage, string type) {
 		else { healthPoints = 0; lastDamageType = type; }
 	}
 	
-	else if ((type == "enemy") ) {
-		if (sprite->animation() != ATTACK_LEFT && sprite->animation() != ATTACK_RIGHT 
-			&& sprite->animation() != MOVE_SWORD_LEFT && sprite->animation() != MOVE_SWORD_RIGHT  
-			&& sprite->animation() != STAND_SWORD_RIGHT && sprite->animation() != STAND_SWORD_LEFT)
-			healthPoints = 0;
-		else healthPoints -= damage;
-	}
+	/*else if ((type == "enemy") ) {
+		if (!isSwordOut()) { healthPoints = 0; lastDamageType = type; }
+		else { healthPoints -= damage; lastDamageType = type; }
+	}*/
 
 }
 
@@ -965,7 +991,7 @@ bool Player::isAttacking() {
 
 
 
-void Player::setSultans(IA *sultans)
+void Player::setSultans(vector<IA*>sultans)
 {
 	this->sultans = sultans;
 }

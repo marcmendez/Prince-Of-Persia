@@ -3,12 +3,13 @@
 
 #include "Sprite.h"
 #include "TileMap.h"
+#include "IA.h"
 
 
 
 // Player is basically a Sprite that represents the player. As such it has
 // all properties it needs to track its movement, jumping, and collisions.
-class IA;
+
 
 class Player
 {
@@ -27,7 +28,7 @@ public:
 	float Player::GetScreenX(int widthScreen);
 	float Player::GetScreenY(int heightScreen);
 	bool Player::isAttacking();
-	void Player::setSultans(IA *sultans);
+	void Player::setSultans(vector<IA*>sultans);
 	bool isBlocking();
 	bool isSwordOut();
 
@@ -56,7 +57,8 @@ private:
 	Sprite *sprite;
 	TileMap *map;
 
-	IA *sultans;
+	vector<IA*> sultans;
+
 
 	int healthPoints;
 	int easterEggPoint;

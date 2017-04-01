@@ -42,14 +42,15 @@ private:
 	void initTraps(string TrapsFile);
 	void initTorches(string TorchesFile);
 	void initDoors(string doorsFile);
-	void intiIA(string IAFile);
+	void initIA(string IAFile);
+
 
 private:
-	TileMap *map, *columns;
+	TileMap *map, *columns, *doors;;
 
 	Player *player;
-	IA *sultans;
 	Princess *princess;
+	vector <IA*> sultans;
 
 	vector<TrapSteelBars*> trapsFloor;
 	vector<TrapDoor *> trapsDoor;

@@ -22,7 +22,7 @@ enum PlayerAnims
 	DEAD_LEFT, DEAD_RIGHT
 };
 
-void IA::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
+void IA::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, Player* player, int minPos, int maxPos)
 {
 
 	// Configuring the spritesheet
@@ -108,6 +108,11 @@ void IA::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posIA.x), float(tileMapDispl.y + posIA.y)));
 
 	healthPoints = 3;
+	playerBlocking = false;
+	playerAttacking = false;
+	this->player = player;
+	this->minPos = minPos;
+	this->maxPos = maxPos;
 }
 
 void IA::update(int deltaTime)
@@ -118,12 +123,13 @@ void IA::update(int deltaTime)
 
 	int playerX = player->getPosition().x;
 	int playerY = player->getPosition().y;
-	int playerHealth = player->getHealth();
 	int sultanX = posIA.x;
 	int sultanY = posIA.y;
 	bool visionRange = (playerY - sultanY == 0) && (abs(playerX - sultanX) <= IA_VISION);
 	bool fightRange = (playerY - sultanY == 0) && (abs(playerX - sultanX) <= ATTACK_RANGE);
-	bool block = player->isBlocking();
+	playerBlocking = player->isAttacking();
+	playerAttacking = player->isAttacking();
+
 
 	if (finishAction) {
 
@@ -134,7 +140,7 @@ void IA::update(int deltaTime)
 			if (healthPoints == 0) sprite->changeAnimation(DYING_LEFT);
 			else if (playerHealth == 0) sprite->changeAnimation(STAND_LEFT);
 			else if (playerX > sultanX)	sprite->changeAnimation(STAND_RIGHT);
-			else if (fightRange && block) sprite->changeAnimation(BLOCK_LEFT);
+			else if (fightRange && playerBlocking) sprite->changeAnimation(BLOCK_LEFT);
 			else if (fightRange) sprite->changeAnimation(ATTACK_RIGHT);
 			else if (visionRange) sprite->changeAnimation(MOVE_LEFT);
 			
@@ -155,7 +161,7 @@ void IA::update(int deltaTime)
 			if (healthPoints == 0) sprite->changeAnimation(DYING_LEFT);
 			else if (playerHealth == 0) sprite->changeAnimation(STAND_LEFT);
 			else if (playerX > sultanX)	sprite->changeAnimation(STAND_RIGHT);
-			else if (fightRange && block) sprite->changeAnimation(BLOCK_LEFT);
+			else if (fightRange && playerBlocking) sprite->changeAnimation(BLOCK_LEFT);
 			else if (fightRange) sprite->changeAnimation(ATTACK_LEFT);
 			else if (visionRange) sprite->changeAnimation(MOVE_LEFT);
 		
@@ -176,7 +182,7 @@ void IA::update(int deltaTime)
 			if (healthPoints == 0) sprite->changeAnimation(DYING_LEFT);
 			else if (playerHealth == 0) sprite->changeAnimation(STAND_LEFT);
 			else if (playerX > sultanX)	sprite->changeAnimation(STAND_RIGHT);
-			else if (fightRange && block) sprite->changeAnimation(BLOCK_LEFT);
+			else if (fightRange && playerBlocking) sprite->changeAnimation(BLOCK_LEFT);
 			else if (fightRange) sprite->changeAnimation(ATTACK_LEFT);
 			else if (visionRange) sprite->changeAnimation(MOVE_LEFT);
 
@@ -224,19 +230,20 @@ void IA::update(int deltaTime)
 
 		}
 	}
-	if (sprite->animation() == MOVE_LEFT && sprite->getFrame() == 0) posIA.x -= 2;
-	if (sprite->animation() == MOVE_RIGHT && sprite->getFrame() == 0) posIA.x += 2;
+	if (sprite->animation() == MOVE_LEFT && sprite->getFrame() == 0 && posIA.x - 2 >= minPos) posIA.x -= 2;
+	if (sprite->animation() == MOVE_RIGHT && sprite->getFrame() == 0 && posIA.x + 2 <= maxPos) posIA.x += 2;
 	if (sprite->animation() == BLOCK_RIGHT && sprite->getFrame() % 2) posIA.x -= 1;
 	if (sprite->animation() == BLOCK_LEFT && sprite->getFrame() %  2) posIA.x += 1;
 
-	if ((sprite->animation() == ATTACK_LEFT || sprite->animation() == ATTACK_RIGHT) && sprite->getFrame() == 5  && !block) {
-		player->dealDamage(1,"enemy");
+	if (player->getHealth() == 0) sprite->changeAnimation(STAND_LEFT);
 
-	}
-
-	if ((sprite->animation() != BLOCK_RIGHT || sprite->animation() != BLOCK_LEFT) && player->isAttacking())
+	if ((sprite->animation() != BLOCK_RIGHT || sprite->animation() != BLOCK_LEFT) && playerAttacking)
 		dealDamageEnemy(1);
+	if (posIA.x - 2 == minPos && player->getPosition().x < posIA.x) sprite->changeAnimation(STAND_LEFT);
+	else if (posIA.x + 2 == maxPos && player->getPosition().x > posIA.x) sprite->changeAnimation(STAND_RIGHT);
 
+
+	if (healthPoints == 0) sprite->changeAnimation(DEAD_LEFT);
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posIA.x), float(tileMapDispl.y + posIA.y)));
 }
 
@@ -245,10 +252,6 @@ void IA::render()
 	sprite->render();
 }
 
-void IA::setPlayer(Player *player)
-{
-	this->player = player;
-}
 
 void IA::setPosition(const glm::vec2 &pos)
 {
@@ -264,7 +267,7 @@ void IA::setTileMap(TileMap *tileMap)
 
 void IA::dealDamageEnemy(int damage) {
 	
-	if (sprite->animation() != BLOCK_RIGHT && sprite->animation() != BLOCK_LEFT ) {
+	if (sprite->animation() != BLOCK_RIGHT && sprite->animation() != BLOCK_LEFT  ) {
 		healthPoints -= 1;
 			
 	}
@@ -273,14 +276,34 @@ void IA::dealDamageEnemy(int damage) {
 
 }
 
-bool IA::isBlockingEnemy() {
+bool IA::sultanIsBlockking() {
 
 	if (sprite->animation() != BLOCK_RIGHT && sprite->animation() != BLOCK_LEFT) {
 		return false;
 
 	}
 	else return true;
+	
 
 
+
+}
+
+bool IA::sultanIsAttacking() {
+
+	if (sprite->animation() != ATTACK_RIGHT && sprite->animation() != ATTACK_LEFT) {
+		return false;
+
+	}
+	else return true;
+
+
+
+
+}
+
+void IA::setPlayerStats(Player *player) {
+
+	this->player = player;
 
 }
