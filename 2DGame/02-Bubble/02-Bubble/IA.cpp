@@ -172,6 +172,7 @@ void IA::update(int deltaTime)
 			if (healthPoints == 0) sprite->changeAnimation(DYING_RIGHT);
 			else if (playerHealth == 0) sprite->changeAnimation(STAND_RIGHT);
 			else if (playerX < sultanX)	sprite->changeAnimation(STAND_LEFT);
+			else if (fightRange && playerBlocking) sprite->changeAnimation(BLOCK_RIGHT);
 			else if (fightRange) sprite->changeAnimation(ATTACK_RIGHT);
 			else if (visionRange) sprite->changeAnimation(MOVE_RIGHT);
 			
@@ -179,6 +180,7 @@ void IA::update(int deltaTime)
 
 		case ATTACK_LEFT:
 
+			if (!playerBlocking) player->dealDamage(1, "enemy");
 			if (healthPoints == 0) sprite->changeAnimation(DYING_LEFT);
 			else if (playerHealth == 0) sprite->changeAnimation(STAND_LEFT);
 			else if (playerX > sultanX)	sprite->changeAnimation(STAND_RIGHT);
@@ -191,6 +193,7 @@ void IA::update(int deltaTime)
 
 		case ATTACK_RIGHT:
 
+			if (!playerBlocking) player->dealDamage(1,"enemy");
 			if (healthPoints == 0) sprite->changeAnimation(DYING_RIGHT);
 			else if (playerHealth == 0) sprite->changeAnimation(STAND_RIGHT);
 			else if (playerX < sultanX)	sprite->changeAnimation(STAND_LEFT);
@@ -237,13 +240,12 @@ void IA::update(int deltaTime)
 
 	if (player->getHealth() == 0) sprite->changeAnimation(STAND_LEFT);
 
-	if ((sprite->animation() != BLOCK_RIGHT || sprite->animation() != BLOCK_LEFT) && playerAttacking)
-		dealDamageEnemy(1);
+	
 	if (posIA.x - 2 == minPos && player->getPosition().x < posIA.x) sprite->changeAnimation(STAND_LEFT);
 	else if (posIA.x + 2 == maxPos && player->getPosition().x > posIA.x) sprite->changeAnimation(STAND_RIGHT);
 
 
-	if (healthPoints == 0) sprite->changeAnimation(DEAD_LEFT);
+	if (healthPoints == 0 && sprite->animation() != DYING_LEFT && sprite->animation() != DYING_RIGHT  && sprite->animation() != DEAD_LEFT && sprite->animation() != DEAD_RIGHT) sprite->changeAnimation(DYING_LEFT);
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posIA.x), float(tileMapDispl.y + posIA.y)));
 }
 

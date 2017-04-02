@@ -1,12 +1,37 @@
-﻿Compilación iniciada a las 01/04/2017 20:21:49.
+﻿Compilación iniciada a las 02/04/2017 17:20:21.
      1>Proyecto "C:\Users\Marc\Desktop\Prince-Of-Persia\2DGame\02-Bubble\02-Bubble\02-Bubble.vcxproj" en el nodo 2 (Build destinos).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"..\..\..\libs\Simple OpenGL Image Library\src" /I..\..\..\libs\freeglut\include /I"..\..\..\libs\glew-1.13.0\include" /I..\..\..\libs\glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt IA.cpp
-         IA.cpp
-     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\ia.cpp(124): warning C4244: 'inicializando' : conversión de 'float' a 'int'; posible pérdida de datos
-     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\ia.cpp(125): warning C4244: 'inicializando' : conversión de 'float' a 'int'; posible pérdida de datos
-     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\ia.cpp(126): warning C4244: 'inicializando' : conversión de 'float' a 'int'; posible pérdida de datos
-     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\ia.cpp(127): warning C4244: 'inicializando' : conversión de 'float' a 'int'; posible pérdida de datos
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"..\..\..\libs\Simple OpenGL Image Library\src" /I..\..\..\libs\freeglut\include /I"..\..\..\libs\glew-1.13.0\include" /I..\..\..\libs\glm /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Player.cpp
+         Player.cpp
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(527): warning C4244: '=' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(694): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(705): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(864): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(872): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(883): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(884): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(885): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(886): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(887): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(888): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(889): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(890): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(891): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(892): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(897): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(898): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(899): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(900): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(901): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(902): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(903): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(904): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(905): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(906): warning C4244: 'argumento' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(923): warning C4244: 'inicializando' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(924): warning C4244: 'inicializando' : conversión de 'float' a 'int'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(925): warning C4244: '=' : conversión de 'int' a 'float'; posible pérdida de datos
+     1>c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\player.cpp(926): warning C4244: '=' : conversión de 'int' a 'float'; posible pérdida de datos
      1>c:\program files (x86)\microsoft visual studio 12.0\vc\include\utility(103): warning C4244: 'inicializando' : conversión de 'const double' a 'int'; posible pérdida de datos
                  c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\tilemap.h(37) : vea la referencia a la creación de instancias de plantilla de función 'std::pair<int,int>::pair<char,double,void>(const std::pair<char,double> &)' que se está compilando
                  c:\users\marc\desktop\prince-of-persia\2dgame\02-bubble\02-bubble\tilemap.h(37) : vea la referencia a la creación de instancias de plantilla de función 'std::pair<int,int>::pair<char,double,void>(const std::pair<char,double> &)' que se está compilando
@@ -38,4 +63,4 @@
 
 Compilación correcta.
 
-Tiempo transcurrido 00:00:00.90
+Tiempo transcurrido 00:00:00.81

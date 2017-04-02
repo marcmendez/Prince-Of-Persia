@@ -12,6 +12,7 @@
 #define  FALLEN_ANGLE 0.4
 #define PLAYER_VISION 32*6
 #define NUMBER_ENEMIES 2
+#define ATTACK_RANGE 32
 
 enum PlayerAnims
 {
@@ -396,7 +397,7 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 	/* STANDING WITH SWORD OUT*/
 	sprite->setAnimationSpeed(STAND_SWORD_LEFT, 8);
-	sprite->addKeyframe(STAND_SWORD_LEFT, glm::vec2(-0.4f, 0.5f));
+	sprite->addKeyframe(STAND_SWORD_LEFT, glm::vec2(-0.5f, 0.5f));
 
 	/* STANDING WITH SWORD OUT*/
 	sprite->setAnimationSpeed(STAND_SWORD_RIGHT, 8);
@@ -519,6 +520,7 @@ void Player::update(int deltaTime)
 
 	int contador = 0;
 	
+	
 
 	for each (IA* sultanIter in sultans){
 		if (abs(minDistX > abs(sultanIter->getPosition().x - posPlayer.x)) && posPlayer.y == sultanIter->getPosition().y) {
@@ -529,6 +531,8 @@ void Player::update(int deltaTime)
 	}
 	if (contador == 0) sultan = sultans[0];
 	
+	bool fightRange = (posPlayer.y - sultan->getPosition().y == 0) && (abs(posPlayer.x - sultan->getPosition().x) <= ATTACK_RANGE);
+
 	if (finishAction) {
 
 		if (sultan->getPosition().y - posPlayer.y == 0
@@ -796,7 +800,7 @@ void Player::update(int deltaTime)
 			if (Game::instance().getSpecialKey(113) || Game::instance().getSpecialKey(112)) sprite->changeAnimation(ATTACK_LEFT);
 			else if (!Game::instance().getSpecialKey(GLUT_KEY_LEFT) && !Game::instance().getSpecialKey(GLUT_KEY_RIGHT))sprite->changeAnimation(STAND_SWORD_LEFT);
 
-			if (sultan->getPosition().y - posPlayer.y <= 0 && posPlayer.x - sultan->getPosition().x <= PLAYER_VISION && posPlayer.x - sultan->getPosition().x < 0)
+			if (sultan->getPosition().y - posPlayer.y == 0 && posPlayer.x - sultan->getPosition().x <= PLAYER_VISION && posPlayer.x - sultan->getPosition().x < 0)
 				sprite->changeAnimation(STAND_SWORD_RIGHT);
 
 			break;
@@ -804,20 +808,23 @@ void Player::update(int deltaTime)
 		case MOVE_SWORD_RIGHT:
 
 			if (Game::instance().getSpecialKey(113) || Game::instance().getSpecialKey(112)) sprite->changeAnimation(ATTACK_RIGHT);
-			else sprite->changeAnimation(STAND_SWORD_RIGHT);
+			else if (!Game::instance().getSpecialKey(GLUT_KEY_LEFT) && !Game::instance().getSpecialKey(GLUT_KEY_RIGHT))sprite->changeAnimation(STAND_SWORD_RIGHT);
+
+			if (sultan->getPosition().y - posPlayer.y == 0 && sultan->getPosition().x - posPlayer.x <= PLAYER_VISION && sultan->getPosition().x - posPlayer.x < 0)
+				sprite->changeAnimation(STAND_SWORD_LEFT);
 
 			break;
 
 		case ATTACK_LEFT:
 
-			if (!sultan->sultanIsBlockking())sultan->dealDamageEnemy(1);
+			if (!sultan->sultanIsBlockking() && fightRange)sultan->dealDamageEnemy(1);
 			sprite->changeAnimation(STAND_SWORD_LEFT);
 
 			break;
 
 		case ATTACK_RIGHT:
 
-			if (!sultan->sultanIsBlockking())sultan->dealDamageEnemy(1);
+			if (!sultan->sultanIsBlockking() && fightRange)sultan->dealDamageEnemy(1);
 			sprite->changeAnimation(STAND_SWORD_RIGHT);
 
 			break;
@@ -927,7 +934,7 @@ void Player::update(int deltaTime)
 		posPlayer.y = 13 * 64; posPlayer.x = 73 * 32; sprite->changeAnimation(STAND_RIGHT);
 	}
 
-	if (sultan->sultanIsAttacking())dealDamage(1, "enemy");
+	//if (sultan->sultanIsAttacking())dealDamage(1, "enemy");
 
 	for each (IA* sultan in sultans) sultan->setPlayerStats(this);
 
@@ -972,10 +979,10 @@ void Player::dealDamage(int damage, string type) {
 		else { healthPoints = 0; lastDamageType = type; }
 	}
 	
-	/*else if ((type == "enemy") ) {
+	else if ((type == "enemy") ) {
 		if (!isSwordOut()) { healthPoints = 0; lastDamageType = type; }
 		else { healthPoints -= damage; lastDamageType = type; }
-	}*/
+	}
 
 }
 
