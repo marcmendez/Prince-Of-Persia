@@ -16,8 +16,8 @@
 #define SCREEN_X 0
 #define SCREEN_Y 0
 
-#define INIT_PLAYER_X_TILES 70
-#define INIT_PLAYER_Y_TILES 4
+#define INIT_PLAYER_X_TILES 52
+#define INIT_PLAYER_Y_TILES 3
 
 #define NUMBER_ENEMIES 2
 
