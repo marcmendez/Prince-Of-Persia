@@ -16,9 +16,8 @@
 #define SCREEN_X 0
 #define SCREEN_Y 0
 
-#define INIT_PLAYER_X_TILES 52
-#define INIT_PLAYER_Y_TILES 3
-
+#define INIT_PLAYER_X_TILES 26
+#define INIT_PLAYER_Y_TILES 10
 #define NUMBER_ENEMIES 2
 
 Scene::Scene()
@@ -120,7 +119,7 @@ void Scene::update(int deltaTime)
 			glm::vec2 poscam; poscam.x = kOffsetX; poscam.y = kOffsetY;
 			if (timer >= 2000) { healthInterface->update(player->getHealth(), poscam); bStory2 = false; timer = 0; }
 
-		}
+		}	
 
 		else if (bCredits) {
 			if (Game::instance().getSpecialKey(GLUT_KEY_UP)) { healthInterface->update(-1, poscam); bPrincipalMenu = true; bCredits = false; }

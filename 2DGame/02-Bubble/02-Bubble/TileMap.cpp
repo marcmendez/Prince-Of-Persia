@@ -187,15 +187,18 @@ bool TileMap::collisionMoveRight(int posx, int posy, const glm::ivec2 &size) con
 
 bool TileMap::collisionMoveDown(int posx, int posy, const glm::ivec2 &size, char dir) const {
 	
-	int x0, x1, y;
+	int x0, x1, y, p;
 
 	x0 = posx / tileSizeX;
-	x1 = (posx + (size.x - 1)) / tileSizeX;
+	x1 = (posx + (size.x - 6)) / tileSizeX;
 	y = (posy) / tileSizeY;
 
 	for (int x = x0; x <= x1; x++) {
+
 		if ((map[y*mapSize.x + x] / 10) % 10 == 3 || ((map[y*mapSize.x + x] / 10) % 10) == 8) return true;
 		if (mapTraps[y*mapSize.x + x] == 1) return true;
+
+		
 	}
 
 	return false;
@@ -209,7 +212,7 @@ bool TileMap::canIMoveUpLeft(int posx, int posy, const glm::ivec2 &size) const{
 	y = round((double)posy / (double)64);
 
 	if (((map[(y - 1)*mapSize.x + x] / 10) % 10 == 3 && map[(y - 1)*mapSize.x + x + 1] >= 40 && mapTraps[(y - 1)*mapSize.x + x + 1] != 1)
-		 || ((map[(y - 1)*mapSize.x + x] / 10) % 10 == 8 && (map[(y - 1)*mapSize.x + x + 1] / 10) % 10 == 4) && (mapTraps[(y - 1)*mapSize.x + x + 1] / 10) % 10 != 1) return true;
+		 || ((map[(y - 1)*mapSize.x + x] / 10) % 10 == 8 && (map[(y - 1)*mapSize.x + x + 1] / 10) % 10 == 4 && (mapTraps[(y - 1)*mapSize.x + x + 1] != 1))) return true;
 	
 	return false;
 
@@ -219,10 +222,10 @@ bool TileMap::canIMoveUpRight(int posx, int posy, const glm::ivec2 &size) const 
 	int x, y;
 	x = (posx + size.x / 2 - 1) / 32;
 	y = round((double)posy / (double)64);
-	if ((map[(y - 1)*mapSize.x + x + 1] / 10) % 10 == 3 && map[(y - 1)*mapSize.x + (x)] >= 40 || (map[(y - 1)*mapSize.x + x + 1] / 10) % 10 == 8 && (map[(y - 1)*mapSize.x + (x)]/10) %10 == 4) return true;
+	if ((map[(y - 1)*mapSize.x + x + 1] / 10) % 10 == 3 && map[(y - 1)*mapSize.x + (x)] >= 40 && mapTraps[(y - 1)*mapSize.x + (x)] != 1 ||
+		(map[(y - 1)*mapSize.x + x + 1] / 10) % 10 == 8 && (map[(y - 1)*mapSize.x + (x)] / 10) % 10 == 4 && mapTraps[(y - 1)*mapSize.x + (x)] != 1) return true;
 	return false;
 }
-
 
 void TileMap::addTrapCollision(int x, int y, int type) {
 	mapTraps[(y/64) * mapSize.x + (x/32)] = type; //1 = down and 2 = left or right

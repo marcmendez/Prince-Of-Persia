@@ -60,7 +60,7 @@ void TrapFallingFloor::init(glm::vec2 &trapPos, const glm::ivec2 &tileMapPos, Pl
 	//Init sprite and position
 	sprite->changeAnimation(NORMAL);
 	tileMapDispl = tileMapPos;
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + trapPos.x), float(tileMapDispl.y + trapPos.y)));
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x + trapPos.x), float(tileMapDispl.y + trapPos.y + 1)));
 
 	map->addTrapCollision(tileMapDispl.x + trapPos.x, tileMapDispl.y + trapPos.y, 1);
 
@@ -68,7 +68,6 @@ void TrapFallingFloor::init(glm::vec2 &trapPos, const glm::ivec2 &tileMapPos, Pl
 	bDetected = false;
 	fallen = 0;
 }
-
 void TrapFallingFloor::restart() {
 	bDetected = false;
 	if (fallen != 0) { 
@@ -91,7 +90,7 @@ void TrapFallingFloor::update(int deltaTime)
 
 			if (!bDetected && int(player->getPosition().x / 32) <= int(posTrap.x / 32) + 2 && int(player->getPosition().x / 32) >= int(posTrap.x / 32) - 3)
 				sprite->changeAnimation(SHAKE);
-			if (bDetected && AmISteppingOn())
+			if (bDetected && AmISteppingOn() && player->canBeHit())
 				sprite->changeAnimation(SHAKE);
 			break;
 
@@ -115,12 +114,10 @@ void TrapFallingFloor::update(int deltaTime)
 	}
 
 }
-
 void TrapFallingFloor::render()
 {
 	sprite->render();
 }
-
 bool TrapFallingFloor::AmISteppingOn() const {
 
 	int x0, x1, y;

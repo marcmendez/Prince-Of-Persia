@@ -31,6 +31,7 @@ public:
 	void Player::setSultans(vector<IA*>sultans);
 	bool isBlocking();
 	bool isSwordOut();
+	bool canBeHit();
 
 	void addEasterEggPoint() {
 		++easterEggPoint;

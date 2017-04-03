@@ -1035,6 +1035,9 @@ bool Player::isAttacking() {
 	else return true;
 }
 
+bool Player::canBeHit() {
+	return !bJumping;
+}
 
 
 

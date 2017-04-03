@@ -77,7 +77,7 @@ void TrapDoor::init(glm::vec2 &doorPos, glm::vec2 &pressurePlatePos, const glm::
 	tileMapDispl = tileMapPos;
 	posDoor = doorPos; posPressurePlate = pressurePlatePos;
 
-	spritePressurePlate->setPosition(glm::vec2(float(tileMapDispl.x + pressurePlatePos.x), float(tileMapDispl.y + pressurePlatePos.y)));
+	spritePressurePlate->setPosition(glm::vec2(float(tileMapDispl.x + pressurePlatePos.x), float(tileMapDispl.y + pressurePlatePos.y + 1)));
 	spriteDoor->setPosition(glm::vec2(float(tileMapDispl.x + doorPos.x + 32), float(tileMapDispl.y + doorPos.y - 10)));
 
 	map->addTrapCollision(doorPos.x, doorPos.y, 2);

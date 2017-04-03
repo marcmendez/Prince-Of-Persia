@@ -86,7 +86,7 @@ void TrapSaw::update(int deltaTime)
 		}
 	}
 
-	if (sprite->animation() == ACTIVE && AmISteppingOn()) player->dealDamage(4, "saw");
+	if (sprite->animation() == ACTIVE && AmISteppingOn() && player->canBeHit()) player->dealDamage(4, "saw");
 
 }
 

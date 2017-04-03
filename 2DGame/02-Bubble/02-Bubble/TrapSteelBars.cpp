@@ -76,7 +76,7 @@ void TrapSteelBars::update(int deltaTime)
 		}
 	}
 
-	if (sprite->animation() == UP && AmISteppingOn()) player->dealDamage(4, "steelbars");
+	if (sprite->animation() == UP && AmISteppingOn() && player->canBeHit()) player->dealDamage(4, "steelbars");
 
 }
 
@@ -90,7 +90,7 @@ bool TrapSteelBars::AmISteppingOn() const {
 	int x0, x1, y;
 
 	x0 = player->getPosition().x / 32;
-	x1 = (player->getPosition().x + (32 - 1)) / 32;
+	x1 = (player->getPosition().x + (32 - 6)) / 32;
 	y = (player->getPosition().y) / 64;
 
 	if (x0 == (posTrap.x / 32) && y == (posTrap.y / 64)) return true;

@@ -69,7 +69,7 @@ private:
 	float currentTime;
 	glm::mat4 projection;
 
-	bool bPrincipalMenu, bInstructions, bStory1, bStory2, bCredits;
+	bool bPrincipalMenu, bInstructions, bStory1, bStory2, bStory3, bCredits;
 	int timer, lastHP;
 	glm::ivec2 lastPos;
 
