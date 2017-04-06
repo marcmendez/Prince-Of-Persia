@@ -32,9 +32,11 @@ public:
 	bool isBlocking();
 	bool isSwordOut();
 	bool canBeHit();
+	bool playerSeesEnemy();
 
 	void addEasterEggPoint() {
 		++easterEggPoint;
+		if (healthPoints < 3) ++healthPoints;
 	}
 
 	int getHealth() {
@@ -44,15 +46,23 @@ public:
 	int getEasterEggPoints() {
 		return easterEggPoint;
 	}
+
+	int getHealthEnemy() {
+		return healthIA;
+	}
 	
 
 private:
+	bool lookingRight();
+
 	glm::ivec2 tileMapDispl;
 	glm::vec2 posPlayer;
+	glm::vec2 posIA;
 
 	bool bFalling, bJumping;
 	int fallenDistance;
 	char direction;
+	int healthIA;
 
 	Texture spritesheet;
 	Sprite *sprite;

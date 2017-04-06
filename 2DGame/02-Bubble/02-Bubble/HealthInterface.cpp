@@ -10,7 +10,7 @@ HealthInterface *HealthInterface::createHealthInterface(const int health, const 
 }
 
 HealthInterface::HealthInterface(const int health, const glm::vec2 &minCoords, ShaderProgram &program) {
-	loadInterface(health,0);
+	loadInterface(health,false,0, 0);
 	this->minCoords = minCoords;
 	this->program = program;
 	glm::vec2 poscam; poscam.x = 0; poscam.y = 0;
@@ -32,15 +32,27 @@ void HealthInterface::free() {
 	glDeleteBuffers(1, &vbo);
 }
 
-void HealthInterface::update(int health, glm::vec2 poscam) {
-	loadInterface(health, poscam.y);
+void HealthInterface::update(int health, bool bEnemy, int healthEnemy, glm::vec2 poscam) {
+	loadInterface(health, bEnemy,healthEnemy, poscam.y);
 	prepareArrays(poscam);
 }
 
-bool HealthInterface::loadInterface(int health, int poscamY) {
+bool HealthInterface::loadInterface(int health, bool bEnemy, int healthEnemy, int poscamY) {
 
-	if (health >= 0 && poscamY < 576) { interfacesheet.loadFromFile("images/interface/HealthInterfaceSheet" + to_string(health) + ".png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = false; }
-	else if (health >= 0 && poscamY >= 576) { interfacesheet.loadFromFile("images/interface/HealthInterfaceSheet" + to_string(health) + "_1.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = false; }
+	if (bEnemy) { 
+	if (health >= 0 && poscamY < 576) { interfacesheet.loadFromFile("images/interface/HealthInterfaceSheet" + to_string(health) + "_Enemy" + to_string(healthEnemy) + ".png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = false; }
+	else if (health >= 0 && poscamY >= 576 && poscamY < 768) { interfacesheet.loadFromFile("images/interface/HealthInterfaceSheet" + to_string(health) + "_1_Enemy" + to_string(healthEnemy) +".png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = false; }
+	else if (health >= 0 && poscamY >= 768) { interfacesheet.loadFromFile("images/interface/HealthInterfaceSheet" + to_string(health) + "_Enemy" + to_string(healthEnemy) + ".png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = false; }
+	else if (health == -1) { interfacesheet.loadFromFile("images/menu/Menu.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }
+	else if (health == -2) { interfacesheet.loadFromFile("images/menu/instructions.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }
+	else if (health == -3) { interfacesheet.loadFromFile("images/menu/story1.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }
+	else if (health == -4) { interfacesheet.loadFromFile("images/menu/story2.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }
+	else if (health == -5) { interfacesheet.loadFromFile("images/menu/credits.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }
+	else { interfacesheet.loadFromFile("images/menu/credits.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }
+	}
+	else if (health >= 0 && poscamY < 576) { interfacesheet.loadFromFile("images/interface/HealthInterfaceSheet" + to_string(health) + ".png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = false; }
+	else if (health >= 0 && poscamY >= 576 && poscamY < 768) { interfacesheet.loadFromFile("images/interface/HealthInterfaceSheet" + to_string(health) + "_1.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = false; }
+	else if (health >= 0 && poscamY >= 768) { interfacesheet.loadFromFile("images/interface/HealthInterfaceSheet" + to_string(health) + ".png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = false; }
 	else if (health == -1) { interfacesheet.loadFromFile("images/menu/Menu.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }
 	else if (health == -2) { interfacesheet.loadFromFile("images/menu/instructions.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }
 	else if (health == -3) { interfacesheet.loadFromFile("images/menu/story1.png", TEXTURE_PIXEL_FORMAT_RGBA); bMenu = true; }

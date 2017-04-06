@@ -60,6 +60,8 @@ private:
 	CoinEasterEgg *coin1;
 	CoinEasterEgg *coin2;
 
+	CoinEasterEgg *coin3;
+	CoinEasterEgg *coin4;
 
 	vector<Torch*> torches;
 
@@ -69,9 +71,11 @@ private:
 	float currentTime;
 	glm::mat4 projection;
 
-	bool bPrincipalMenu, bInstructions, bStory1, bStory2, bStory3, bCredits;
-	int timer, lastHP;
+	bool bPrincipalMenu, bInstructions, bStory1, bStory2, bCredits;
+	int timer, lastHP, lastHPEnemy;
 	glm::ivec2 lastPos;
+
+	bool lastEnemy;
 
 };
 

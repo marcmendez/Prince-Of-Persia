@@ -16,8 +16,8 @@
 #define SCREEN_X 0
 #define SCREEN_Y 0
 
-#define INIT_PLAYER_X_TILES 26
-#define INIT_PLAYER_Y_TILES 10
+#define INIT_PLAYER_X_TILES 70
+#define INIT_PLAYER_Y_TILES 4
 #define NUMBER_ENEMIES 2
 
 Scene::Scene()
@@ -62,19 +62,24 @@ void Scene::init()
 	const float kOffsetY = static_cast<int>(player->GetScreenY(3 * map->getTileSize().second)) * 3 * map->getTileSize().second;
 	projection = glm::ortho(kOffsetX, SCREEN_WIDTH + kOffsetX, SCREEN_HEIGHT + kOffsetY, kOffsetY);
 	glm::vec2 poscam; poscam.x = kOffsetX; poscam.y = kOffsetY;
-	healthInterface->update(-1, poscam);
+	healthInterface->update(-1, false, 0, poscam);
 
 	currentTime = 0.0f;
 	
-	bPrincipalMenu = true; bStory1 = false; bStory2 = false; bInstructions = false; bCredits = false;
+	bPrincipalMenu = true; bStory1 = false; bStory2 = false; bInstructions = false; bCredits = false; lastEnemy = false;
 
 	princess = new Princess();
 	princess->init("images/SpriteSheetPV.png", glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 
 	coin1 = new CoinEasterEgg();
-	coin1->init(glm::vec2(72 * 32, 10 * 64), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
+	coin1->init(glm::vec2(7 * 32, 0 * 64), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
 	coin2 = new CoinEasterEgg();
-	coin2->init(glm::vec2(76 * 32, 10 * 64), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
+	coin2->init(glm::vec2(25 * 32, 8 * 64), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
+
+	coin3 = new CoinEasterEgg();
+	coin3->init(glm::vec2(6 * 32, 9 * 64), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
+	coin4 = new CoinEasterEgg();
+	coin4->init(glm::vec2(87 * 32, 12 * 64), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
 
 }
 
@@ -97,19 +102,19 @@ void Scene::update(int deltaTime)
 		if (!bCredits) projection = glm::ortho(kOffsetX, SCREEN_WIDTH + kOffsetX, SCREEN_HEIGHT + kOffsetY, kOffsetY);
 		
 		if (bPrincipalMenu) {
-			if (Game::instance().getSpecialKey(GLUT_KEY_LEFT)) { healthInterface->update(-3, poscam); bPrincipalMenu = false; bStory1 = true; timer = 0; }
-			else if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT)) { healthInterface->update(-2, poscam); bPrincipalMenu = false; bInstructions = true; }
+			if (Game::instance().getSpecialKey(GLUT_KEY_LEFT)) { healthInterface->update(-3, false, 0, poscam); bPrincipalMenu = false; bStory1 = true; timer = 0; }
+			else if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT)) { healthInterface->update(-2, false, 0, poscam); bPrincipalMenu = false; bInstructions = true; }
 		}
 
 		else if (bInstructions) {
-			if (Game::instance().getSpecialKey(GLUT_KEY_UP)) { healthInterface->update(-1, poscam); bPrincipalMenu = true; bInstructions = false; }
+			if (Game::instance().getSpecialKey(GLUT_KEY_UP)) { healthInterface->update(-1, false, 0, poscam); bPrincipalMenu = true; bInstructions = false; }
 		}
 
 		else if (bStory1) {
 			timer += deltaTime;
 			projection = glm::ortho(kOffsetX, 1295 + kOffsetX, 816 + kOffsetY, kOffsetY);
 			glm::vec2 poscam; poscam.x = kOffsetX; poscam.y = kOffsetY;
-			if (timer >= 1000) { healthInterface->update(-4, poscam); bStory1 = false; bStory2 = true; }
+			if (timer >= 1000) { healthInterface->update(-4, false, 0, poscam); bStory1 = false; bStory2 = true; }
 
 		}
 
@@ -117,17 +122,17 @@ void Scene::update(int deltaTime)
 			timer += deltaTime;
 			projection = glm::ortho(kOffsetX, 1295 + kOffsetX, 816 + kOffsetY, kOffsetY);
 			glm::vec2 poscam; poscam.x = kOffsetX; poscam.y = kOffsetY;
-			if (timer >= 2000) { healthInterface->update(player->getHealth(), poscam); bStory2 = false; timer = 0; }
+			if (timer >= 2000) { healthInterface->update(player->getHealth(), false, 0, poscam); bStory2 = false; timer = 0; }
 
 		}	
 
 		else if (bCredits) {
-			if (Game::instance().getSpecialKey(GLUT_KEY_UP)) { healthInterface->update(-1, poscam); bPrincipalMenu = true; bCredits = false; }
+			if (Game::instance().getSpecialKey(GLUT_KEY_UP)) { healthInterface->update(-1, false, 0, poscam); bPrincipalMenu = true; bCredits = false; }
 
 		}
 	}
 
-	else if ((player->getPosition().x / 32) == 73 && (player->getPosition().y) / 64 == 13) {
+	else if ((player->getPosition().x / 32) >= 73 && (player->getPosition().y) / 64 == 13) {
 
 		if (!princess->finished()) {
 
@@ -151,7 +156,7 @@ void Scene::update(int deltaTime)
 			projection = glm::ortho(kOffsetX, 1295 + kOffsetX, 816 + kOffsetY, kOffsetY);
 			glm::vec2 poscam; poscam.x = kOffsetX; poscam.y = kOffsetY;
 
-			healthInterface->update(-5, poscam); bCredits = true;
+			healthInterface->update(-5, false,0, poscam); bCredits = true;
 
 		}
 	}
@@ -160,15 +165,12 @@ void Scene::update(int deltaTime)
 
 		currentTime += deltaTime;
 
-		if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT) && player->getHealth() <= 0) restart();
+		if (Game::instance().getSpecialKey(114) && player->getHealth() <= 0) restart();
 
 		for each (IA* sultan in sultans)
 			sultan->update(deltaTime);
 
 		player->update(deltaTime);
-
-
-		
 
 		for each (Torch* torch in torches)
 			torch->update(deltaTime);		
@@ -190,9 +192,9 @@ void Scene::update(int deltaTime)
 		projection = glm::ortho(kOffsetX, SCREEN_WIDTH + kOffsetX, SCREEN_HEIGHT + kOffsetY, kOffsetY);
 		glm::vec2 poscam; poscam.x = kOffsetX; poscam.y = kOffsetY;
 
-		if (lastHP != player->getHealth() || lastPos.x != kOffsetX || lastPos.y != kOffsetY) healthInterface->update(player->getHealth(), poscam);
-		lastHP = player->getHealth(); lastPos = glm::ivec2(kOffsetX, kOffsetY);
-		coin1->update(deltaTime); coin2->update(deltaTime);
+		if (lastEnemy != player->playerSeesEnemy() || lastHPEnemy != player->getHealthEnemy() || lastHP != player->getHealth() || lastPos.x != kOffsetX || lastPos.y != kOffsetY) healthInterface->update(player->getHealth(), player->playerSeesEnemy(), player->getHealthEnemy(), poscam);
+		lastHP = player->getHealth(); lastPos = glm::ivec2(kOffsetX, kOffsetY); lastEnemy = player->playerSeesEnemy(); lastHPEnemy = player->getHealthEnemy();
+		coin1->update(deltaTime); coin2->update(deltaTime); coin3->update(deltaTime); coin4->update(deltaTime);
 
 	}
 }
@@ -220,6 +222,9 @@ void Scene::render()
 
 	for each (TrapSteelBars* trap in trapsFloor) trap->render();
 
+	coin1->render(); coin2->render();
+	coin3->render(); coin4->render();
+
 	texProgram.use();
 	texProgram.setUniformMatrix4f("projection", projection);
 	texProgram.setUniform4f("color", 1.0f, 1.0f, 1.0f, 1.0f);
@@ -229,7 +234,6 @@ void Scene::render()
 	columns->render();
 
 	princess->render();
-	coin1->render(); coin2->render();
 
 	texProgram.use();
 	texProgram.setUniformMatrix4f("projection", projection);
@@ -454,7 +458,7 @@ void Scene::initIA(string IAFile) {
 		{
 			fin >> sultanX >> sultanY >> minPos >> maxPos;
 			IA* sultan = new IA();
-			sultan->init(glm::ivec2(SCREEN_X, SCREEN_Y), texProgram, player, minPos* map->getTileSize().first, maxPos * map->getTileSize().second);
+			sultan->init(glm::ivec2(32*sultanX, 64*sultanY), texProgram, player, minPos*32, maxPos * 32);
 			sultan->setTileMap(map);
 			sultan->setPosition(glm::ivec2(sultanX * map->getTileSize().first, sultanY * map->getTileSize().second));
 			sultans.push_back(sultan);

@@ -1,4 +1,7 @@
 IAMAP
-2								-- Number of enemies						
+5								-- Number of enemies						
 78 4 70 78
-58 3 55 58
+48 0 40 48
+25 12 24 27
+64 12 61 68
+58 10 53 58

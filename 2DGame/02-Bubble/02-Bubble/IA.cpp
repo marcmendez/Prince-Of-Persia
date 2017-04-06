@@ -24,10 +24,10 @@ enum PlayerAnims
 
 void IA::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, Player* player, int minPos, int maxPos)
 {
-
 	// Configuring the spritesheet
 	spritesheet.setWrapS(GL_MIRRORED_REPEAT);
-	spritesheet.loadFromFile("images/spriteSheetEnemy.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	if (tileMapPos.y/64 < 9) spritesheet.loadFromFile("images/spriteSheetEnemy1.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	else spritesheet.loadFromFile("images/spriteSheetEnemy2.png", TEXTURE_PIXEL_FORMAT_RGBA);
 
 	// Configuring a single sprite
 	sprite = Sprite::createSprite(glm::ivec2(64, 64), glm::vec2(0.1f, 0.1f), &spritesheet, &shaderProgram);
@@ -104,8 +104,8 @@ void IA::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, Player
 
 	//Init sprite and position
 	sprite->changeAnimation(STAND_LEFT);
-	tileMapDispl = tileMapPos;
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posIA.x), float(tileMapDispl.y + posIA.y)));
+	tileMapDispl = glm::ivec2(0, 0);
+	sprite->setPosition(glm::vec2(float(0 + posIA.x), float(0 + posIA.y - 6)));
 
 	healthPoints = 3;
 	playerBlocking = false;
@@ -234,19 +234,21 @@ void IA::update(int deltaTime)
 		}
 	}
 	if (sprite->animation() == MOVE_LEFT && sprite->getFrame() == 0 && posIA.x - 2 >= minPos) posIA.x -= 2;
+
 	if (sprite->animation() == MOVE_RIGHT && sprite->getFrame() == 0 && posIA.x + 2 <= maxPos) posIA.x += 2;
+	//else if (sprite->animation() == MOVE_RIGHT && posIA.x + 2 >= maxPos) sprite->changeAnimation(STAND_RIGHT);
 	if (sprite->animation() == BLOCK_RIGHT && sprite->getFrame() % 2) posIA.x -= 1;
 	if (sprite->animation() == BLOCK_LEFT && sprite->getFrame() %  2) posIA.x += 1;
 
 	if (player->getHealth() == 0) sprite->changeAnimation(STAND_LEFT);
 
 	
-	if (posIA.x - 2 == minPos && player->getPosition().x < posIA.x) sprite->changeAnimation(STAND_LEFT);
-	else if (posIA.x + 2 == maxPos && player->getPosition().x > posIA.x) sprite->changeAnimation(STAND_RIGHT);
+	//if (posIA.x - 2 == minPos && player->getPosition().x < posIA.x) sprite->changeAnimation(STAND_LEFT);
+	//else if (posIA.x + 2 == maxPos && player->getPosition().x > posIA.x) sprite->changeAnimation(STAND_RIGHT);
 
 
 	if (healthPoints == 0 && sprite->animation() != DYING_LEFT && sprite->animation() != DYING_RIGHT  && sprite->animation() != DEAD_LEFT && sprite->animation() != DEAD_RIGHT) sprite->changeAnimation(DYING_LEFT);
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posIA.x), float(tileMapDispl.y + posIA.y)));
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posIA.x), float(tileMapDispl.y + posIA.y - 6)));
 }
 
 void IA::render()
@@ -258,7 +260,7 @@ void IA::render()
 void IA::setPosition(const glm::vec2 &pos)
 {
 	posIA = pos;
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posIA.x), float(tileMapDispl.y + posIA.y)));
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posIA.x), float(tileMapDispl.y + posIA.y - 6)));
 }
 
 
@@ -270,7 +272,8 @@ void IA::setTileMap(TileMap *tileMap)
 void IA::dealDamageEnemy(int damage) {
 	
 	if (sprite->animation() != BLOCK_RIGHT && sprite->animation() != BLOCK_LEFT  ) {
-		healthPoints -= 1;
+		if (healthPoints - 1 >= 0)healthPoints -= 1;
+		else healthPoints = 0;
 			
 	}
 

@@ -67,13 +67,13 @@ void CoinEasterEgg::update(int deltaTime)
 
 	if (AmISteppingOn() && !bTaken) { player->addEasterEggPoint(); bTaken = true; sprite->changeAnimation(NO_COIN); }
 	
-	if (moveAxisY < 32 && bDirectionUp) moveAxisY +=1.5;
-	if (moveAxisY >= 32) bDirectionUp = false;
-	if (moveAxisY > 0 && !bDirectionUp) moveAxisY -=1.5;
+	if (moveAxisY < 28 && bDirectionUp) moveAxisY +=1.25;
+	if (moveAxisY >= 28) bDirectionUp = false;
+	if (moveAxisY > 0 && !bDirectionUp) moveAxisY -=1.25;
 	if (moveAxisY <= 0) bDirectionUp = true;
 
 	sprite->update(deltaTime);
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x) + posCoin.x + 5, float(tileMapDispl.y) + posCoin.y - 8 + moveAxisY));
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x) + posCoin.x + 5, float(tileMapDispl.y) + posCoin.y - 6 + moveAxisY));
 
 }
 

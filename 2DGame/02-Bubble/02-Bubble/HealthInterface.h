@@ -13,12 +13,12 @@ public:
 
 	void render() const;
 	void free();
-	void update(int health, glm::vec2 poscam);
+	void update(int health, bool bEnemy, int healthEnemy, glm::vec2 poscam);
 
 	bool isMenu() { return bMenu; }
 private:
 
-	bool loadInterface(int health, int poscamY);
+	bool loadInterface(int health, bool bEnemy, int healthEnemy, int poscamY);
 	void prepareArrays(glm::vec2 poscam);
 
 private:
