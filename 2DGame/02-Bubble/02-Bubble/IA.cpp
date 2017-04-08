@@ -233,9 +233,9 @@ void IA::update(int deltaTime)
 
 		}
 	}
-	if (sprite->animation() == MOVE_LEFT && sprite->getFrame() == 0 && posIA.x - 2 >= minPos) posIA.x -= 2;
+	if (sprite->animation() == MOVE_LEFT && sprite->getFrame() == 0 && posIA.x - 1 >= minPos) posIA.x -= 1;
 
-	if (sprite->animation() == MOVE_RIGHT && sprite->getFrame() == 0 && posIA.x + 2 <= maxPos) posIA.x += 2;
+	if (sprite->animation() == MOVE_RIGHT && sprite->getFrame() == 0 && posIA.x + 1 <= maxPos) posIA.x += 1;
 	//else if (sprite->animation() == MOVE_RIGHT && posIA.x + 2 >= maxPos) sprite->changeAnimation(STAND_RIGHT);
 	if (sprite->animation() == BLOCK_RIGHT && sprite->getFrame() % 2) posIA.x -= 1;
 	if (sprite->animation() == BLOCK_LEFT && sprite->getFrame() %  2) posIA.x += 1;

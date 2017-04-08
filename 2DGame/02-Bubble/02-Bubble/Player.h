@@ -76,6 +76,7 @@ private:
 	string lastDamageType;
 	float jumped;
 	bool fallStraight;
+	bool stop;
 	bool saved; // quan guardes la espasa voluntariament
 	
 
