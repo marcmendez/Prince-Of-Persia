@@ -141,8 +141,8 @@ void Scene::update(int deltaTime)
 			projection = glm::ortho(kOffsetX, SCREEN_WIDTH + kOffsetX, SCREEN_HEIGHT + kOffsetY, kOffsetY);
 			glm::vec2 poscam; poscam.x = kOffsetX; poscam.y = kOffsetY;
 
-			if (player->getEasterEggPoints() >= 2 && !princess->peach()) princess->init("images/SpriteSheetPeach.png", glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
-			else if (player->getEasterEggPoints() < 2 && princess->peach()) princess->init("images/SpriteSheetPV.png", glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			if (player->getEasterEggPoints() >= 4 && !princess->peach()) princess->init("images/SpriteSheetPeach.png", glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
+			else if (player->getEasterEggPoints() < 4 && princess->peach()) princess->init("images/SpriteSheetPV.png", glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 			princess->setStarted(true); princess->update(deltaTime);
 
 		}

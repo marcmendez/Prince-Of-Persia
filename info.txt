@@ -1,0 +1,107 @@
+﻿A) Nom i cognoms dels integrant dels grup:
+
+
+
+	- Marc Méndez Roca
+
+	- Jordi Estapé Canal
+
+
+
+B) Funcionalitats implementades:
+
+ 
+
+	1) PART COMUNA:
+
+    
+
+	- Interfície gràfica que mostra vida tant el jugador com dels enemics.
+
+   
+
+	- Dos nivells d'aspecte i distribució diferents.
+
+        
+
+		(+) El primer nivell és practicament igual que el nivell 1 del joc.
+        
+		(+) El segon nivell és semblant al nivell 4 del joc.
+        
+		(++) Adjuntem imatges dels nivells i les trampes per facilitar la comprovació.
+
+
+   
+	- Dues trampes del joc.
+
+      
+
+		(+) Trampa de la serra mecànica
+      
+		(+) Trampa de les portes que s'obren o no depenent de les plataformes de pressió.
+
+  
+
+	- Dos enemics que trobeu en el joc.
+
+    
+
+	- Lluita contra els enemics implementada.
+
+  
+
+	2) TRES FUNCIONALITATS DEL JOC:
+
+    
+
+	- Estructura bàsica de 4 pantalles: menú principal, jugar, instruccions i crèdits.
+      
+
+		(+) Hem afegit les pantalles d'història per donar un objectiu clar al joc.
+     
+		(+) S'ha afegit un final per tancar l'història.
+
+    
+
+	- Dues trampes extra del joc
+
+      
+
+		(+) Trampa de les punxes de ferro.
+      
+		(+) Trampa de les plaques que cauen.
+
+    
+
+	- Animació de les antorxes.
+
+  
+
+	3) PART CREATIVA:
+
+    
+
+	- S'ha afegit la possibilitat de recollir objectes extra (monedes de mario) 
+	per tenir al possibilitat
+ d'arribar a un final alternatiu.
+
+
+C) Instruccions:
+
+	1) MOVIMENTS JUGADOR
+
+	moviment:	fletxa esquerra o fletxa dreta
+	correr: 	mantenir fletxa esquerra o fletxa dreta
+	caminar lent: 	shift i fletxa esquerra o fletxa dreta
+	saltar: 	fletxa adalt
+	salt lateral: 	fletxa adalt i fletxa esquerra o fletxa dreta
+	saltar corrent:	correr i fletxa adalt
+	
+	2) LLUITA JUGADOR
+	
+	treure espasa:  fletxa amunt
+	guardar espasa: flexta avall
+	atac: 		shift
+	bloquejar: 	fletxa adalt
+
+	3) MENUS: Els botons a clicar en els menus estan indicats en pantalla.
