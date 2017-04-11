@@ -36,7 +36,8 @@ public:
 
 	void addEasterEggPoint() {
 		++easterEggPoint;
-		if (healthPoints < 3) ++healthPoints;
+		if (healthPoints < 3 && healthPoints > 0) ++healthPoints;
+		
 	}
 
 	int getHealth() {

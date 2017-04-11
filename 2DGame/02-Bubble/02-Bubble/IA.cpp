@@ -105,8 +105,8 @@ void IA::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, Player
 	//Init sprite and position
 	sprite->changeAnimation(STAND_LEFT);
 	tileMapDispl = glm::ivec2(0, 0);
-	sprite->setPosition(glm::vec2(float(0 + posIA.x), float(0 + posIA.y - 6)));
-
+	sprite->setPosition(glm::vec2(float(0 + posIA.x), float(0 + posIA.y )));
+	
 	healthPoints = 3;
 	playerBlocking = false;
 	playerAttacking = false;
@@ -114,6 +114,18 @@ void IA::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram, Player
 	this->minPos = minPos;
 	this->maxPos = maxPos;
 }
+
+
+void IA::reset() {
+
+	healthPoints = 3;
+	playerBlocking = false;
+	playerAttacking = false;
+	tileMapDispl = glm::ivec2(0, 0);
+	this->setPosition(posIAInit);
+	sprite->changeAnimation(STAND_RIGHT);
+
+	}
 
 void IA::update(int deltaTime)
 {
@@ -248,7 +260,7 @@ void IA::update(int deltaTime)
 
 
 	if (healthPoints == 0 && sprite->animation() != DYING_LEFT && sprite->animation() != DYING_RIGHT  && sprite->animation() != DEAD_LEFT && sprite->animation() != DEAD_RIGHT) sprite->changeAnimation(DYING_LEFT);
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posIA.x), float(tileMapDispl.y + posIA.y - 6)));
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posIA.x), float(tileMapDispl.y + posIA.y - 6 )));
 }
 
 void IA::render()
@@ -260,7 +272,9 @@ void IA::render()
 void IA::setPosition(const glm::vec2 &pos)
 {
 	posIA = pos;
-	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posIA.x), float(tileMapDispl.y + posIA.y - 6)));
+	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posIA.x), float(tileMapDispl.y + posIA.y)));
+	posIAInit = glm::vec2(float(tileMapDispl.x + posIA.x), float(tileMapDispl.y + posIA.y));
+
 }
 
 

@@ -76,6 +76,7 @@ private:
 	glm::ivec2 lastPos;
 
 	bool lastEnemy;
+	bool releaseCtrl;
 
 };
 

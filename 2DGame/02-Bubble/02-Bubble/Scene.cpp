@@ -16,8 +16,9 @@
 #define SCREEN_X 0
 #define SCREEN_Y 0
 
-#define INIT_PLAYER_X_TILES 70
-#define INIT_PLAYER_Y_TILES 4
+#define INIT_PLAYER_X_TILES 81
+#define INIT_PLAYER_Y_TILES 10
+
 #define NUMBER_ENEMIES 2
 
 Scene::Scene()
@@ -66,18 +67,25 @@ void Scene::init()
 
 	currentTime = 0.0f;
 	
-	bPrincipalMenu = true; bStory1 = false; bStory2 = false; bInstructions = false; bCredits = false; lastEnemy = false;
+	bPrincipalMenu = true; bStory1 = false; bStory2 = false; bInstructions = false; bCredits = false; lastEnemy = false; releaseCtrl = true;
 
 	princess = new Princess();
 	princess->init("images/SpriteSheetPV.png", glm::ivec2(SCREEN_X, SCREEN_Y), texProgram);
 
+
+	// 7. 0
 	coin1 = new CoinEasterEgg();
 	coin1->init(glm::vec2(7 * 32, 0 * 64), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
+
+	//25 . 8
 	coin2 = new CoinEasterEgg();
 	coin2->init(glm::vec2(25 * 32, 8 * 64), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
 
+	//6 . 9
 	coin3 = new CoinEasterEgg();
 	coin3->init(glm::vec2(6 * 32, 9 * 64), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
+
+	// 87  12
 	coin4 = new CoinEasterEgg();
 	coin4->init(glm::vec2(87 * 32, 12 * 64), glm::ivec2(SCREEN_X, SCREEN_Y), player, texProgram);
 
@@ -88,12 +96,14 @@ void Scene::restart() {
 
 	player->restart();
 	player->setPosition(glm::vec2(INIT_PLAYER_X_TILES * map->getTileSize().first, INIT_PLAYER_Y_TILES * map->getTileSize().second));
+	
+
 	restartTraps();
 }
 
 void Scene::update(int deltaTime)
 {
-
+	if (!Game::instance().getSpecialKey(114))releaseCtrl = true;
 	if (healthInterface->isMenu()) {
 
 		const float kOffsetX = static_cast<int>(player->GetScreenX(10 * 32)) * 10 * 32;
@@ -102,12 +112,12 @@ void Scene::update(int deltaTime)
 		if (!bCredits) projection = glm::ortho(kOffsetX, SCREEN_WIDTH + kOffsetX, SCREEN_HEIGHT + kOffsetY, kOffsetY);
 		
 		if (bPrincipalMenu) {
-			if (Game::instance().getSpecialKey(GLUT_KEY_LEFT)) { healthInterface->update(-3, false, 0, poscam); bPrincipalMenu = false; bStory1 = true; timer = 0; }
+			if (Game::instance().getSpecialKey(114) && releaseCtrl) { healthInterface->update(-3, false, 0, poscam); bPrincipalMenu = false; bStory1 = true; timer = 0; }
 			else if (Game::instance().getSpecialKey(GLUT_KEY_RIGHT)) { healthInterface->update(-2, false, 0, poscam); bPrincipalMenu = false; bInstructions = true; }
 		}
 
 		else if (bInstructions) {
-			if (Game::instance().getSpecialKey(GLUT_KEY_UP)) { healthInterface->update(-1, false, 0, poscam); bPrincipalMenu = true; bInstructions = false; }
+			if (Game::instance().getSpecialKey(GLUT_KEY_LEFT)) { healthInterface->update(-1, false, 0, poscam); bPrincipalMenu = true; bInstructions = false; }
 		}
 
 		else if (bStory1) {
@@ -127,7 +137,7 @@ void Scene::update(int deltaTime)
 		}	
 
 		else if (bCredits) {
-			if (Game::instance().getSpecialKey(GLUT_KEY_UP)) { healthInterface->update(-1, false, 0, poscam); bPrincipalMenu = true; bCredits = false; }
+			if (Game::instance().getSpecialKey(114)) { healthInterface->update(-1, false, 0, poscam); bPrincipalMenu = true; bCredits = false; releaseCtrl = false; }
 
 		}
 	}

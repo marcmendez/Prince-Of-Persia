@@ -82,8 +82,8 @@ B) Funcionalitats implementades:
     
 
 	- S'ha afegit la possibilitat de recollir objectes extra (monedes de mario) 
-	per tenir al possibilitat
- d'arribar a un final alternatiu.
+	  per tenir al possibilitat
+	  d'arribar a un final alternatiu.
 
 
 C) Instruccions:

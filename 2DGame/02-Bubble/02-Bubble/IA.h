@@ -25,7 +25,8 @@ public:
 	void dealDamageEnemy(int damage);
 	bool sultanIsBlockking();
 	bool sultanIsAttacking();
-
+	void reset();
+	void restartPos();
 	int getHealthEnemy() {
 		return healthPoints;
 	}
@@ -34,6 +35,7 @@ private:
 	glm::ivec2 tileMapDispl;
 	glm::vec2 posIA;
 	glm::vec2 posPlayer;
+	glm::vec2 posIAInit;
 
 	Texture spritesheet;
 	Sprite *sprite;

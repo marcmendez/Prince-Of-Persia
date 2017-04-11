@@ -24,7 +24,7 @@ void TrapSaw::init(const glm::vec2 &pos, const glm::ivec2 &tileMapPos, Player *p
 	sprite->setNumberAnimations(3);
 
 	//KeyFrames
-	sprite->setAnimationSpeed(UNACTIVE, 5);
+	sprite->setAnimationSpeed(UNACTIVE, 1);
 	sprite->addKeyframe(UNACTIVE, glm::vec2(0.f, 0.4f));
 
 	sprite->setAnimationSpeed(MOVING, 10);
@@ -76,7 +76,7 @@ void TrapSaw::update(int deltaTime)
 
 		case ACTIVE:
 			bUp = true;
-			if ((player->getPosition().y - posTrap.y > 0 || int(player->getPosition().x / 32) != int(posTrap.x / 32) &&
+			if ((player->getPosition().y - posTrap.y >= 0 || int(player->getPosition().x / 32) != int(posTrap.x / 32) &&
 				(int(player->getPosition().x / 32) != int(posTrap.x / 32) - 1 || int(player->getPosition().x / 16) % 2 == 0)) && player->getHealth() != 0)
 				sprite->changeAnimation(MOVING);
 			else if (player->getHealth() != 0) {
