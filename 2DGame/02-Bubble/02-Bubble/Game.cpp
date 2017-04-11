@@ -37,7 +37,7 @@ void Game::keyReleased(int key)
 
 void Game::specialKeyPressed(int key)
 {
-	specialKeys[key] = true;
+			specialKeys[key] = true;
 }
 
 void Game::specialKeyReleased(int key)

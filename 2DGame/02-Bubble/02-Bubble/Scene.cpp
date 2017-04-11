@@ -16,8 +16,8 @@
 #define SCREEN_X 0
 #define SCREEN_Y 0
 
-#define INIT_PLAYER_X_TILES 81
-#define INIT_PLAYER_Y_TILES 10
+#define INIT_PLAYER_X_TILES 60
+#define INIT_PLAYER_Y_TILES 0
 
 #define NUMBER_ENEMIES 2
 
@@ -142,7 +142,7 @@ void Scene::update(int deltaTime)
 		}
 	}
 
-	else if ((player->getPosition().x / 32) >= 73 && (player->getPosition().y) / 64 == 13) {
+	else if ((player->getPosition().x / 32) == 73 && (player->getPosition().y) / 64 == 13) {
 
 		if (!princess->finished()) {
 

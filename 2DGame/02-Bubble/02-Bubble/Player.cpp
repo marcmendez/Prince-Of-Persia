@@ -1012,7 +1012,7 @@ void Player::update(int deltaTime)
 			sprite->changeAnimation(DEATH_BY_ENEMY_RIGHT_STOP);
 	}
 
-	if ((posPlayer.y / 64) == 4 && posPlayer.x >= 2680) {
+	if (((posPlayer.y / 64) == 4 && posPlayer.x >= 2680) || Game::instance().getSpecialKey(116)) {
 		posPlayer.y = 640, posPlayer.x = 1450;
 	}
 	else if ((posPlayer.y / 64) == 10 && (posPlayer.x / 32) >= 82) {
